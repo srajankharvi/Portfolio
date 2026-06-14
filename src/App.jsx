@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const navItems = ["Home", "About", "Skills", "Projects", "Contact"];
@@ -49,6 +49,37 @@ function App() {
 
 function Header() {
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [activeItem, setActiveItem] = useState("Home");
+
+  useEffect(() => {
+    const sections = navItems.map(item => document.getElementById(item.toLowerCase()));
+    
+    const observerOptions = {
+      root: null,
+      rootMargin: "-40% 0px -50% 0px", // Trigger when section occupies center of viewport
+      threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          const capitalized = id.charAt(0).toUpperCase() + id.slice(1);
+          setActiveItem(capitalized);
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach((section) => {
+      if (section) observer.observe(section);
+    });
+
+    return () => {
+      sections.forEach((section) => {
+        if (section) observer.unobserve(section);
+      });
+    };
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/20 bg-white/30 backdrop-blur-md shadow-sm">
@@ -64,23 +95,28 @@ function Header() {
           className="hidden items-center gap-1 rounded-full border border-white bg-white/80 p-2 shadow-soft md:flex"
           onMouseLeave={() => setHoveredItem(null)}
         >
-          {navItems.map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              onMouseEnter={() => setHoveredItem(item)}
-              className="relative rounded-full px-4 py-2 text-sm font-black text-slate-600 transition-colors duration-200 hover:text-ink"
-            >
-              {hoveredItem === item && (
-                <motion.span
-                  layoutId="headerHoverPill"
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  className="absolute inset-0 rounded-full bg-skyPastel/75 -z-10"
-                />
-              )}
-              {item}
-            </a>
-          ))}
+          {navItems.map((item) => {
+            const isSelected = hoveredItem ? (hoveredItem === item) : (activeItem === item);
+            return (
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                onMouseEnter={() => setHoveredItem(item)}
+                className={`relative rounded-full px-4 py-2 text-sm font-black transition-colors duration-300 ${
+                  isSelected ? "text-ink" : "text-slate-500"
+                }`}
+              >
+                {isSelected && (
+                  <motion.span
+                    layoutId="headerHoverPill"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    className="absolute inset-0 rounded-full bg-skyPastel/75 -z-10"
+                  />
+                )}
+                {item}
+              </a>
+            );
+          })}
         </div>
 
         <CartoonButton
@@ -91,15 +127,22 @@ function Header() {
         </CartoonButton>
       </nav>
       <div className="mx-auto flex w-[min(100%_-_1.5rem,1120px)] gap-2 overflow-x-auto pb-3 md:hidden">
-        {navItems.map((item) => (
-          <a
-            key={item}
-            href={`#${item.toLowerCase()}`}
-            className="shrink-0 rounded-full border border-white bg-white/85 px-4 py-2 text-sm font-black text-slate-600 shadow-soft"
-          >
-            {item}
-          </a>
-        ))}
+        {navItems.map((item) => {
+          const isActive = activeItem === item;
+          return (
+            <a
+              key={item}
+              href={`#${item.toLowerCase()}`}
+              className={`shrink-0 rounded-full border-2 transition-all duration-200 px-4 py-2 text-sm font-black shadow-soft ${
+                isActive 
+                  ? "bg-skyPastel border-ink text-ink" 
+                  : "bg-white/85 border-white text-slate-600"
+              }`}
+            >
+              {item}
+            </a>
+          );
+        })}
       </div>
     </header>
   );
