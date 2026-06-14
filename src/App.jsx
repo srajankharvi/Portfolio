@@ -595,24 +595,18 @@ function CartoonButton({ href, children, tone = "dark", target, rel, className =
   const baseClasses = "inline-flex min-h-14 items-center justify-center rounded-full px-7 text-center font-black border-2 transition-colors duration-200 cursor-pointer select-none";
   
   let toneClasses = "";
-  let baseShadow = "";
-  let hoverShadow = "";
+  let baseShadow = "0 4px 0px #27324a";
+  let hoverShadow = "0 8px 0px #27324a";
   let activeShadow = "0 0px 0px #27324a";
   let hoverBg = "";
-  let hoverTextColor = "";
+  let hoverTextColor = "#27324a";
 
   if (tone === "dark") {
     toneClasses = "bg-ink text-white border-ink";
-    baseShadow = "0 4px 0px #63b8ff";
-    hoverShadow = "0 8px 0px #63b8ff";
-    hoverBg = "#63b8ff";
-    hoverTextColor = "#27324a";
+    hoverBg = "#bfe7ff"; // skyPastel
   } else if (tone === "light") {
     toneClasses = "bg-white text-ink border-ink";
-    baseShadow = "0 4px 0px #27324a";
-    hoverShadow = "0 8px 0px #27324a";
-    hoverBg = "#fff2a8";
-    hoverTextColor = "#27324a";
+    hoverBg = "#fff2a8"; // lemonPastel
   }
 
   return (
