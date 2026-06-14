@@ -902,9 +902,20 @@ function EmailIcon() {
 
 function Footer() {
   return (
-    <footer className="border-t border-white bg-white/70 px-6 py-8 text-center text-sm font-bold text-slate-500">
-      <p>Created on 2026, Developed and Designed by Srajan</p>
-    </footer>
+    <motion.footer
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="relative border-t border-white/40 bg-white/30 px-6 py-7 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] backdrop-blur-xl"
+    >
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-skyPastel/20 via-transparent to-transparent" />
+      <p className="text-sm font-bold text-slate-500">
+        © 2026 Developed and Designed by{" "}
+        <span className="font-black text-ink">Srajan</span>{" "}
+        <span className="mx-1 text-skyBright">✦</span> Built with 💙
+      </p>
+    </motion.footer>
   );
 }
 
