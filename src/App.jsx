@@ -84,8 +84,8 @@ function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-white/20 bg-white/30 backdrop-blur-md shadow-sm">
       <nav className="mx-auto flex min-h-20 w-[min(100%_-_1.5rem,1120px)] items-center justify-between gap-4">
-        <a href="#home" className="group flex items-center gap-3 font-extrabold">
-          <span className="grid h-12 w-12 place-items-center rounded-2xl border-2 border-ink/10 bg-white shadow-soft transition-transform group-hover:-rotate-6 group-hover:scale-105">
+        <a href="#home" className="group flex items-center gap-3 font-heading font-extrabold">
+          <span className="grid h-12 w-12 place-items-center rounded-2xl border-2 border-ink/10 bg-white shadow-soft transition-transform group-hover:-rotate-6 group-hover:scale-105 font-heading font-bold text-lg">
             SK
           </span>
           <span>Srajan</span>
@@ -102,7 +102,7 @@ function Header() {
                 key={item}
                 href={`#${item.toLowerCase()}`}
                 onMouseEnter={() => setHoveredItem(item)}
-                className={`relative rounded-full px-4 py-2 text-sm font-black transition-colors duration-300 ${
+                className={`relative rounded-full px-4 py-2 text-sm font-semibold tracking-wide transition-colors duration-300 ${
                   isSelected ? "text-ink" : "text-slate-500"
                 }`}
               >
@@ -121,7 +121,7 @@ function Header() {
 
         <CartoonButton
           href="#contact"
-          className="hidden md:inline-flex min-h-0 py-3 px-6 text-sm font-extrabold"
+          className="hidden md:inline-flex min-h-0 py-3 px-6 text-sm"
         >
           Say Hello
         </CartoonButton>
@@ -133,7 +133,7 @@ function Header() {
             <a
               key={item}
               href={`#${item.toLowerCase()}`}
-              className={`shrink-0 rounded-full border-2 transition-all duration-200 px-4 py-2 text-sm font-black shadow-soft ${
+              className={`shrink-0 rounded-full border-2 transition-all duration-200 px-4 py-2 text-sm font-semibold tracking-wide shadow-soft ${
                 isActive 
                   ? "bg-skyPastel border-ink text-ink" 
                   : "bg-white/85 border-white text-slate-600"
@@ -153,18 +153,18 @@ function Hero() {
     <section id="home" className="relative isolate min-h-[calc(100vh_-_80px)] overflow-hidden py-16 sm:py-20">
       <div className="mx-auto grid w-[min(100%_-_1.5rem,1120px)] items-center gap-12 lg:grid-cols-[1fr_0.95fr]">
         <motion.div variants={stagger} initial="hidden" animate="show" className="relative z-10">
-          <motion.p variants={fadeUp} className="mb-4 text-sm font-black uppercase tracking-[0.24em] text-sky-600">
+          <motion.p variants={fadeUp} className="mb-4 text-xs font-bold uppercase tracking-[0.28em] text-sky-600">
             Portfolio
           </motion.p>
-          <motion.h1 variants={fadeUp} className="max-w-3xl text-5xl font-black leading-[0.95] tracking-normal sm:text-6xl lg:text-7xl">
+          <motion.h1 variants={fadeUp} className="max-w-3xl text-5xl font-heading font-extrabold leading-[0.92] tracking-tight sm:text-6xl lg:text-7xl">
             Srajan Kharvi
           </motion.h1>
-          <motion.div variants={fadeUp} className="mt-6 text-xl font-extrabold text-slate-700 sm:text-2xl">
+          <motion.div variants={fadeUp} className="mt-6 text-xl font-semibold text-slate-700 sm:text-2xl">
             <span className="typewriter inline-block max-w-full overflow-hidden whitespace-nowrap align-bottom">
               BCA Student | Aspiring Software Developer
             </span>
           </motion.div>
-          <motion.p variants={fadeUp} className="mt-5 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
+          <motion.p variants={fadeUp} className="mt-5 max-w-xl text-base leading-relaxed text-slate-500 sm:text-lg">
             A BCA student passionate about web development and building meaningful digital solutions. Always learning, growing, and excited to collaborate on impactful projects.
           </motion.p>
           <motion.div variants={fadeUp} className="mt-8 flex flex-col gap-4 sm:flex-row">
@@ -197,13 +197,13 @@ function About() {
         <MotionCard className="p-7 sm:p-9">
           <div className="space-y-5 text-lg leading-8 text-slate-600">
             <p>
-              I'm a <span className="font-black text-ink">BCA Student</span> with a passion for technology and a curiosity for learning how things work behind the scenes.
+              I'm a <span className="font-bold text-ink">BCA Student</span> with a passion for technology and a curiosity for learning how things work behind the scenes.
             </p>
             <p>
-              I enjoy building responsive and user-friendly <span className="font-black text-ink">Web Applications</span> using HTML, CSS, JavaScript, and modern web technologies. Creating projects that turn ideas into practical solutions is something I genuinely enjoy.
+              I enjoy building responsive and user-friendly <span className="font-bold text-ink">Web Applications</span> using HTML, CSS, JavaScript, and modern web technologies. Creating projects that turn ideas into practical solutions is something I genuinely enjoy.
             </p>
             <p>
-              Alongside web development, I'm actively exploring <span className="font-black text-ink">AI Integration</span> and learning how intelligent technologies can solve real-world problems. My goal is to grow into a skilled developer through <span className="font-black text-ink">Full Stack Learning</span> and hands-on experience.
+              Alongside web development, I'm actively exploring <span className="font-bold text-ink">AI Integration</span> and learning how intelligent technologies can solve real-world problems. My goal is to grow into a skilled developer through <span className="font-bold text-ink">Full Stack Learning</span> and hands-on experience.
             </p>
           </div>
         </MotionCard>
@@ -409,8 +409,8 @@ function SkillCard({ skill, delay }) {
       <div className={`grid h-16 w-16 place-items-center rounded-2xl ${skill.color} border-2 ${skill.border} shadow-soft mb-4`}>
         <SkillIcon type={skill.icon} />
       </div>
-      <h4 className="text-lg font-black text-ink">{skill.name}</h4>
-      <span className={`mt-2 inline-block rounded-full px-3.5 py-1 text-xs font-black border-2 border-white/60 ${skill.color} ${skill.ink} shadow-sm`}>
+      <h4 className="text-base font-bold text-ink">{skill.name}</h4>
+      <span className={`mt-2 inline-block rounded-full px-3.5 py-1 text-xs font-medium border-2 border-white/60 ${skill.color} ${skill.ink} shadow-sm`}>
         {skill.level}
       </span>
     </motion.div>
@@ -424,8 +424,8 @@ function Skills() {
         {/* Proficient Section */}
         <div>
           <div className="mb-6">
-            <h3 className="text-2xl font-black text-ink">Proficient</h3>
-            <p className="text-sm font-bold text-slate-500">Technologies I use confidently to build web apps.</p>
+            <h3 className="text-2xl font-heading font-bold text-ink">Proficient</h3>
+            <p className="mt-1 text-sm font-normal leading-relaxed text-slate-400">Technologies I use confidently to build web apps.</p>
           </div>
           <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 max-w-4xl">
             {proficientSkills.map((skill, index) => (
@@ -437,8 +437,8 @@ function Skills() {
         {/* Currently Learning Section */}
         <div>
           <div className="mb-6">
-            <h3 className="text-2xl font-black text-ink">Currently Learning / Familiar With</h3>
-            <p className="text-sm font-bold text-slate-500">Technologies I am actively exploring and practicing.</p>
+            <h3 className="text-2xl font-heading font-bold text-ink">Currently Learning / Familiar With</h3>
+            <p className="mt-1 text-sm font-normal leading-relaxed text-slate-400">Technologies I am actively exploring and practicing.</p>
           </div>
           <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 max-w-4xl">
             {learningSkills.map((skill, index) => (
@@ -469,14 +469,14 @@ function Projects() {
           />
         </div>
         <div className="relative p-7 sm:p-10">
-          <p className="text-sm font-black uppercase tracking-[0.22em] text-sky-600">Featured</p>
-          <h3 className="mt-4 text-4xl font-black">Future Map</h3>
-          <p className="mt-5 max-w-xl text-lg leading-8 text-slate-600">
+          <p className="text-xs font-bold uppercase tracking-[0.28em] text-sky-600">Featured</p>
+          <h3 className="mt-4 text-4xl font-heading font-bold leading-tight">Future Map</h3>
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-500 sm:text-lg">
             AI-powered career guidance platform designed to help students explore career paths, discover learning roadmaps, and prepare for interviews with personalized recommendations.
           </p>
           <div className="mt-8 grid gap-3 sm:grid-cols-3">
             {["Career paths", "AI - Mock Interviews", "Student focus"].map((item) => (
-              <span key={item} className="rounded-2xl bg-skyPastel/45 px-4 py-3 text-center text-sm font-black text-slate-700">
+              <span key={item} className="rounded-2xl bg-skyPastel/45 px-4 py-3 text-center text-sm font-medium text-slate-600">
                 {item}
               </span>
             ))}
@@ -510,11 +510,11 @@ function Contact() {
         transition={{ duration: 0.55 }}
         className="mx-auto max-w-xl text-center"
       >
-        <p className="text-lg leading-8 text-slate-600">
+        <p className="text-base leading-relaxed text-slate-500 sm:text-lg">
           Have an opportunity, project idea, or just want to say hello? Feel free to reach out.
         </p>
 
-        <CartoonButton href={mailtoLink} className="mt-6 gap-3 px-8 py-4 font-black">
+        <CartoonButton href={mailtoLink} className="mt-6 gap-3 px-8 py-4">
           <EmailIcon />
           Email Me
         </CartoonButton>
@@ -552,8 +552,8 @@ function Section({ id, eyebrow, title, children }) {
           transition={{ duration: 0.55 }}
           className="mb-10 max-w-3xl"
         >
-          <p className="mb-3 text-sm font-black uppercase tracking-[0.22em] text-sky-600">{eyebrow}</p>
-          <h2 className="text-4xl font-black leading-tight tracking-normal sm:text-5xl">{title}</h2>
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-sky-600">{eyebrow}</p>
+          <h2 className="text-4xl font-heading font-bold leading-snug tracking-tight sm:text-5xl">{title}</h2>
         </motion.div>
         {children}
       </div>
@@ -642,8 +642,8 @@ function MiniInfo({ icon, title, text }) {
       <div className="grid h-14 w-14 place-items-center rounded-2xl bg-lemonPastel/75 shadow-soft">
         {icon}
       </div>
-      <h3 className="mt-4 text-lg font-black">{title}</h3>
-      <p className="text-sm font-bold text-slate-500">{text}</p>
+      <h3 className="mt-4 text-base font-bold">{title}</h3>
+      <p className="mt-0.5 text-sm font-normal text-slate-400">{text}</p>
     </motion.div>
   );
 }
@@ -651,7 +651,7 @@ function MiniInfo({ icon, title, text }) {
 
 
 function CartoonButton({ href, children, tone = "dark", target, rel, className = "", onClick }) {
-  const baseClasses = "inline-flex min-h-14 items-center justify-center rounded-full px-7 text-center font-black border-2 transition-colors duration-200 cursor-pointer select-none";
+  const baseClasses = "inline-flex min-h-14 items-center justify-center rounded-full px-7 text-center font-semibold tracking-wide border-2 transition-colors duration-200 cursor-pointer select-none";
   
   let toneClasses = "";
   let baseShadow = "0 4px 0px #27324a";
@@ -920,9 +920,9 @@ function Footer() {
       className="relative border-t border-white/40 bg-white/30 px-6 py-7 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] backdrop-blur-xl"
     >
       <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-skyPastel/20 via-transparent to-transparent" />
-      <p className="text-sm font-bold text-slate-500">
+      <p className="text-sm font-normal text-slate-400">
         © 2026 Developed and Designed by{" "}
-        <span className="font-black text-ink">Srajan</span>{" "}
+        <span className="font-semibold text-ink">Srajan</span>{" "}
         <span className="mx-1 text-skyBright">✦</span> Built with 💙
       </p>
     </motion.footer>

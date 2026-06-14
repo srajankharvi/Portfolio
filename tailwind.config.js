@@ -22,7 +22,8 @@ export default {
         cartoon: "2rem",
       },
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        heading: ['"Baloo 2"', "ui-rounded", "system-ui", "sans-serif"],
+        sans: ["Nunito", "ui-sans-serif", "system-ui", "sans-serif"],
       },
     },
   },
