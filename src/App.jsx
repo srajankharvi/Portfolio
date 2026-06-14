@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 
 const navItems = ["Home", "About", "Skills", "Projects", "Contact"];
@@ -47,6 +48,8 @@ function App() {
 }
 
 function Header() {
+  const [hoveredItem, setHoveredItem] = useState(null);
+
   return (
     <header className="sticky top-0 z-50 border-b border-white/20 bg-white/30 backdrop-blur-md shadow-sm">
       <nav className="mx-auto flex min-h-20 w-[min(100%_-_1.5rem,1120px)] items-center justify-between gap-4">
@@ -57,13 +60,24 @@ function Header() {
           <span>Srajan</span>
         </a>
 
-        <div className="hidden items-center gap-2 rounded-full border border-white bg-white/80 p-2 shadow-soft md:flex">
+        <div 
+          className="hidden items-center gap-1 rounded-full border border-white bg-white/80 p-2 shadow-soft md:flex"
+          onMouseLeave={() => setHoveredItem(null)}
+        >
           {navItems.map((item) => (
             <a
               key={item}
               href={`#${item.toLowerCase()}`}
-              className="rounded-full px-4 py-2 text-sm font-bold text-slate-600 transition hover:bg-skyPastel/55 hover:text-ink"
+              onMouseEnter={() => setHoveredItem(item)}
+              className="relative rounded-full px-4 py-2 text-sm font-black text-slate-600 transition-colors duration-200 hover:text-ink"
             >
+              {hoveredItem === item && (
+                <motion.span
+                  layoutId="headerHoverPill"
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  className="absolute inset-0 rounded-full bg-skyPastel/75 -z-10"
+                />
+              )}
               {item}
             </a>
           ))}
