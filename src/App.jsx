@@ -69,12 +69,12 @@ function Header() {
           ))}
         </div>
 
-        <a
+        <CartoonButton
           href="#contact"
-          className="hidden rounded-full bg-ink px-5 py-3 text-sm font-extrabold text-white shadow-soft transition hover:-translate-y-1 hover:bg-skyBright md:inline-flex"
+          className="hidden md:inline-flex min-h-0 py-3 px-6 text-sm font-extrabold"
         >
           Say Hello
-        </a>
+        </CartoonButton>
       </nav>
       <div className="mx-auto flex w-[min(100%_-_1.5rem,1120px)] gap-2 overflow-x-auto pb-3 md:hidden">
         {navItems.map((item) => (
@@ -456,15 +456,10 @@ function Contact() {
           Have an opportunity, project idea, or just want to say hello? Feel free to reach out.
         </p>
 
-        <motion.a
-          href={mailtoLink}
-          whileHover={{ y: -4, scale: 1.04 }}
-          whileTap={{ scale: 0.96 }}
-          className="mt-6 inline-flex items-center gap-3 rounded-full bg-ink px-8 py-4 font-black text-white shadow-soft transition hover:bg-skyBright"
-        >
+        <CartoonButton href={mailtoLink} className="mt-6 gap-3 px-8 py-4 font-black">
           <EmailIcon />
           Email Me
-        </motion.a>
+        </CartoonButton>
 
         <div className="mt-6 flex items-center justify-center gap-4">
           {socials.map((s) => (
@@ -596,20 +591,59 @@ function MiniInfo({ icon, title, text }) {
 
 
 
-function CartoonButton({ href, children, tone = "dark", target, rel }) {
-  const classes =
-    tone === "dark"
-      ? "bg-ink text-white hover:bg-skyBright"
-      : "border-2 border-white bg-white text-sky-700 hover:bg-lemonPastel";
+function CartoonButton({ href, children, tone = "dark", target, rel, className = "", onClick }) {
+  const baseClasses = "inline-flex min-h-14 items-center justify-center rounded-full px-7 text-center font-black border-2 transition-colors duration-200 cursor-pointer select-none";
+  
+  let toneClasses = "";
+  let baseShadow = "";
+  let hoverShadow = "";
+  let activeShadow = "0 0px 0px #27324a";
+  let hoverBg = "";
+  let hoverTextColor = "";
+
+  if (tone === "dark") {
+    toneClasses = "bg-ink text-white border-ink";
+    baseShadow = "0 4px 0px #63b8ff";
+    hoverShadow = "0 8px 0px #63b8ff";
+    hoverBg = "#63b8ff";
+    hoverTextColor = "#27324a";
+  } else if (tone === "light") {
+    toneClasses = "bg-white text-ink border-ink";
+    baseShadow = "0 4px 0px #27324a";
+    hoverShadow = "0 8px 0px #27324a";
+    hoverBg = "#fff2a8";
+    hoverTextColor = "#27324a";
+  }
 
   return (
     <motion.a
       href={href}
       target={target}
       rel={rel}
-      whileHover={{ y: -4, scale: 1.03 }}
-      whileTap={{ scale: 0.96 }}
-      className={`inline-flex min-h-14 items-center justify-center rounded-full px-7 text-center font-black shadow-soft transition ${classes}`}
+      onClick={onClick}
+      initial={{
+        y: 0,
+        boxShadow: baseShadow,
+        backgroundColor: tone === "dark" ? "#27324a" : "#ffffff",
+        color: tone === "dark" ? "#ffffff" : "#27324a"
+      }}
+      whileHover={{
+        y: -4,
+        boxShadow: hoverShadow,
+        backgroundColor: hoverBg,
+        color: hoverTextColor
+      }}
+      whileTap={{
+        y: 2,
+        boxShadow: activeShadow,
+        scale: 0.98
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 400,
+        damping: 20
+      }}
+      className={`${baseClasses} ${toneClasses} ${className}`}
     >
       {children}
     </motion.a>
@@ -818,7 +852,7 @@ function EmailIcon() {
 function Footer() {
   return (
     <footer className="border-t border-white bg-white/70 px-6 py-8 text-center text-sm font-bold text-slate-500">
-      <p>Copyright 2026. Developed and Desgined by Srajan</p>
+      <p>Created on 2026, Developed and Designed by Srajan</p>
     </footer>
   );
 }
