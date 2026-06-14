@@ -528,7 +528,8 @@ function Contact() {
               rel="noopener noreferrer"
               whileHover={{ y: -6, scale: 1.1 }}
               whileTap={{ scale: 0.92 }}
-              className="flex h-12 w-12 items-center justify-center rounded-2xl border-2 border-white bg-white text-slate-600 shadow-soft transition hover:bg-skyPastel/55 hover:text-ink"
+              transition={{ type: "spring", stiffness: 500, damping: 20, mass: 0.6 }}
+              className="flex h-12 w-12 items-center justify-center rounded-2xl border-2 border-white bg-white text-slate-600 shadow-soft transition-colors duration-100 hover:bg-skyPastel/55 hover:text-ink"
               aria-label={s.label}
             >
               {s.icon}
