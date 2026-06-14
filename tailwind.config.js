@@ -22,8 +22,8 @@ export default {
         cartoon: "2rem",
       },
       fontFamily: {
-        heading: ['"Fredoka"', "cursive", "sans-serif"],
-        sans: ['"Poppins"', "sans-serif"],
+        heading: ["Fredoka", "cursive", "sans-serif"],
+        sans: ["Poppins", "ui-sans-serif", "system-ui", "sans-serif"],
       },
     },
   },

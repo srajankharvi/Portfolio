@@ -102,6 +102,7 @@ textarea {
   from {
     width: 0;
   }
+
   to {
     width: 100%;
   }
@@ -114,30 +115,36 @@ textarea {
 }
 
 @keyframes blink-caret {
+
   from,
   to {
     border-color: transparent;
   }
+
   50% {
     border-color: #63b8ff;
   }
 }
 
 @keyframes floaty {
+
   0%,
   100% {
     transform: translate3d(0, 0, 0) rotate(0deg);
   }
+
   50% {
     transform: translate3d(14px, -18px, 0) rotate(3deg);
   }
 }
 
 @keyframes popFloat {
+
   0%,
   100% {
     transform: translateY(0) rotate(0deg) scale(1);
   }
+
   50% {
     transform: translateY(-14px) rotate(12deg) scale(1.06);
   }
@@ -171,6 +178,7 @@ textarea {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
