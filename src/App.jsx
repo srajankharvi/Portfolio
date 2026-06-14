@@ -177,7 +177,7 @@ function Hero() {
           initial={{ opacity: 0, scale: 0.9, y: 28 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
-          className="relative z-10"
+          className="relative z-10 hidden lg:block"
         >
           <img
             src="/developer-avatar.png"
