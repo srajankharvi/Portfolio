@@ -22,8 +22,8 @@ export default {
         cartoon: "2rem",
       },
       fontFamily: {
-        heading: ['"Baloo 2"', "ui-rounded", "system-ui", "sans-serif"],
-        sans: ["Nunito", "ui-sans-serif", "system-ui", "sans-serif"],
+        heading: ["Fredoka", "ui-rounded", "system-ui", "sans-serif"],
+        sans: ["Poppins", "ui-sans-serif", "system-ui", "sans-serif"],
       },
     },
   },
