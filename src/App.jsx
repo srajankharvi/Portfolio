@@ -750,82 +750,6 @@ function FloatingBackground() {
   );
 }
 
-function DeveloperAvatar() {
-  return (
-    <div className="relative mx-auto max-w-[540px]">
-      <motion.div
-        animate={{ y: [0, -12, 0], rotate: [0, 1.5, 0] }}
-        transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute right-0 top-4 z-20 hidden rounded-3xl border-2 border-white bg-white/95 p-4 shadow-sticker sm:block"
-      >
-        <div className="mb-3 flex gap-2">
-          <span className="h-3 w-3 rounded-full bg-peachPastel" />
-          <span className="h-3 w-3 rounded-full bg-lemonPastel" />
-          <span className="h-3 w-3 rounded-full bg-mintPastel" />
-        </div>
-        <div className="grid gap-2">
-          <span className="h-3 w-36 rounded-full bg-skyPastel" />
-          <span className="h-3 w-28 rounded-full bg-mintPastel" />
-          <span className="h-3 w-32 rounded-full bg-lilacPastel" />
-        </div>
-      </motion.div>
-
-      <svg
-        viewBox="0 0 540 470"
-        className="relative z-10 h-auto w-full drop-shadow-[0_26px_35px_rgba(87,113,155,0.18)]"
-        role="img"
-        aria-labelledby="avatar-title"
-      >
-        <title id="avatar-title">Cartoon student developer with laptop</title>
-        <path d="M88 405c47-40 315-42 365 0 22 19 10 42-26 48-77 13-251 13-318 0-36-7-44-30-21-48z" fill="#C8F6DD" />
-        <path d="M116 110c30-58 96-83 162-64 79 22 128 90 130 168 2 76-50 148-132 163-82 15-162-26-196-95-27-55-13-123 36-172z" fill="#BFE7FF" opacity="0.55" />
-        <path d="M128 178c-17 4-34 21-44 47-10 27-7 50 9 56 15 5 29-9 40-32 8-18 18-30 36-37l-41-34z" fill="#63B8FF" />
-        <path d="M410 178c17 4 34 21 44 47 10 27 7 50-9 56-15 5-29-9-40-32-8-18-18-30-36-37l41-34z" fill="#A9D8FF" />
-        <path d="M180 169c19-31 54-50 90-50 37 0 73 20 92 52 17 30 21 84 13 123H165c-9-42-3-93 15-125z" fill="#FFFFFF" />
-        <path d="M186 170c32 31 128 31 165 0 21 19 31 60 28 99-65 30-153 29-219 0-2-40 6-79 26-99z" fill="#FFF2A8" />
-        <circle cx="269" cy="104" r="48" fill="#FFD7BD" />
-        <path d="M220 97c-1-37 32-67 73-58 34 8 52 38 42 67-28-17-69-20-115-9z" fill="#27324A" />
-        <path d="M222 97c21-20 63-29 100-10 0 0-7 22-46 25-29 2-54-15-54-15z" fill="#27324A" />
-        <circle cx="252" cy="107" r="5" fill="#27324A" />
-        <circle cx="289" cy="107" r="5" fill="#27324A" />
-        <path d="M255 132c10 8 23 8 34 0" fill="none" stroke="#27324A" strokeWidth="6" strokeLinecap="round" />
-        <rect x="142" y="268" width="256" height="118" rx="28" fill="#27324A" />
-        <rect x="165" y="294" width="210" height="58" rx="18" fill="#F9FCFF" />
-        <path d="M220 323h101" stroke="#63B8FF" strokeWidth="11" strokeLinecap="round" />
-        <path d="M114 392h310" stroke="#9EB5D1" strokeWidth="18" strokeLinecap="round" />
-        <rect x="64" y="132" width="68" height="54" rx="19" fill="#FFFFFF" />
-        <path d="M82 158h31M96 143v31" stroke="#63B8FF" strokeWidth="8" strokeLinecap="round" />
-        <rect x="386" y="114" width="74" height="64" rx="22" fill="#FFFFFF" />
-        <path d="M407 141h30M407 158h20" stroke="#A78BFA" strokeWidth="8" strokeLinecap="round" />
-        <path d="M87 319l22-22 22 22-22 22-22-22z" fill="#FFF2A8" />
-        <path d="M418 330c13-26 39-21 40 3 22-8 38 16 19 34h-74c-19-18-7-43 15-37z" fill="#FFFFFF" />
-      </svg>
-    </div>
-  );
-}
-
-function ProjectFolder() {
-  return (
-    <motion.svg
-      animate={{ y: [0, -10, 0], rotate: [-1, 1, -1] }}
-      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-      viewBox="0 0 420 300"
-      className="absolute left-1/2 top-1/2 h-[82%] w-[82%] -translate-x-1/2 -translate-y-1/2"
-      role="img"
-      aria-labelledby="folder-title"
-    >
-      <title id="folder-title">Cartoon project folder illustration</title>
-      <path d="M52 83c0-19 15-34 34-34h82c14 0 25 7 32 19l12 21h122c19 0 34 15 34 34v118c0 19-15 34-34 34H86c-19 0-34-15-34-34V83z" fill="#FFFFFF" />
-      <path d="M52 121h316v120c0 19-15 34-34 34H86c-19 0-34-15-34-34V121z" fill="#63B8FF" />
-      <path d="M88 154h244" stroke="#FFFFFF" strokeWidth="14" strokeLinecap="round" opacity="0.55" />
-      <path d="M102 198h78M214 198h92" stroke="#FFF2A8" strokeWidth="16" strokeLinecap="round" />
-      <path d="M151 235h122" stroke="#C8F6DD" strokeWidth="16" strokeLinecap="round" />
-      <circle cx="318" cy="79" r="26" fill="#FFD7BD" />
-      <path d="M308 79h20M318 69v20" stroke="#27324A" strokeWidth="7" strokeLinecap="round" />
-    </motion.svg>
-  );
-}
-
 function BookIcon() {
   return (
     <svg viewBox="0 0 42 42" className="h-7 w-7" aria-hidden="true">
@@ -914,7 +838,7 @@ function EmailIcon() {
 function FbIcon() {
   return (
     <svg viewBox="0 0 24 24" className="h-6 w-6 fill-current" aria-hidden="true">
-      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+      <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.95z" />
     </svg>
   );
 }
