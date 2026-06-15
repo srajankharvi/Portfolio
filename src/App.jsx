@@ -498,7 +498,11 @@ function Contact() {
     { label: "GitHub", href: "https://github.com/srajankharvi", icon: <GitHubIcon /> },
     { label: "Instagram", href: "https://www.instagram.com/saju_kharvi_99/", icon: <InstagramIcon /> },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/srajan-kharvi-6aba9a3b8/", icon: <LinkedInIcon /> },
-    { label: "Facebook", href: "https://www.facebook.com/people/Srajan-Kharvi/pfbid02gZrKaV9gbyt9rS636oz81M2YSfajPrKLctaDBGeLvaZCseZbFmZnSnWEptQpXuTrl/", icon: <FacebookIcon /> },
+    { 
+      label: "FB", 
+      onClick: () => window.open("https://www.facebook.com/people/Srajan-Kharvi/pfbid02gZrKaV9gbyt9rS636oz81M2YSfajPrKLctaDBGeLvaZCseZbFmZnSnWEptQpXuTrl/", "_blank", "noopener,noreferrer"), 
+      icon: <FacebookIcon /> 
+    },
   ];
 
   return (
@@ -520,21 +524,26 @@ function Contact() {
         </CartoonButton>
 
         <div className="mt-6 flex items-center justify-center gap-4">
-          {socials.map((s) => (
-            <motion.a
-              key={s.label}
-              href={s.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ y: -6, scale: 1.1 }}
-              whileTap={{ scale: 0.92 }}
-              transition={{ type: "spring", stiffness: 500, damping: 20, mass: 0.6 }}
-              className="flex h-12 w-12 items-center justify-center rounded-2xl border-2 border-white bg-white text-slate-600 shadow-soft transition-colors duration-100 hover:bg-skyPastel/55 hover:text-ink"
-              aria-label={s.label}
-            >
-              {s.icon}
-            </motion.a>
-          ))}
+          {socials.map((s) => {
+            const isClickAction = !!s.onClick;
+            const Tag = isClickAction ? motion.button : motion.a;
+            return (
+              <Tag
+                key={s.label}
+                {...(isClickAction 
+                  ? { onClick: s.onClick, type: "button" } 
+                  : { href: s.href, target: "_blank", rel: "noopener noreferrer" }
+                )}
+                whileHover={{ y: -6, scale: 1.1 }}
+                whileTap={{ scale: 0.92 }}
+                transition={{ type: "spring", stiffness: 500, damping: 20, mass: 0.6 }}
+                className="flex h-12 w-12 items-center justify-center rounded-2xl border-2 border-white bg-white text-slate-600 shadow-soft transition-colors duration-100 hover:bg-skyPastel/55 hover:text-ink cursor-pointer"
+                aria-label={s.label}
+              >
+                {s.icon}
+              </Tag>
+            );
+          })}
         </div>
       </motion.div>
     </Section>
