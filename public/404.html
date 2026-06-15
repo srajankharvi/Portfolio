@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found | Srajan Kharvi</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #27324a;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(191, 231, 255, 0.62), transparent 30%),
+        radial-gradient(circle at 86% 12%, rgba(255, 215, 189, 0.55), transparent 28%),
+        radial-gradient(circle at 58% 86%, rgba(200, 246, 221, 0.68), transparent 34%),
+        #f9fcff;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      padding: 1rem;
+    }
+    .container {
+      background: #ffffff;
+      border: 3px solid #27324a;
+      border-radius: 2.2rem;
+      padding: 3.5rem 2rem;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 18px 0px rgba(39, 50, 74, 0.05), 0 24px 54px rgba(87, 113, 155, 0.16);
+      position: relative;
+      overflow: hidden;
+    }
+    .emoji {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+      animation: floaty 4.5s ease-in-out infinite;
+    }
+    h1 {
+      font-size: 5rem;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      font-weight: 800;
+      color: #27324a;
+    }
+    h2 {
+      font-size: 1.65rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #64748b;
+      margin-bottom: 2.2rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 3.5rem;
+      border-radius: 9999px;
+      padding: 0 2.2rem;
+      font-weight: 600;
+      font-size: 1rem;
+      border: 2px solid #27324a;
+      background: #27324a;
+      color: #ffffff;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 4px 0px #27324a;
+      transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s, color 0.2s;
+    }
+    .btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 0px #27324a;
+      background-color: #bfe7ff; /* skyPastel */
+      color: #27324a;
+    }
+    .btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 0px 0px #27324a;
+    }
+    @keyframes floaty {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-12px) rotate(-6deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span class="emoji" role="img" aria-label="UFO">🛸</span>
+    <h1>404</h1>
+    <h2>Oops! Page Lost in Space</h2>
+    <p>The page you are looking for doesn't exist or has been moved to another coordinate.</p>
+    <a href="/" class="btn">Take Me Home</a>
+  </div>
+</body>
+</html>
