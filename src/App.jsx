@@ -498,10 +498,10 @@ function Contact() {
     { label: "GitHub", href: "https://github.com/srajankharvi", icon: <GitHubIcon /> },
     { label: "Instagram", href: "https://www.instagram.com/saju_kharvi_99/", icon: <InstagramIcon /> },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/srajan-kharvi-6aba9a3b8/", icon: <LinkedInIcon /> },
-    {
-      label: "Facebook",
-      href: "https://www.facebook.com/people/Srajan-Kharvi/pfbid02gZrKaV9gbyt9rS636oz81M2YSfajPrKLctaDBGeLvaZCseZbFmZnSnWEptQpXuTrl/",
-      icon: <FbIcon />,
+    { 
+      label: "FB", 
+      onClick: () => window.open("https://www.facebook.com/people/Srajan-Kharvi/pfbid02gZrKaV9gbyt9rS636oz81M2YSfajPrKLctaDBGeLvaZCseZbFmZnSnWEptQpXuTrl/", "_blank", "noopener,noreferrer"), 
+      icon: <FbIcon /> 
     },
   ];
 
@@ -524,21 +524,26 @@ function Contact() {
         </CartoonButton>
 
         <div className="mt-6 flex items-center justify-center gap-4">
-          {socials.map((s) => (
-            <motion.a
-              key={s.label}
-              href={s.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ y: -6, scale: 1.1 }}
-              whileTap={{ scale: 0.92 }}
-              transition={{ type: "spring", stiffness: 500, damping: 20, mass: 0.6 }}
-              className="flex h-12 w-12 items-center justify-center rounded-2xl border-2 border-white bg-white text-slate-600 shadow-soft transition-colors duration-100 hover:bg-skyPastel/55 hover:text-ink"
-              aria-label={s.label}
-            >
-              {s.icon}
-            </motion.a>
-          ))}
+          {socials.map((s) => {
+            const isClickAction = !!s.onClick;
+            const Tag = isClickAction ? motion.button : motion.a;
+            return (
+              <Tag
+                key={s.label}
+                {...(isClickAction 
+                  ? { onClick: s.onClick, type: "button" } 
+                  : { href: s.href, target: "_blank", rel: "noopener noreferrer" }
+                )}
+                whileHover={{ y: -6, scale: 1.1 }}
+                whileTap={{ scale: 0.92 }}
+                transition={{ type: "spring", stiffness: 500, damping: 20, mass: 0.6 }}
+                className="flex h-12 w-12 items-center justify-center rounded-2xl border-2 border-white bg-white text-slate-600 shadow-soft transition-colors duration-100 hover:bg-skyPastel/55 hover:text-ink cursor-pointer"
+                aria-label={s.label}
+              >
+                {s.icon}
+              </Tag>
+            );
+          })}
         </div>
       </motion.div>
     </Section>
@@ -832,9 +837,15 @@ function EmailIcon() {
 
 function FbIcon() {
   return (
-    <span className="h-6 w-6 flex items-center justify-center text-current font-bold text-2xl leading-none">
-      f
-    </span>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      className="h-6 w-6"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.95z" />
+    </svg>
   );
 }
 
