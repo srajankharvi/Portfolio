@@ -11,6 +11,7 @@
   "dependencies": {
     "@fontsource/fredoka": "^5.2.10",
     "@fontsource/poppins": "^5.2.7",
+    "@vercel/speed-insights": "^2.0.0",
     "@vitejs/plugin-react": "^6.0.2",
     "framer-motion": "^11.15.0",
     "react": "^18.3.1",
@@ -21,6 +22,6 @@
   "devDependencies": {
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3.4.19"
   }
 }
