@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://portfolio-srajankharvis-projects.vercel.app/sitemap.xml
