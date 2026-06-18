@@ -832,17 +832,16 @@ function EmailIcon() {
 
 function FbIcon() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      className="h-6 w-6"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.95z" />
+    <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" fill="currentColor" />
+      <path
+        d="M13.7 8.8h2V6h-2.4c-2.5 0-4 1.5-4 4v2H7v3h2.3v6h3.3v-6h2.4l.5-3h-2.9v-1.8c0-.9.4-1.4 1.1-1.4z"
+        fill="white"
+      />
     </svg>
   );
 }
+
 
 function Footer() {
   return (
