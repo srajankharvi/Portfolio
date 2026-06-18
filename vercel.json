@@ -33,8 +33,8 @@
   ],
   "rewrites": [
     {
-      "source": "/((?!assets|robots\\.txt|sitemap\\.xml|favicon\\.ico|favicon\\.svg|developer-avatar\\.png|future-map-preview\\.png).*)",
-      "destination": "/index.html"
+      "$schema": "https://openapi.vercel.sh/vercel.json",
+      "framework": "vite"
     }
   ]
 }
