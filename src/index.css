@@ -43,7 +43,7 @@ textarea {
 
 .typewriter {
   border-right: 0.16em solid #63b8ff;
-  animation: typing 3.4s steps(44, end), blink 0.8s step-end infinite;
+  animation: typing 3.4s steps(38, end),blink 0.8s step-end infinite;
 }
 
 .cloud-shape {
