@@ -50,10 +50,11 @@ function App() {
 function Header() {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [activeItem, setActiveItem] = useState("Home");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const sections = navItems.map(item => document.getElementById(item.toLowerCase()));
-    
+
     const observerOptions = {
       root: null,
       rootMargin: "-40% 0px -50% 0px", // Trigger when section occupies center of viewport
@@ -82,69 +83,99 @@ function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/20 bg-white/30 backdrop-blur-md shadow-sm">
-      <nav className="mx-auto flex min-h-20 w-[min(100%_-_1.5rem,1120px)] items-center justify-between gap-4">
-        <a href="#home" className="group flex items-center gap-3 font-heading font-extrabold">
-          <span className="grid h-12 w-12 place-items-center rounded-2xl border-2 border-ink/10 bg-white shadow-soft transition-transform group-hover:-rotate-6 group-hover:scale-105 font-heading font-bold text-lg">
-            SK
-          </span>
-          <span>Srajan</span>
-        </a>
+    <>
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/20 bg-white/60 backdrop-blur-lg shadow-sm">
+        <nav className="mx-auto flex h-20 w-[min(100%_-_1.5rem,1120px)] items-center justify-between gap-4">
+          <a href="#home" className="group flex items-center gap-3 font-heading font-extrabold">
+            <span className="grid h-12 w-12 place-items-center rounded-2xl border-2 border-ink/10 bg-white shadow-soft transition-transform group-hover:-rotate-6 group-hover:scale-105 font-heading font-bold text-lg">
+              SK
+            </span>
+            <span>Srajan</span>
+          </a>
 
-        <div 
-          className="hidden items-center gap-1 rounded-full border border-white bg-white/80 p-2 shadow-soft md:flex"
-          onMouseLeave={() => setHoveredItem(null)}
-        >
-          {navItems.map((item) => {
-            const isSelected = hoveredItem ? (hoveredItem === item) : (activeItem === item);
-            return (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                onMouseEnter={() => setHoveredItem(item)}
-                className={`relative rounded-full px-4 py-2 text-sm font-semibold tracking-wide transition-colors duration-300 ${
-                  isSelected ? "text-ink" : "text-slate-500"
-                }`}
-              >
-                {isSelected && (
-                  <motion.span
-                    layoutId="headerHoverPill"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    className="absolute inset-0 rounded-full bg-skyPastel/75 -z-10"
-                  />
-                )}
-                {item}
-              </a>
-            );
-          })}
-        </div>
+          <div
+            className="hidden items-center gap-1 rounded-full border border-white bg-white/80 p-2 shadow-soft md:flex"
+            onMouseLeave={() => setHoveredItem(null)}
+          >
+            {navItems.map((item) => {
+              const isSelected = hoveredItem ? (hoveredItem === item) : (activeItem === item);
+              return (
+                <a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  onMouseEnter={() => setHoveredItem(item)}
+                  className={`relative rounded-full px-4 py-2 text-sm font-semibold tracking-wide transition-colors duration-300 ${isSelected ? "text-ink" : "text-slate-500"
+                    }`}
+                >
+                  {isSelected && (
+                    <motion.span
+                      layoutId="headerHoverPill"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      className="absolute inset-0 rounded-full bg-skyPastel/75 -z-10"
+                    />
+                  )}
+                  {item}
+                </a>
+              );
+            })}
+          </div>
 
-        <CartoonButton
-          href="#contact"
-          className="hidden md:inline-flex min-h-0 py-3 px-6 text-sm"
+          <CartoonButton
+            href="#contact"
+            className="hidden md:inline-flex min-h-0 py-3 px-6 text-sm"
+          >
+            Say Hello
+          </CartoonButton>
+
+          <button
+            className="md:hidden flex h-11 w-11 items-center justify-center rounded-xl border-2 border-ink bg-white text-ink shadow-[2px_2px_0px_#27324a] transition-transform active:translate-y-0.5 active:shadow-[0px_0px_0px_#27324a]"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {isMobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </nav>
+
+        <motion.div
+          initial={false}
+          animate={{ height: isMobileMenuOpen ? "auto" : 0, opacity: isMobileMenuOpen ? 1 : 0 }}
+          className="overflow-hidden bg-white/95 backdrop-blur-md md:hidden"
         >
-          Say Hello
-        </CartoonButton>
-      </nav>
-      <div className="mx-auto flex w-[min(100%_-_1.5rem,1120px)] gap-2 overflow-x-auto pb-3 md:hidden">
-        {navItems.map((item) => {
-          const isActive = activeItem === item;
-          return (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              className={`shrink-0 rounded-full border-2 transition-all duration-200 px-4 py-2 text-sm font-semibold tracking-wide shadow-soft ${
-                isActive 
-                  ? "bg-skyPastel border-ink text-ink" 
-                  : "bg-white/85 border-white text-slate-600"
-              }`}
+          <div className="mx-auto flex flex-col gap-2 p-4 w-[min(100%_-_1.5rem,1120px)] pb-6 border-t border-ink/10">
+            {navItems.map((item) => {
+              const isActive = activeItem === item;
+              return (
+                <a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`rounded-xl px-4 py-3 text-sm font-semibold tracking-wide border-2 transition-all duration-200 ${isActive
+                    ? "bg-skyPastel border-ink text-ink shadow-[2px_2px_0px_#27324a]"
+                    : "bg-transparent border-transparent text-slate-600 hover:bg-slate-50"
+                    }`}
+                >
+                  {item}
+                </a>
+              );
+            })}
+            <CartoonButton
+              href="#contact"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="mt-4 w-full min-h-0 py-3 text-sm justify-center"
             >
-              {item}
-            </a>
-          );
-        })}
-      </div>
-    </header>
+              Say Hello
+            </CartoonButton>
+          </div>
+        </motion.div>
+      </header>
+      <div className="h-20" />
+    </>
   );
 }
 
@@ -219,9 +250,9 @@ function About() {
           viewport={{ once: true, amount: 0.35 }}
           className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1"
         >
-          <MiniInfo icon={<BookIcon />} title="Study" text="BCA student" />
-          <MiniInfo icon={<LaptopIcon />} title="Build" text="Web projects" />
-          <MiniInfo icon={<CodeIcon />} title="Practice" text="Coding skills" />
+          <MiniInfo icon={<BookIcon />} title="Study" text="Pursuing a Bachelor of Computer Applications, focusing on software development and modern tech stacks." />
+          <MiniInfo icon={<LaptopIcon />} title="Build" text="Developing responsive, full-stack web applications and interactive user experiences." />
+          <MiniInfo icon={<CodeIcon />} title="Practice" text="Refining algorithms, solving data structure challenges, and mastering clean code principles." />
         </motion.div>
       </div>
     </Section>
@@ -666,7 +697,7 @@ function MiniInfo({ icon, title, text }) {
 
 function CartoonButton({ href, children, tone = "dark", target, rel, className = "", onClick }) {
   const baseClasses = "inline-flex min-h-14 items-center justify-center rounded-full px-7 text-center font-semibold tracking-wide border-2 transition-colors duration-200 cursor-pointer select-none";
-  
+
   let toneClasses = "";
   let baseShadow = "0 4px 0px #27324a";
   let hoverShadow = "0 8px 0px #27324a";
