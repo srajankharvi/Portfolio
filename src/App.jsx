@@ -182,8 +182,11 @@ function Hero() {
           <img
             src="/developer-avatar.png"
             alt="Srajan Kharvi - Software Developer Profile Picture"
+            width="1024"
+            height="1536"
             className="mx-auto h-auto w-full max-w-[540px] drop-shadow-[0_26px_35px_rgba(87,113,155,0.18)]"
             loading="eager"
+            fetchpriority="high"
           />
         </motion.div>
       </div>
@@ -466,6 +469,8 @@ function Projects() {
           <img
             src="/future-map-preview.png"
             alt="Screenshot of full-stack dashboard project built by Srajan Kharvi"
+            width="1920"
+            height="1200"
             className="h-full w-full object-contain rounded-2xl"
             loading="lazy"
           />
