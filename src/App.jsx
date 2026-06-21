@@ -576,14 +576,12 @@ const motionCardVariants = {
   hidden: {
     opacity: 0,
     y: 30,
-    borderColor: "#ffffff",
-    boxShadow: "0 18px 0 rgba(39, 50, 74, 0.05), 0 24px 54px rgba(87, 113, 155, 0.16)"
+    boxShadow: "0px 0px 0px #27324a"
   },
   show: {
     opacity: 1,
     y: 0,
-    borderColor: "#ffffff",
-    boxShadow: "0 18px 0 rgba(39, 50, 74, 0.05), 0 24px 54px rgba(87, 113, 155, 0.16)",
+    boxShadow: "10px 10px 0px #27324a",
     transition: { duration: 0.55, ease: "easeOut" }
   }
 };
@@ -596,18 +594,21 @@ function MotionCard({ children, className = "" }) {
       whileInView="show"
       viewport={{ once: true, amount: 0.3 }}
       whileHover={{
-        y: -10,
-        rotate: -0.5,
-        scale: 1.01,
-        borderColor: "#27324a",
-        boxShadow: "0 12px 0px #27324a"
+        y: -4,
+        x: -4,
+        boxShadow: "14px 14px 0px #27324a"
+      }}
+      whileTap={{
+        y: 4,
+        x: 4,
+        boxShadow: "6px 6px 0px #27324a"
       }}
       transition={{
         type: "spring",
         stiffness: 400,
         damping: 25
       }}
-      className={`rounded-cartoon border-2 border-white bg-white shadow-sticker ${className}`}
+      className={`rounded-cartoon border-4 border-ink bg-white ${className}`}
     >
       {children}
     </motion.div>
@@ -618,14 +619,12 @@ const miniInfoVariants = {
   hidden: {
     opacity: 0,
     y: 30,
-    borderColor: "#ffffff",
-    boxShadow: "0 18px 45px rgba(87, 113, 155, 0.14)"
+    boxShadow: "0px 0px 0px #27324a"
   },
   show: {
     opacity: 1,
     y: 0,
-    borderColor: "#ffffff",
-    boxShadow: "0 18px 45px rgba(87, 113, 155, 0.14)",
+    boxShadow: "6px 6px 0px #27324a",
     transition: { duration: 0.5, ease: "easeOut" }
   }
 };
@@ -638,23 +637,27 @@ function MiniInfo({ icon, title, text }) {
       whileInView="show"
       viewport={{ once: true, amount: 0.3 }}
       whileHover={{
-        y: -8,
-        scale: 1.03,
-        borderColor: "#27324a",
-        boxShadow: "0 10px 0px #27324a"
+        y: -4,
+        x: -4,
+        boxShadow: "10px 10px 0px #27324a"
+      }}
+      whileTap={{
+        y: 2,
+        x: 2,
+        boxShadow: "4px 4px 0px #27324a"
       }}
       transition={{
         type: "spring",
         stiffness: 400,
         damping: 25
       }}
-      className="rounded-3xl border-2 border-white bg-white p-5 shadow-soft"
+      className="rounded-[2rem] border-4 border-ink bg-white p-5"
     >
-      <div className="grid h-14 w-14 place-items-center rounded-2xl bg-lemonPastel/75 shadow-soft">
+      <div className="grid h-14 w-14 place-items-center rounded-2xl bg-lemonPastel/75 border-2 border-ink shadow-[4px_4px_0px_#27324a]">
         {icon}
       </div>
-      <h3 className="mt-4 text-base font-bold">{title}</h3>
-      <p className="mt-0.5 text-sm font-normal text-slate-400">{text}</p>
+      <h3 className="mt-4 text-base font-bold text-ink">{title}</h3>
+      <p className="mt-0.5 text-sm font-normal text-slate-600">{text}</p>
     </motion.div>
   );
 }
