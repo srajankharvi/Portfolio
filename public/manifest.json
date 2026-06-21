@@ -1,0 +1,21 @@
+{
+  "name": "Srajan Kharvi | Software Developer Portfolio",
+  "short_name": "Srajan Kharvi",
+  "description": "Srajan Kharvi is a passionate software developer building scalable web applications. Explore projects, skills, and get in touch.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32",
+      "type": "image/x-icon"
+    }
+  ]
+}

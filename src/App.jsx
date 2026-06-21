@@ -181,8 +181,9 @@ function Hero() {
         >
           <img
             src="/developer-avatar.png"
-            alt="Developer working on laptop"
+            alt="Srajan Kharvi - Software Developer Profile Picture"
             className="mx-auto h-auto w-full max-w-[540px] drop-shadow-[0_26px_35px_rgba(87,113,155,0.18)]"
+            loading="eager"
           />
         </motion.div>
       </div>
@@ -464,8 +465,9 @@ function Projects() {
         <div className="relative min-h-[320px] overflow-hidden bg-gradient-to-br from-lemonPastel via-peachPastel to-skyPastel p-6 flex items-center justify-center">
           <img
             src="/future-map-preview.png"
-            alt="Future Map project preview"
+            alt="Screenshot of full-stack dashboard project built by Srajan Kharvi"
             className="h-full w-full object-contain rounded-2xl"
+            loading="lazy"
           />
         </div>
         <div className="relative p-7 sm:p-10">
