@@ -52,6 +52,18 @@ function Header() {
   const [activeItem, setActiveItem] = useState("Home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  const scrollToSection = (event, sectionId) => {
+    event.preventDefault();
+    const section = document.getElementById(sectionId);
+    if (section) {
+      const headerOffset = 80;
+      const elementPosition = section.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - headerOffset;
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+    }
+    setIsMobileMenuOpen(false);
+  };
+
   useEffect(() => {
     const sections = navItems.map(item => document.getElementById(item.toLowerCase()));
 
@@ -103,6 +115,7 @@ function Header() {
                 <a
                   key={item}
                   href={`#${item.toLowerCase()}`}
+                  onClick={(event) => scrollToSection(event, item.toLowerCase())}
                   onMouseEnter={() => setHoveredItem(item)}
                   className={`relative rounded-full px-4 py-2 text-sm font-semibold tracking-wide transition-colors duration-300 ${isSelected ? "text-ink" : "text-slate-500"
                     }`}
@@ -155,7 +168,7 @@ function Header() {
                 <a
                   key={item}
                   href={`#${item.toLowerCase()}`}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(event) => scrollToSection(event, item.toLowerCase())}
                   className={`rounded-xl px-4 py-3 text-sm font-semibold tracking-wide border-2 transition-all duration-200 ${isActive
                     ? "bg-skyPastel border-ink text-ink shadow-[2px_2px_0px_#27324a]"
                     : "bg-transparent border-transparent text-slate-600 hover:bg-slate-50"
