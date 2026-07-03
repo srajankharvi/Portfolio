@@ -145,6 +145,7 @@ function Header() {
         <motion.div
           initial={false}
           animate={{ height: isMobileMenuOpen ? "auto" : 0, opacity: isMobileMenuOpen ? 1 : 0 }}
+          style={{ pointerEvents: isMobileMenuOpen ? "auto" : "none" }}
           className="overflow-hidden bg-white/95 backdrop-blur-md md:hidden"
         >
           <div className="mx-auto flex flex-col gap-2 p-4 w-[min(100%_-_1.5rem,1120px)] pb-6 border-t border-ink/10">
