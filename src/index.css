@@ -151,6 +151,128 @@ textarea {
   padding-right: 4px;
 }
 
+.certificate-card-shell {
+  --cert-surface-start: rgba(255, 255, 255, 0.92);
+  --cert-surface-mid: rgba(191, 231, 255, 0.55);
+  --cert-surface-end: rgba(200, 246, 221, 0.5);
+  --cert-band-start: rgba(255, 255, 255, 0.38);
+  --cert-band-end: rgba(191, 231, 255, 0.48);
+  --cert-blob: rgba(255, 242, 168, 0.78);
+  --cert-chip: rgba(255, 255, 255, 0.72);
+  background:
+    radial-gradient(circle at 92% 2%, var(--cert-blob), transparent 23%),
+    linear-gradient(135deg, var(--cert-surface-start), var(--cert-surface-mid) 54%, var(--cert-surface-end));
+  box-shadow:
+    7px 7px 0 #27324a,
+    0 18px 45px rgba(87, 113, 155, 0.13);
+  isolation: isolate;
+  transition: box-shadow 220ms ease, border-color 220ms ease, background-color 220ms ease;
+}
+
+.certificate-card-sky {
+  --cert-surface-start: rgba(255, 255, 255, 0.94);
+  --cert-surface-mid: rgba(191, 231, 255, 0.62);
+  --cert-surface-end: rgba(200, 246, 221, 0.52);
+  --cert-band-start: rgba(191, 231, 255, 0.82);
+  --cert-band-end: rgba(255, 242, 168, 0.55);
+  --cert-blob: rgba(255, 242, 168, 0.8);
+  --cert-chip: rgba(255, 255, 255, 0.76);
+}
+
+.certificate-card-lilac {
+  --cert-surface-start: rgba(255, 255, 255, 0.94);
+  --cert-surface-mid: rgba(223, 212, 255, 0.56);
+  --cert-surface-end: rgba(255, 215, 189, 0.44);
+  --cert-band-start: rgba(223, 212, 255, 0.78);
+  --cert-band-end: rgba(191, 231, 255, 0.54);
+  --cert-blob: rgba(200, 246, 221, 0.76);
+  --cert-chip: rgba(255, 255, 255, 0.78);
+}
+
+.certificate-card-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 78px;
+  z-index: 0;
+  background: linear-gradient(135deg, var(--cert-band-start), rgba(255, 255, 255, 0.24), var(--cert-band-end));
+  opacity: 0.82;
+}
+
+.certificate-card-shell > * {
+  position: relative;
+  z-index: 1;
+}
+
+.certificate-card-shell::after {
+  content: "";
+  position: absolute;
+  right: -28px;
+  top: -26px;
+  width: 92px;
+  height: 92px;
+  z-index: 0;
+  border: 2px solid rgba(39, 50, 74, 0.1);
+  border-radius: 31% 69% 61% 39% / 38% 34% 66% 62%;
+  pointer-events: none;
+  background: var(--cert-blob);
+  opacity: 0.8;
+  transition: transform 220ms ease, opacity 220ms ease;
+}
+
+.certificate-card-shell:hover {
+  box-shadow:
+    11px 11px 0 #27324a,
+    0 22px 50px rgba(87, 113, 155, 0.17);
+}
+
+.certificate-card-shell:hover::after {
+  opacity: 1;
+  transform: translate3d(-6px, 7px, 0) rotate(6deg);
+}
+
+.cert-skill-badge {
+  background: var(--cert-chip);
+  isolation: isolate;
+  transition: color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+  transition-delay: var(--badge-delay, 0ms);
+  will-change: transform;
+}
+
+.cert-skill-badge::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--cert-chip), rgba(255, 242, 168, 0.58));
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.certificate-card-shell:hover .cert-skill-badge {
+  color: #27324a;
+  transform: translateY(-2px);
+}
+
+.certificate-card-shell:hover .cert-skill-badge::before,
+.cert-skill-badge:hover::before {
+  opacity: 1;
+}
+
+.certificate-view-button:focus-visible {
+  outline: 3px solid rgba(99, 184, 255, 0.65);
+  outline-offset: 4px;
+}
+
+.certificate-view-button svg {
+  transition: transform 180ms ease;
+}
+
+.certificate-view-button:hover svg {
+  transform: translate3d(2px, -2px, 0);
+}
+
 
 @media (prefers-reduced-motion: reduce) {
 
@@ -165,6 +287,10 @@ textarea {
 }
 
 @media (max-width: 768px) {
+  html {
+    scroll-behavior: auto;
+  }
+
   /* Disable heavy floating background animations on mobile to guarantee scroll performance */
   .cloud-shape,
   .blob-shape,

@@ -49,7 +49,7 @@ function Typewriter({ words, typingSpeed = 80, deletingSpeed = 40, delayBetween 
   );
 }
 
-const navItems = ["Home", "About", "Skills", "Projects", "Contact"];
+const navItems = ["Home", "About", "Skills", "Certifications", "Projects", "Contact"];
 
 const proficientSkills = [
   { name: "HTML", level: "Intermediate", color: "bg-orange-50", border: "border-orange-200/60", ink: "text-orange-800", icon: "html", rotateOffset: -1.5 },
@@ -62,6 +62,29 @@ const learningSkills = [
   { name: "Python", level: "Beginner", color: "bg-blue-50", border: "border-blue-200/60", ink: "text-blue-800", icon: "python", rotateOffset: -1.2 },
   { name: "Java", level: "Beginner", color: "bg-purple-50", border: "border-purple-200/60", ink: "text-purple-800", icon: "java", rotateOffset: 0.8 },
   { name: "C / C++", level: "Beginner", color: "bg-emerald-50", border: "border-emerald-200/60", ink: "text-emerald-800", icon: "cpp", rotateOffset: -1.4 },
+];
+
+const certifications = [
+  {
+    course: "The Language of DevOps: DevOps Tools & Processes",
+    organization: "Infosys Springboard",
+    issued: "June 26, 2026",
+    issuedDateTime: "2026-06-26",
+    status: "Verified Certificate",
+    skills: ["DevOps", "Docker", "Git", "Linux", "Jenkins", "CI/CD"],
+    certificateUrl: "/Beginner_Devops_Course.pdf",
+    tone: "sky",
+  },
+  {
+    course: "Python for Data Science",
+    organization: "NPTEL",
+    issued: "Jan-Feb 2026",
+    issuedDateTime: "2026-02",
+    status: "Verified Certificate",
+    skills: ["Python", "Data Science", "Analytics", "NumPy", "Pandas", "Visualization"],
+    certificateUrl: "/NPTL_CERTIFICATE.pdf",
+    tone: "lilac",
+  },
 ];
 
 const fadeUp = {
@@ -87,6 +110,7 @@ function App() {
         <Hero />
         <About />
         <Skills />
+        <Certifications />
         <Projects />
         <Contact />
       </main>
@@ -105,15 +129,23 @@ function Header() {
     event.preventDefault();
     const section = document.getElementById(sectionId);
     if (section) {
+      const shouldJump = window.matchMedia("(max-width: 1023px)").matches;
       isScrollingRef.current = true;
-      const capitalized = sectionId.charAt(0).toUpperCase() + sectionId.slice(1);
-      setActiveItem(capitalized);
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
+      const activeLabel = navItems.find((item) => item.toLowerCase() === sectionId) || sectionId;
+      setActiveItem(activeLabel);
+      setIsMobileMenuOpen(false);
+
+      window.requestAnimationFrame(() => {
+        const headerHeight = document.querySelector("header")?.offsetHeight || 80;
+        const targetTop = section.getBoundingClientRect().top + window.scrollY - headerHeight + 1;
+        window.scrollTo({ top: Math.max(targetTop, 0), behavior: shouldJump ? "auto" : "smooth" });
+        window.history.replaceState(null, "", `#${sectionId}`);
+      });
+
       setTimeout(() => {
         isScrollingRef.current = false;
       }, 800);
     }
-    setIsMobileMenuOpen(false);
   };
 
   useEffect(() => {
@@ -159,7 +191,7 @@ function Header() {
           </a>
 
           <div
-            className="hidden items-center gap-1 rounded-full border border-white bg-white/80 p-2 shadow-soft md:flex"
+            className="hidden items-center gap-1 rounded-full border border-white bg-white/80 p-2 shadow-soft lg:flex"
             onMouseLeave={() => setHoveredItem(null)}
           >
             {navItems.map((item) => {
@@ -170,7 +202,7 @@ function Header() {
                   href={`#${item.toLowerCase()}`}
                   onClick={(event) => scrollToSection(event, item.toLowerCase())}
                   onMouseEnter={() => setHoveredItem(item)}
-                  className={`relative rounded-full px-4 py-2 text-sm font-semibold tracking-wide transition-colors duration-300 ${isSelected ? "text-ink" : "text-slate-500"
+                  className={`relative rounded-full px-3 py-2 text-sm font-semibold tracking-wide transition-colors duration-300 xl:px-4 ${isSelected ? "text-ink" : "text-slate-500"
                     }`}
                 >
                   {isSelected && (
@@ -186,15 +218,8 @@ function Header() {
             })}
           </div>
 
-          <CartoonButton
-            href="#contact"
-            className="hidden md:inline-flex min-h-0 py-3 px-6 text-sm"
-          >
-            Say Hello
-          </CartoonButton>
-
           <button
-            className="md:hidden flex h-11 w-11 items-center justify-center rounded-xl border-2 border-ink bg-white text-ink shadow-[2px_2px_0px_#27324a] transition-transform active:translate-y-0.5 active:shadow-[0px_0px_0px_#27324a]"
+            className="flex h-11 w-11 items-center justify-center rounded-xl border-2 border-ink bg-white text-ink shadow-[2px_2px_0px_#27324a] transition-transform active:translate-y-0.5 active:shadow-[0px_0px_0px_#27324a] lg:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -212,7 +237,7 @@ function Header() {
           initial={false}
           animate={{ height: isMobileMenuOpen ? "auto" : 0, opacity: isMobileMenuOpen ? 1 : 0 }}
           style={{ pointerEvents: isMobileMenuOpen ? "auto" : "none" }}
-          className="overflow-hidden bg-white/95 backdrop-blur-md md:hidden"
+          className="overflow-hidden bg-white/95 backdrop-blur-md lg:hidden"
         >
           <div className="mx-auto flex flex-col gap-2 p-4 w-[min(100%_-_1.5rem,1120px)] pb-6 border-t border-ink/10">
             {navItems.map((item) => {
@@ -231,13 +256,6 @@ function Header() {
                 </a>
               );
             })}
-            <CartoonButton
-              href="#contact"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="mt-4 w-full min-h-0 py-3 text-sm justify-center"
-            >
-              Say Hello
-            </CartoonButton>
           </div>
         </motion.div>
       </header>
@@ -557,6 +575,118 @@ function Skills() {
         </div>
       </div>
     </Section>
+  );
+}
+
+const certificateCardVariants = {
+  hidden: { opacity: 0, y: 24, scale: 0.98 },
+  show: (index) => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.45, delay: index * 0.08, ease: "easeOut" }
+  })
+};
+
+function Certifications() {
+  return (
+    <Section id="certifications" eyebrow="Certifications" title="Verified credentials at a glance.">
+      <motion.div
+        variants={stagger}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.18 }}
+        role="list"
+        className="grid grid-cols-1 gap-5 md:grid-cols-2"
+      >
+        {certifications.map((certificate, index) => (
+          <CertificateCard
+            key={`${certificate.organization}-${certificate.course}`}
+            certificate={certificate}
+            index={index}
+          />
+        ))}
+      </motion.div>
+    </Section>
+  );
+}
+
+function CertificateCard({ certificate, index }) {
+  const hasHover = useHoverSupported();
+
+  return (
+    <motion.article
+      role="listitem"
+      variants={certificateCardVariants}
+      custom={index}
+      whileHover={hasHover ? {
+        y: -6,
+        scale: 1.015,
+      } : undefined}
+      transition={{ type: "spring", stiffness: 380, damping: 26 }}
+      className={`certificate-card-shell certificate-card-${certificate.tone} group relative flex min-h-full flex-col overflow-hidden rounded-[1.65rem] border-4 border-ink p-4 sm:p-5`}
+    >
+      <div className="relative z-10 flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-sky-600">{certificate.organization}</p>
+          <h3 className="mt-2 text-xl font-heading font-bold leading-snug text-ink sm:text-[1.35rem]">
+            {certificate.course}
+          </h3>
+          <span className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-skyPastel/55 px-3 py-1.5 text-xs font-semibold text-slate-600">
+            <CalendarIcon />
+            <time dateTime={certificate.issuedDateTime}>{certificate.issued}</time>
+          </span>
+        </div>
+
+        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border-2 border-ink bg-mintPastel/80 px-2.5 py-1 text-[0.64rem] font-bold uppercase tracking-[0.14em] text-ink shadow-[2px_2px_0px_#27324a]">
+          <VerifiedBadgeIcon />
+          Verified
+        </span>
+      </div>
+
+      <div className="relative z-10 mt-4 flex flex-wrap gap-2" aria-label={`${certificate.course} skills`}>
+        {certificate.skills.map((skill, skillIndex) => (
+          <span
+            key={skill}
+            className="cert-skill-badge relative rounded-2xl border-2 border-white bg-lemonPastel/45 px-3 py-1.5 text-[0.72rem] font-semibold text-slate-600 shadow-sm"
+            style={{ "--badge-delay": `${skillIndex * 45}ms` }}
+          >
+            {skill}
+          </span>
+        ))}
+      </div>
+
+      <div className="relative z-10 mt-auto pt-5">
+        <motion.a
+          href={certificate.certificateUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`View certificate PDF for ${certificate.course}`}
+          initial={{
+            y: 0,
+            boxShadow: "0 3px 0px #27324a",
+            backgroundColor: "#27324a",
+            color: "#ffffff"
+          }}
+          whileHover={hasHover ? {
+            y: -3,
+            boxShadow: "0 6px 0px #27324a",
+            backgroundColor: "#bfe7ff",
+            color: "#27324a"
+          } : undefined}
+          whileTap={{
+            y: 2,
+            scale: 0.98,
+            boxShadow: "0 0px 0px #27324a"
+          }}
+          transition={{ type: "spring", stiffness: 420, damping: 20 }}
+          className="certificate-view-button relative inline-flex min-h-10 items-center justify-center gap-2 rounded-full border-2 border-ink px-4 text-center text-xs font-bold tracking-wide"
+        >
+          <span className="relative z-10">View Certificate</span>
+          <ExternalLinkIcon />
+        </motion.a>
+      </div>
+    </motion.article>
   );
 }
 
@@ -916,6 +1046,39 @@ function CodeIcon() {
       <circle cx="18" cy="15" r="1.2" fill="#27324A" />
       <circle cx="22" cy="15" r="1.2" fill="#27324A" />
       <path d="M14 22.5l3 2.5-3 2.5M19 27.5h4" stroke="#27324A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    </svg>
+  );
+}
+
+function VerifiedBadgeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-current" aria-hidden="true">
+      <path d="M12 2.25 14.45 4l3-.3 1.25 2.75 2.55 1.55-.75 2.95.75 2.95-2.55 1.55-1.25 2.75-3-.3L12 21.75 9.55 20l-3 .3-1.25-2.75-2.55-1.55.75-2.95-.75-2.95L5.3 6.55 6.55 3.8l3 .3L12 2.25Zm-1.05 13.2 5.8-5.8-1.75-1.8-4.05 4.05-1.95-1.95-1.75 1.8 3.7 3.7Z" />
+    </svg>
+  );
+}
+
+function CalendarIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current text-sky-600" aria-hidden="true">
+      <path d="M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1.5A2.5 2.5 0 0 1 22 6.5v12A2.5 2.5 0 0 1 19.5 21h-15A2.5 2.5 0 0 1 2 18.5v-12A2.5 2.5 0 0 1 4.5 4H6V3a1 1 0 0 1 1-1Zm13 8H4v8.5c0 .28.22.5.5.5h15a.5.5 0 0 0 .5-.5V10ZM4.5 6a.5.5 0 0 0-.5.5V8h16V6.5a.5.5 0 0 0-.5-.5h-15Z" />
+    </svg>
+  );
+}
+
+function ShieldCheckIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current text-emerald-700" aria-hidden="true">
+      <path d="M12 2 4.5 5.2v6.25c0 4.72 3.18 9.12 7.5 10.55 4.32-1.43 7.5-5.83 7.5-10.55V5.2L12 2Zm-.85 13.85-3.3-3.3 1.4-1.45 1.9 1.9 4-4 1.45 1.45-5.45 5.4Z" />
+    </svg>
+  );
+}
+
+function ExternalLinkIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="relative z-10 h-4 w-4 fill-current" aria-hidden="true">
+      <path d="M14 3a1 1 0 1 0 0 2h3.59l-8.3 8.29a1 1 0 1 0 1.42 1.42L19 6.41V10a1 1 0 1 0 2 0V4a1 1 0 0 0-1-1h-6Z" />
+      <path d="M5 5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 1 0-2 0v5H5V7h5a1 1 0 1 0 0-2H5Z" />
     </svg>
   );
 }
