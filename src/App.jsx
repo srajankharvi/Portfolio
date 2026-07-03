@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
 function useHoverSupported() {
@@ -99,15 +99,19 @@ function Header() {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [activeItem, setActiveItem] = useState("Home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const isScrollingRef = useRef(false);
 
   const scrollToSection = (event, sectionId) => {
     event.preventDefault();
     const section = document.getElementById(sectionId);
     if (section) {
-      const headerOffset = 80;
-      const elementPosition = section.getBoundingClientRect().top + window.scrollY;
-      const offsetPosition = elementPosition - headerOffset;
-      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+      isScrollingRef.current = true;
+      const capitalized = sectionId.charAt(0).toUpperCase() + sectionId.slice(1);
+      setActiveItem(capitalized);
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => {
+        isScrollingRef.current = false;
+      }, 800);
     }
     setIsMobileMenuOpen(false);
   };
@@ -122,6 +126,7 @@ function Header() {
     };
 
     const observer = new IntersectionObserver((entries) => {
+      if (isScrollingRef.current) return;
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const id = entry.target.id;
