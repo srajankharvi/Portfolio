@@ -1,6 +1,54 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
+function useHoverSupported() {
+  const [hasHover, setHasHover] = useState(false);
+  useEffect(() => {
+    setHasHover(window.matchMedia("(hover: hover)").matches);
+    const media = window.matchMedia("(hover: hover)");
+    const listener = (e) => setHasHover(e.matches);
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }, []);
+  return hasHover;
+}
+
+function Typewriter({ words, typingSpeed = 80, deletingSpeed = 40, delayBetween = 2000 }) {
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [currentText, setCurrentText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    let timer;
+    const word = words[currentWordIndex];
+
+    if (isDeleting) {
+      timer = setTimeout(() => {
+        setCurrentText(word.substring(0, currentText.length - 1));
+      }, deletingSpeed);
+    } else {
+      timer = setTimeout(() => {
+        setCurrentText(word.substring(0, currentText.length + 1));
+      }, typingSpeed);
+    }
+
+    if (!isDeleting && currentText === word) {
+      timer = setTimeout(() => setIsDeleting(true), delayBetween);
+    } else if (isDeleting && currentText === "") {
+      setIsDeleting(false);
+      setCurrentWordIndex((prev) => (prev + 1) % words.length);
+    }
+
+    return () => clearTimeout(timer);
+  }, [currentText, isDeleting, currentWordIndex, words, typingSpeed, deletingSpeed, delayBetween]);
+
+  return (
+    <span className="typewriter-cursor border-r-3 border-skyBright pr-1">
+      {currentText}
+    </span>
+  );
+}
+
 const navItems = ["Home", "About", "Skills", "Projects", "Contact"];
 
 const proficientSkills = [
@@ -57,7 +105,7 @@ function Header() {
     const section = document.getElementById(sectionId);
     if (section) {
       const headerOffset = 80;
-      const elementPosition = section.getBoundingClientRect().top + window.pageYOffset;
+      const elementPosition = section.getBoundingClientRect().top + window.scrollY;
       const offsetPosition = elementPosition - headerOffset;
       window.scrollTo({ top: offsetPosition, behavior: "smooth" });
     }
@@ -204,10 +252,15 @@ function Hero() {
           <motion.h1 variants={fadeUp} className="max-w-3xl text-5xl font-heading font-extrabold leading-[0.92] tracking-tight sm:text-6xl lg:text-7xl">
             Srajan Kharvi
           </motion.h1>
-          <motion.div variants={fadeUp} className="mt-6 text-xl font-semibold text-slate-700 sm:text-2xl">
-            <span className="typewriter inline-block max-w-full overflow-hidden whitespace-nowrap align-bottom">
-              BCA Student | Aspiring Software Developer
-            </span>
+          <motion.div variants={fadeUp} className="mt-6 text-xl font-semibold text-slate-700 sm:text-2xl min-h-[32px] sm:min-h-[40px]">
+            <Typewriter
+              words={[
+                "BCA Student",
+                "Aspiring Software Developer",
+                "Passionate Web Builder",
+                "Problem Solver"
+              ]}
+            />
           </motion.div>
           <motion.p variants={fadeUp} className="mt-5 max-w-xl text-base leading-relaxed text-slate-500 sm:text-lg">
             A BCA student passionate about web development and building meaningful digital solutions. Always learning, growing, and excited to collaborate on impactful projects.
@@ -224,15 +277,18 @@ function Hero() {
           transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
           className="relative z-10 hidden lg:block"
         >
-          <img
-            src="/developer-avatar.png"
-            alt="Srajan Kharvi - Software Developer Profile Picture"
-            width="1024"
-            height="1536"
-            className="mx-auto h-auto w-full max-w-[540px] drop-shadow-[0_26px_35px_rgba(87,113,155,0.18)]"
-            loading="eager"
-            fetchpriority="high"
-          />
+          <picture>
+            <source srcSet="/developer-avatar.webp" type="image/webp" />
+            <img
+              src="/developer-avatar.png"
+              alt="Srajan Kharvi - Software Developer Profile Picture"
+              width="1024"
+              height="1536"
+              className="mx-auto h-auto w-full max-w-[540px] drop-shadow-[0_26px_35px_rgba(87,113,155,0.18)]"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </picture>
         </motion.div>
       </div>
     </section>
@@ -243,7 +299,7 @@ function About() {
   return (
     <Section id="about" eyebrow="About" title="Passionate developer committed to continuous learning.">
       <div className="grid items-stretch gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-        <MotionCard className="p-7 sm:p-9">
+        <MotionCard className="p-5 sm:p-9">
           <div className="space-y-5 text-lg leading-8 text-slate-600">
             <p>
               I'm a <span className="font-bold text-ink">BCA Student</span> with a passion for technology and a curiosity for learning how things work behind the scenes.
@@ -261,7 +317,7 @@ function About() {
           variants={stagger}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.35 }}
+          viewport={{ once: true, amount: 0.15 }}
           className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1"
         >
           <MiniInfo icon={<BookIcon />} title="Study" text="Pursuing a Bachelor of Computer Applications, focusing on software development and modern tech stacks." />
@@ -423,17 +479,16 @@ function SkillIcon({ type }) {
 }
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 24, borderColor: "#ffffff", boxShadow: "0 18px 45px rgba(87, 113, 155, 0.14)" },
+  hidden: { opacity: 0, y: 24 },
   show: (delay) => ({
     opacity: 1,
     y: 0,
-    borderColor: "#ffffff",
-    boxShadow: "0 18px 45px rgba(87, 113, 155, 0.14)",
     transition: { duration: 0.45, delay, ease: "easeOut" }
   })
 };
 
 function SkillCard({ skill, delay }) {
+  const hasHover = useHoverSupported();
   return (
     <motion.div
       variants={cardVariants}
@@ -441,19 +496,19 @@ function SkillCard({ skill, delay }) {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.15 }}
-      whileHover={{
+      whileHover={hasHover ? {
         y: -10,
         rotate: skill.rotateOffset || 1,
         scale: 1.04,
         borderColor: "#27324a",
         boxShadow: "0 10px 0px #27324a"
-      }}
+      } : undefined}
       transition={{
         type: "spring",
         stiffness: 400,
         damping: 25
       }}
-      className="relative flex flex-col items-center justify-center rounded-[2rem] border-2 border-white bg-white p-6 text-center shadow-soft"
+      className="relative flex flex-col items-center justify-center rounded-[2rem] border-2 border-white bg-white p-4 sm:p-6 text-center shadow-soft"
     >
       <div className={`grid h-16 w-16 place-items-center rounded-2xl ${skill.color} border-2 ${skill.border} shadow-soft mb-4`}>
         <SkillIcon type={skill.icon} />
@@ -506,19 +561,22 @@ function Projects() {
       <motion.article
         initial={{ opacity: 0, y: 36, rotate: -1 }}
         whileInView={{ opacity: 1, y: 0, rotate: 0 }}
-        viewport={{ once: true, amount: 0.28 }}
+        viewport={{ once: true, amount: 0.15 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="group grid overflow-hidden rounded-[2.2rem] border-2 border-white bg-white shadow-sticker lg:grid-cols-[0.95fr_1.05fr]"
       >
         <div className="relative min-h-[320px] overflow-hidden bg-gradient-to-br from-lemonPastel via-peachPastel to-skyPastel p-6 flex items-center justify-center">
-          <img
-            src="/future-map-preview.png"
-            alt="Screenshot of full-stack dashboard project built by Srajan Kharvi"
-            width="1920"
-            height="1200"
-            className="h-full w-full object-contain rounded-2xl"
-            loading="lazy"
-          />
+          <picture className="h-full w-full flex items-center justify-center">
+            <source srcSet="/future-map-preview.webp" type="image/webp" />
+            <img
+              src="/future-map-preview.png"
+              alt="Screenshot of full-stack dashboard project built by Srajan Kharvi"
+              width="1920"
+              height="1200"
+              className="h-full w-full object-contain rounded-2xl"
+              loading="lazy"
+            />
+          </picture>
         </div>
         <div className="relative p-7 sm:p-10">
           <p className="text-xs font-bold uppercase tracking-[0.28em] text-sky-600">Featured</p>
@@ -526,9 +584,9 @@ function Projects() {
           <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-500 sm:text-lg">
             AI-powered career guidance platform designed to help students explore career paths, discover learning roadmaps, and prepare for interviews with personalized recommendations.
           </p>
-          <div className="mt-8 grid gap-3 sm:grid-cols-3">
+          <div className="mt-8 flex flex-wrap gap-2 sm:gap-3">
             {["Career paths", "AI - Mock Interviews", "Student focus"].map((item) => (
-              <span key={item} className="rounded-2xl bg-skyPastel/45 px-4 py-3 text-center text-sm font-medium text-slate-600">
+              <span key={item} className="rounded-2xl bg-skyPastel/45 px-4 py-2 text-center text-sm font-medium text-slate-600">
                 {item}
               </span>
             ))}
@@ -557,12 +615,13 @@ function Contact() {
     },
   ];
 
+  const hasHover = useHoverSupported();
   return (
     <Section id="contact" eyebrow="Contact" title="Let's Connect">
       <motion.div
         initial={{ opacity: 0, y: 28 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.28 }}
+        viewport={{ once: true, amount: 0.15 }}
         transition={{ duration: 0.55 }}
         className="mx-auto max-w-xl text-center"
       >
@@ -582,7 +641,7 @@ function Contact() {
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ y: -6, scale: 1.1 }}
+              whileHover={hasHover ? { y: -6, scale: 1.1 } : undefined}
               whileTap={{ scale: 0.92 }}
               transition={{ type: "spring", stiffness: 500, damping: 20, mass: 0.6 }}
               className="flex h-12 w-12 items-center justify-center rounded-2xl border-2 border-white bg-white text-slate-600 shadow-soft transition-colors duration-100 hover:bg-skyPastel/55 hover:text-ink"
@@ -604,7 +663,7 @@ function Section({ id, eyebrow, title, children }) {
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.35 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.55 }}
           className="mb-10 max-w-3xl"
         >
@@ -632,17 +691,18 @@ const motionCardVariants = {
 };
 
 function MotionCard({ children, className = "" }) {
+  const hasHover = useHoverSupported();
   return (
     <motion.div
       variants={motionCardVariants}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, amount: 0.3 }}
-      whileHover={{
+      viewport={{ once: true, amount: 0.15 }}
+      whileHover={hasHover ? {
         y: -4,
         x: -4,
         boxShadow: "14px 14px 0px #27324a"
-      }}
+      } : undefined}
       whileTap={{
         y: 4,
         x: 4,
@@ -675,17 +735,18 @@ const miniInfoVariants = {
 };
 
 function MiniInfo({ icon, title, text }) {
+  const hasHover = useHoverSupported();
   return (
     <motion.div
       variants={miniInfoVariants}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, amount: 0.3 }}
-      whileHover={{
+      viewport={{ once: true, amount: 0.15 }}
+      whileHover={hasHover ? {
         y: -4,
         x: -4,
         boxShadow: "10px 10px 0px #27324a"
-      }}
+      } : undefined}
       whileTap={{
         y: 2,
         x: 2,
@@ -710,6 +771,7 @@ function MiniInfo({ icon, title, text }) {
 
 
 function CartoonButton({ href, children, tone = "dark", target, rel, className = "", onClick }) {
+  const hasHover = useHoverSupported();
   const baseClasses = "inline-flex min-h-14 items-center justify-center rounded-full px-7 text-center font-semibold tracking-wide border-2 transition-colors duration-200 cursor-pointer select-none";
 
   let toneClasses = "";
@@ -739,12 +801,12 @@ function CartoonButton({ href, children, tone = "dark", target, rel, className =
         backgroundColor: tone === "dark" ? "#27324a" : "#ffffff",
         color: tone === "dark" ? "#ffffff" : "#27324a"
       }}
-      whileHover={{
+      whileHover={hasHover ? {
         y: -4,
         boxShadow: hoverShadow,
         backgroundColor: hoverBg,
         color: hoverTextColor
-      }}
+      } : undefined}
       whileTap={{
         y: 2,
         boxShadow: activeShadow,
@@ -767,35 +829,35 @@ function FloatingBackground() {
     <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
       {/* Hero Section Area */}
       <span className="cloud-shape left-[4%] top-[2%]" />
-      <span className="cloud-shape right-[8%] top-[5%] scale-75" />
-      <span className="blob-shape left-[12%] top-[14%] bg-mintPastel" />
-      <span className="blob-shape right-[14%] top-[12%] bg-peachPastel" />
+      <span className="cloud-shape right-[8%] top-[5%] scale-75 hidden md:block" />
+      <span className="blob-shape left-[12%] top-[14%] bg-mintPastel hidden md:block" />
+      <span className="blob-shape right-[14%] top-[12%] bg-peachPastel hidden md:block" />
       <span className="star-shape left-[47%] top-[3%]" />
-      <span className="star-shape right-[28%] top-[16%] scale-75" />
+      <span className="star-shape right-[28%] top-[16%] scale-75 hidden md:block" />
 
       {/* About Section Area */}
-      <span className="cloud-shape right-[5%] top-[25%] scale-85" />
-      <span className="star-shape left-[10%] top-[28%]" />
+      <span className="cloud-shape right-[5%] top-[25%] scale-85 hidden md:block" />
+      <span className="star-shape left-[10%] top-[28%] hidden md:block" />
       <span className="blob-shape left-[5%] top-[34%] bg-lilacPastel scale-110" />
-      <span className="cloud-shape left-[48%] top-[38%] scale-75" />
+      <span className="cloud-shape left-[48%] top-[38%] scale-75 hidden md:block" />
 
       {/* Skills Section Area */}
-      <span className="cloud-shape left-[8%] top-[45%]" />
-      <span className="star-shape right-[12%] top-[49%] scale-90" />
-      <span className="blob-shape right-[6%] top-[55%] bg-lemonPastel" />
+      <span className="cloud-shape left-[8%] top-[45%] hidden md:block" />
+      <span className="star-shape right-[12%] top-[49%] scale-90 hidden md:block" />
+      <span className="blob-shape right-[6%] top-[55%] bg-lemonPastel hidden md:block" />
       <span className="star-shape left-[42%] top-[58%] scale-75" />
 
       {/* Projects Section Area */}
       <span className="cloud-shape right-[10%] top-[66%]" />
-      <span className="star-shape left-[6%] top-[72%]" />
-      <span className="blob-shape left-[15%] top-[78%] bg-peachPastel scale-110" />
-      <span className="cloud-shape left-[50%] top-[80%] scale-75" />
+      <span className="star-shape left-[6%] top-[72%] hidden md:block" />
+      <span className="blob-shape left-[15%] top-[78%] bg-peachPastel scale-110 hidden md:block" />
+      <span className="cloud-shape left-[50%] top-[80%] scale-75 hidden md:block" />
 
       {/* Contact Section Area */}
-      <span className="cloud-shape left-[4%] top-[88%]" />
+      <span className="cloud-shape left-[4%] top-[88%] hidden md:block" />
       <span className="star-shape right-[8%] top-[91%]" />
-      <span className="blob-shape right-[12%] top-[95%] bg-mintPastel" />
-      <span className="star-shape left-[45%] top-[97%] scale-75" />
+      <span className="blob-shape right-[12%] top-[95%] bg-mintPastel hidden md:block" />
+      <span className="star-shape left-[45%] top-[97%] scale-75 hidden md:block" />
     </div>
   );
 }

@@ -42,11 +42,6 @@ textarea {
   color: #27324a;
 }
 
-.typewriter {
-  border-right: 0.16em solid #63b8ff;
-  animation: typing 3.4s steps(38, end),blink 0.8s step-end infinite;
-}
-
 .cloud-shape {
   position: absolute;
   width: 150px;
@@ -56,6 +51,7 @@ textarea {
   background: rgba(255, 255, 255, 0.78);
   box-shadow: 0 16px 38px rgba(87, 113, 155, 0.12);
   animation: floaty 8s ease-in-out infinite;
+  will-change: transform;
 }
 
 .cloud-shape::before,
@@ -87,6 +83,7 @@ textarea {
   border-radius: 31% 69% 61% 39% / 38% 34% 66% 62%;
   box-shadow: 0 16px 38px rgba(87, 113, 155, 0.13);
   animation: floaty 7s ease-in-out infinite reverse;
+  will-change: transform;
 }
 
 .star-shape {
@@ -97,17 +94,9 @@ textarea {
   clip-path: polygon(50% 0, 62% 34%, 98% 35%, 69% 56%, 79% 91%, 50% 70%, 21% 91%, 31% 56%, 2% 35%, 38% 34%);
   filter: drop-shadow(0 14px 16px rgba(87, 113, 155, 0.12));
   animation: popFloat 6s ease-in-out infinite;
+  will-change: transform;
 }
 
-@keyframes typing {
-  from {
-    width: 0;
-  }
-
-  to {
-    width: 100%;
-  }
-}
 
 @keyframes blink {
   50% {
@@ -162,21 +151,6 @@ textarea {
   padding-right: 4px;
 }
 
-.nav-say-hello-btn {
-  background: transparent;
-  color: #1e293b;
-  border: 2px solid #1e293b;
-  padding: 10px 24px;
-  border-radius: 9999px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.nav-say-hello-btn:hover {
-  background: #1e293b;
-  color: #ffffff;
-}
 
 @media (prefers-reduced-motion: reduce) {
 
@@ -190,10 +164,11 @@ textarea {
   }
 }
 
-@media (max-width: 420px) {
-  .typewriter {
-    white-space: normal;
-    border-right: 0;
-    animation: none;
+@media (max-width: 768px) {
+  /* Disable heavy floating background animations on mobile to guarantee scroll performance */
+  .cloud-shape,
+  .blob-shape,
+  .star-shape {
+    animation: none !important;
   }
 }
