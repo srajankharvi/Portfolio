@@ -15,7 +15,6 @@ const marqueeSkills = [
 ];
 
 export default function SkillMarquee() {
-  // Duplicate the list for seamless infinite loop
   const duplicated = [...marqueeSkills, ...marqueeSkills];
 
   return (
@@ -32,7 +31,7 @@ export default function SkillMarquee() {
 
       {/* Main marquee container */}
       <div
-        className="skill-marquee-container group relative overflow-hidden rounded-[28px] border border-[#242424] bg-[#0B0B0B]"
+        className="relative overflow-hidden rounded-[28px] border border-[#242424] bg-[#0B0B0B]"
         style={{
           padding: "20px 24px",
           boxShadow: "inset 0 1px 1px rgba(255,255,255,0.03)",
@@ -48,17 +47,15 @@ export default function SkillMarquee() {
               "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
           }}
         >
-          {/* Animated track — pauses on container hover */}
+          {/* Animated track */}
           <div className="skill-marquee-track flex shrink-0 items-center">
             {duplicated.map((skill, i) => (
-              <div
+              <span
                 key={`${skill}-${i}`}
-                className="skill-pill group/pill"
+                className="skill-pill"
               >
-                {/* Glowing blue dot */}
-                <span className="skill-dot" />
-                <span>{skill}</span>
-              </div>
+                {skill}
+              </span>
             ))}
           </div>
         </div>

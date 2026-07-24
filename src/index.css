@@ -265,6 +265,22 @@ textarea:focus-visible {
 }
 
 /* ═══════════════════════════════════════════
+   SKILL CARDS (SaaS Style)
+   ═══════════════════════════════════════════ */
+
+.skill-saas-card {
+  outline: none !important;
+  user-select: none;
+}
+
+.skill-saas-card:focus,
+.skill-saas-card:focus-visible,
+.skill-saas-card:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* ═══════════════════════════════════════════
    SKILL MARQUEE
    ═══════════════════════════════════════════ */
 
@@ -285,54 +301,36 @@ textarea:focus-visible {
   will-change: transform;
 }
 
-/* Individual skill pill */
+/* Individual skill pill — purely decorative, no interaction */
 .skill-pill {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
   height: 48px;
   padding: 0 28px;
   flex-shrink: 0;
-  border-radius: 16px;
-  background-color: #151515;
-  border: 1px solid #2A2A2A;
-  color: #D7D7D7;
+  border-radius: 20px;
+  background-color: #171717;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 600;
   font-size: 18px;
   letter-spacing: 0.01em;
-  cursor: pointer;
+  pointer-events: none;
   user-select: none;
-  transition:
-    transform 350ms cubic-bezier(0.22, 0.61, 0.36, 1),
-    background-color 350ms cubic-bezier(0.22, 0.61, 0.36, 1),
-    border-color 350ms cubic-bezier(0.22, 0.61, 0.36, 1),
-    box-shadow 350ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  outline: none;
 }
 
-.skill-pill:hover {
-  transform: translateY(-4px);
-  background-color: #1B1B1B;
-  border-color: #3B82F6;
-  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
-}
-
-/* Glowing blue dot */
-.skill-dot {
-  width: 8px;
-  height: 8px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background-color: #3B82F6;
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
-  transition:
-    box-shadow 350ms cubic-bezier(0.22, 0.61, 0.36, 1),
-    transform 350ms cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
-.skill-pill:hover .skill-dot {
-  box-shadow: 0 0 14px rgba(59, 130, 246, 0.95);
-  transform: scale(1.15);
+.skill-pill:hover,
+.skill-pill:focus,
+.skill-pill:focus-visible,
+.skill-pill:active {
+  outline: none;
+  box-shadow: none;
+  border-color: rgba(255, 255, 255, 0.08);
+  background-color: #171717;
+  transform: none;
+  color: #FFFFFF;
 }
 
 /* ── Responsive ── */
@@ -345,7 +343,7 @@ textarea:focus-visible {
     height: 42px;
     padding: 0 20px;
     font-size: 15px;
-    border-radius: 14px;
+    border-radius: 16px;
   }
 }
 

@@ -61,10 +61,9 @@ export const aboutCards = [
   },
 ];
 
-export const skillCategories = [
+export const categorizedSkills = [
   {
-    title: "Programming Languages",
-    icon: "code",
+    categoryTitle: "Programming Languages",
     skills: [
       { name: "Python", level: "Intermediate" },
       { name: "JavaScript", level: "Beginner" },
@@ -74,8 +73,7 @@ export const skillCategories = [
     ],
   },
   {
-    title: "Frontend Development",
-    icon: "layout",
+    categoryTitle: "Frontend Development",
     skills: [
       { name: "HTML5", level: "Intermediate" },
       { name: "CSS3", level: "Intermediate" },
@@ -83,47 +81,20 @@ export const skillCategories = [
     ],
   },
   {
-    title: "Databases",
-    icon: "database",
+    categoryTitle: "Databases",
     skills: [
       { name: "SQL", level: "Familiar" },
       { name: "MongoDB", level: "Familiar" },
     ],
   },
   {
-    title: "Version Control",
-    icon: "git",
+    categoryTitle: "Developer Tools",
     skills: [
       { name: "Git", level: "Intermediate" },
       { name: "GitHub", level: "Intermediate" },
-    ],
-  },
-  {
-    title: "Developer Tools",
-    icon: "tools",
-    skills: [
       { name: "Visual Studio Code", level: "Proficient" },
-      { name: "Git", level: "Intermediate" },
-      { name: "GitHub", level: "Intermediate" },
     ],
   },
-  {
-    title: "Currently Learning",
-    icon: "rocket",
-    skills: [
-      { name: "Modern Web Development", level: "Active" },
-      { name: "Machine Learning", level: "Active" },
-      { name: "React Ecosystem", level: "Active" },
-      { name: "DevOps Fundamentals", level: "Active" },
-      { name: "Backend Development", level: "Active" },
-      { name: "REST APIs", level: "Active" },
-    ],
-  },
-];
-
-export const techMarquee = [
-  "Python", "JavaScript", "React", "HTML5", "CSS3", "SQL",
-  "MongoDB", "Git", "GitHub", "VS Code", "Machine Learning", "REST APIs",
 ];
 
 export const certificationsContent = {
