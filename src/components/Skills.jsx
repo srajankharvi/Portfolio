@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import Section from "./Section";
-import { skillCategories, techMarquee } from "../data/content";
+import SkillMarquee from "./SkillMarquee";
+import { skillCategories } from "../data/content";
 import {
   CodeBracketIcon,
   LayoutIcon,
@@ -101,22 +102,8 @@ export default function Skills() {
         })}
       </div>
 
-      {/* Marquee Row */}
-      <div className="mt-16 overflow-hidden rounded-2xl border border-border bg-surface/50 py-6">
-        <div className="marquee-container flex">
-          <div className="animate-marquee flex shrink-0 items-center gap-8 pr-8">
-            {techMarquee.concat(techMarquee).map((tech, i) => (
-              <div
-                key={`${tech}-${i}`}
-                className="flex items-center gap-3 rounded-xl bg-card px-5 py-2.5 text-sm font-medium text-secondary border border-border"
-              >
-                <span className="h-2 w-2 rounded-full bg-accent" />
-                {tech}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      {/* Premium Skill Marquee */}
+      <SkillMarquee />
     </Section>
   );
 }

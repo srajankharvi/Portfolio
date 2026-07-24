@@ -265,12 +265,99 @@ textarea:focus-visible {
 }
 
 /* ═══════════════════════════════════════════
-   MARQUEE
+   SKILL MARQUEE
    ═══════════════════════════════════════════ */
-.marquee-container {
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+
+/* Keyframe: slides the track leftward by exactly half (since items are duplicated) */
+@keyframes skill-marquee-slide {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Animated track */
+.skill-marquee-track {
+  gap: 24px;
+  animation: skill-marquee-slide 28s linear infinite;
+  will-change: transform;
+}
+
+/* Individual skill pill */
+.skill-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 48px;
+  padding: 0 28px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  background-color: #151515;
+  border: 1px solid #2A2A2A;
+  color: #D7D7D7;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    transform 350ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    background-color 350ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    border-color 350ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 350ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.skill-pill:hover {
+  transform: translateY(-4px);
+  background-color: #1B1B1B;
+  border-color: #3B82F6;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+}
+
+/* Glowing blue dot */
+.skill-dot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: #3B82F6;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  transition:
+    box-shadow 350ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 350ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.skill-pill:hover .skill-dot {
+  box-shadow: 0 0 14px rgba(59, 130, 246, 0.95);
+  transform: scale(1.15);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .skill-marquee-track {
+    gap: 16px;
+  }
+
+  .skill-pill {
+    height: 42px;
+    padding: 0 20px;
+    font-size: 15px;
+    border-radius: 14px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .skill-marquee-track {
+    gap: 20px;
+  }
+
+  .skill-pill {
+    padding: 0 24px;
+    font-size: 16px;
+  }
 }
 
 /* ═══════════════════════════════════════════
