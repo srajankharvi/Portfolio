@@ -125,19 +125,7 @@ textarea {
   -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 75%);
 }
 
-/* ═══════════════════════════════════════════
-   SCROLL PROGRESS BAR
-   ═══════════════════════════════════════════ */
-.scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--accent);
-  transform-origin: 0%;
-  z-index: 100;
-}
+
 
 /* ═══════════════════════════════════════════
    GLASS & CARD UTILITIES

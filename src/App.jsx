@@ -1,5 +1,4 @@
 import SmoothScroll from "./components/SmoothScroll";
-import ScrollProgress from "./components/ScrollProgress";
 import Background from "./components/Background";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -14,7 +13,6 @@ export default function App() {
   return (
     <SmoothScroll>
       <div className="relative min-h-screen overflow-x-hidden bg-bg text-primary selection:bg-accent/30 selection:text-white">
-        <ScrollProgress />
         <Background />
         <Navbar />
 
