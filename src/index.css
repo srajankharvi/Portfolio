@@ -6,20 +6,20 @@
    PREMIUM DARK DESIGN TOKENS
    ═══════════════════════════════════════════ */
 :root {
-  --bg: #050505;
-  --section: #0A0A0A;
-  --card: #111111;
-  --card-hover: #181818;
-  --border: #222222;
-  --border-strong: #2E2E2E;
+  --bg: #020203;
+  --section: #060608;
+  --card: #0C0C0F;
+  --card-hover: #141419;
+  --border: #1B1B20;
+  --border-strong: #282830;
   --text-primary: #FFFFFF;
   --text-secondary: #B3B3B3;
   --text-muted: #7A7A7A;
   --accent: #3B82F6;
   --accent-hover: #2563EB;
   --accent-dim: rgba(59, 130, 246, 0.12);
-  --glass-bg: rgba(17, 17, 17, 0.75);
-  --glass-border: #222222;
+  --glass-bg: rgba(12, 12, 15, 0.82);
+  --glass-border: #1B1B20;
 
   color-scheme: dark;
   font-synthesis: none;
@@ -82,7 +82,7 @@ textarea {
 }
 
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: #020203;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -351,10 +351,15 @@ textarea:focus-visible {
    ═══════════════════════════════════════════ */
 .cursor-spotlight {
   position: fixed;
-  width: 600px;
-  height: 600px;
+  width: 700px;
+  height: 700px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.035) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(59, 130, 246, 0.08) 0%,
+    rgba(139, 92, 246, 0.04) 40%,
+    transparent 70%
+  );
   pointer-events: none;
   z-index: 1;
   transform: translate(-50%, -50%);
