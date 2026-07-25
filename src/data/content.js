@@ -123,6 +123,17 @@ export const certificationsContent = {
       skills: ["Python", "Data Science", "Analytics", "NumPy", "Pandas", "Visualization"],
       certificateUrl: "/NPTL_CERTIFICATE.pdf",
     },
+    {
+      organization: "GITHUB",
+      course: "Git & GitHub - Introduction",
+      issued: "Feb 2026",
+      issuedDateTime: "2026-02",
+      status: "Verified",
+      description:
+        "A foundational certification covering version control concepts with Git and collaborative workflows using GitHub.",
+      skills: ["Version Control", "Git", "GitHub", "Collaboration", "Repositories", "Pull Requests"],
+      certificateUrl: "/Git_&_Github-Introduction.pdf",
+    },
   ],
 };
 

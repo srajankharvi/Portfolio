@@ -23,20 +23,14 @@ export default function Projects() {
 
 function ProjectCard({ project, index }) {
   const cardRef = useRef(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0, opacity: 0 });
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-      opacity: 1,
-    });
-  };
-
-  const handleMouseLeave = () => {
-    setMousePos((prev) => ({ ...prev, opacity: 0 }));
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    cardRef.current.style.setProperty("--mouse-x", `${x}px`);
+    cardRef.current.style.setProperty("--mouse-y", `${y}px`);
   };
 
   const isEven = index % 2 === 0;
@@ -46,19 +40,18 @@ function ProjectCard({ project, index }) {
       initial={{ opacity: 0, y: 50, filter: "blur(8px)", scale: 0.96 }}
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
       viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.7, ease: [0.22, 0.61, 0.36, 1], delay: index * 0.1 }}
+      transition={{ duration: 0.5, ease: [0.22, 0.61, 0.36, 1], delay: index * 0.1 }}
     >
       <div
         ref={cardRef}
         onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        className="group relative overflow-hidden rounded-3xl border border-[#222222] bg-[#0E0E0E] p-1 transition-all duration-500 ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:-translate-y-2 hover:border-[#3B82F6]/40 hover:shadow-[0_20px_50px_rgba(59,130,246,0.15)]"
+        className="group relative overflow-hidden rounded-3xl border border-[#222222] bg-[#0E0E0E] p-1 transition-all duration-300 ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:-translate-y-2 hover:border-[#3B82F6]/40 hover:shadow-[0_20px_50px_rgba(59,130,246,0.15)]"
       >
-        {/* Mouse-Following Radial Spotlight Glow */}
+        {/* Ultra-fast Mouse-Following Radial Spotlight Glow using CSS Variables */}
         <div
-          className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition-opacity duration-200 group-hover:opacity-100"
           style={{
-            background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(59, 130, 246, 0.12), transparent 80%)`,
+            background: `radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59, 130, 246, 0.12), transparent 80%)`,
           }}
         />
 

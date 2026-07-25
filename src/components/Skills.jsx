@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { motion } from "framer-motion";
 import Section from "./Section";
 import SkillMarquee from "./SkillMarquee";
@@ -8,42 +8,43 @@ import { techIconMap, CodeBracketIcon } from "./Icons";
 /* Badge colors for proficiency levels */
 const levelStyles = {
   Proficient: {
-    bg: "rgba(59, 130, 246, 0.14)",
+    bg: "rgba(59, 130, 246, 0.12)", // Soft blue
     text: "#60A5FA",
-    border: "rgba(59, 130, 246, 0.28)",
+    border: "rgba(59, 130, 246, 0.25)",
   },
   Intermediate: {
-    bg: "rgba(34, 197, 94, 0.14)",
-    text: "#4ADE80",
-    border: "rgba(34, 197, 94, 0.28)",
+    bg: "rgba(168, 85, 247, 0.12)", // Soft purple
+    text: "#C084FC",
+    border: "rgba(168, 85, 247, 0.25)",
+  },
+  Advanced: {
+    bg: "rgba(16, 185, 129, 0.12)", // Soft emerald
+    text: "#34D399",
+    border: "rgba(16, 185, 129, 0.25)",
   },
   Beginner: {
-    bg: "rgba(250, 204, 21, 0.14)",
-    text: "#FACC15",
-    border: "rgba(250, 204, 21, 0.28)",
+    bg: "rgba(245, 158, 11, 0.12)", // Soft amber
+    text: "#FBBF24",
+    border: "rgba(245, 158, 11, 0.25)",
   },
   Familiar: {
-    bg: "rgba(168, 85, 247, 0.14)",
-    text: "#C084FC",
-    border: "rgba(168, 85, 247, 0.28)",
+    bg: "rgba(255, 255, 255, 0.05)",
+    text: "#A1A1AA",
+    border: "rgba(255, 255, 255, 0.1)",
   },
 };
 
 /* Stagger entrance animation variants */
 const cardVariants = {
-  hidden: {
-    opacity: 0,
-    y: 40,
-    scale: 0.95,
-  },
+  hidden: { opacity: 0, y: 15, scale: 0.98 },
   visible: (i) => ({
     opacity: 1,
     y: 0,
     scale: 1,
     transition: {
-      duration: 0.55,
-      ease: [0.22, 0.61, 0.36, 1],
-      delay: i * 0.07,
+      delay: i * 0.05,
+      duration: 0.4,
+      ease: [0.21, 0.47, 0.32, 0.98],
     },
   }),
 };
@@ -52,42 +53,36 @@ const cardVariants = {
 function SkillCard({ skill, index }) {
   const Icon = techIconMap[skill.name] || CodeBracketIcon;
   const levelConfig = levelStyles[skill.level] || levelStyles.Beginner;
-
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0, opacity: 0 });
+  const cardRef = useRef(null);
 
   const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-      opacity: 1,
-    });
-  };
-
-  const handleMouseLeave = () => {
-    setMousePos((prev) => ({ ...prev, opacity: 0 }));
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    cardRef.current.style.setProperty("--mouse-x", `${x}px`);
+    cardRef.current.style.setProperty("--mouse-y", `${y}px`);
   };
 
   return (
     <motion.div
+      ref={cardRef}
       custom={index}
       variants={cardVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.15 }}
       onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="skill-saas-card group relative flex cursor-default flex-col justify-between overflow-hidden rounded-[20px] border border-white/[0.08] bg-gradient-to-b from-white/[0.05] via-[#141419]/90 to-[#0C0C10] p-6 backdrop-blur-md shadow-md transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-white/[0.20] hover:shadow-[0_16px_36px_rgba(0,0,0,0.4)]"
+      className="skill-saas-card group relative flex cursor-default flex-col justify-between overflow-hidden rounded-[20px] border border-white/[0.08] bg-gradient-to-b from-white/[0.05] via-[#141419]/90 to-[#0C0C10] p-6 backdrop-blur-md shadow-md transition-all duration-200 ease-out hover:-translate-y-1 hover:border-white/[0.15] hover:shadow-[0_16px_36px_rgba(0,0,0,0.4)]"
     >
       {/* Subtle Glassmorphism Light Reflective Overlay */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.04] via-transparent to-transparent opacity-60" />
 
-      {/* Subtle Mouse-Following Radial Spotlight */}
+      {/* Ultra-fast Mouse-Following Radial Spotlight via CSS variables */}
       <div
-        className="pointer-events-none absolute -inset-px transition-opacity duration-300"
+        className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-200 group-hover:opacity-100"
         style={{
-          opacity: mousePos.opacity,
-          background: `radial-gradient(280px circle at ${mousePos.x}px ${mousePos.y}px, rgba(59, 130, 246, 0.10), transparent 80%)`,
+          background: `radial-gradient(280px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59, 130, 246, 0.10), transparent 80%)`,
         }}
       />
 
