@@ -5,7 +5,6 @@
 export const navItems = ["Home", "About", "Skills", "Certifications", "Projects", "Contact"];
 
 export const heroContent = {
-  badge: "Available for Internships",
   greeting: "Hi, I'm",
   firstName: "Srajan",
   lastName: "Kharvi",

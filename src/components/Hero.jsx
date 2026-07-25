@@ -125,15 +125,6 @@ export default function Hero() {
           animate="visible"
           className="relative z-10 space-y-8"
         >
-          {/* Small green availability badge */}
-          <motion.div variants={itemVariants} className="inline-flex items-center gap-2.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3.5 py-1.5 text-xs font-medium text-emerald-400">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-            </span>
-            {heroContent.badge}
-          </motion.div>
-
           {/* Large Minimal Heading with Glyph-Clipped Cursor Spotlight Effect */}
           <motion.div variants={itemVariants} className="space-y-2">
             <p className="text-lg font-medium text-muted sm:text-xl">
