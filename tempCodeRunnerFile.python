@@ -1,3 +1,7 @@
-print("hello world")
-name = input('enter your name ')
-# print(name + ' good morning')
+import os
+
+contents = os.listdir()
+
+print("Contents of the current directory:")
+for item in contents:
+    print(item)

@@ -48,7 +48,7 @@ const cardVariants = {
   }),
 };
 
-/* Individual Skill Card Component with Mouse Spotlight */
+/* Individual Skill Card Component with Soft Inner Gradient & Glassmorphism */
 function SkillCard({ skill, index }) {
   const Icon = techIconMap[skill.name] || CodeBracketIcon;
   const levelConfig = levelStyles[skill.level] || levelStyles.Beginner;
@@ -77,27 +77,30 @@ function SkillCard({ skill, index }) {
       viewport={{ once: true, amount: 0.15 }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="skill-saas-card group relative flex cursor-default flex-col justify-between overflow-hidden rounded-[20px] border border-white/[0.08] bg-[#171717] p-6 shadow-md transition-all duration-[350ms] cubic-bezier(0.22,0.61,0.36,1) hover:-translate-y-2 hover:scale-[1.03] hover:border-white/[0.18] hover:shadow-[0_16px_40px_rgba(59,130,246,0.14)]"
+      className="skill-saas-card group relative flex cursor-default flex-col justify-between overflow-hidden rounded-[20px] border border-white/[0.08] bg-gradient-to-b from-white/[0.05] via-[#141419]/90 to-[#0C0C10] p-6 backdrop-blur-md shadow-md transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-white/[0.20] hover:shadow-[0_16px_36px_rgba(0,0,0,0.4)]"
     >
+      {/* Subtle Glassmorphism Light Reflective Overlay */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.04] via-transparent to-transparent opacity-60" />
+
       {/* Subtle Mouse-Following Radial Spotlight */}
       <div
         className="pointer-events-none absolute -inset-px transition-opacity duration-300"
         style={{
           opacity: mousePos.opacity,
-          background: `radial-gradient(280px circle at ${mousePos.x}px ${mousePos.y}px, rgba(59, 130, 246, 0.12), transparent 80%)`,
+          background: `radial-gradient(280px circle at ${mousePos.x}px ${mousePos.y}px, rgba(59, 130, 246, 0.10), transparent 80%)`,
         }}
       />
 
       {/* Top Row: Icon + Badge */}
       <div className="relative z-10 flex items-center justify-between gap-4">
-        {/* Technology Icon Wrapper */}
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/[0.04] text-[#3B82F6] transition-transform duration-[350ms] cubic-bezier(0.22,0.61,0.36,1) group-hover:rotate-[8deg] group-hover:scale-110">
+        {/* Flat, Clean, and Static Technology Icon Wrapper */}
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.05] text-[#3B82F6]">
           <Icon className="h-7 w-7" />
         </div>
 
-        {/* Proficiency Badge */}
+        {/* Proficiency Badge / Status Pill */}
         <span
-          className="rounded-full border px-3 py-1 text-xs font-semibold tracking-wide transition-all duration-300 group-hover:brightness-125"
+          className="rounded-full border px-3 py-1 text-xs font-semibold tracking-wide"
           style={{
             backgroundColor: levelConfig.bg,
             color: levelConfig.text,
@@ -110,7 +113,7 @@ function SkillCard({ skill, index }) {
 
       {/* Bottom Row: Skill Name */}
       <div className="relative z-10 mt-6">
-        <h4 className="font-heading text-lg font-bold tracking-tight text-white transition-colors duration-300">
+        <h4 className="font-heading text-lg font-bold tracking-tight text-white">
           {skill.name}
         </h4>
       </div>
