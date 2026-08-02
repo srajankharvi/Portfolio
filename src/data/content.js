@@ -134,6 +134,17 @@ export const certificationsContent = {
       skills: ["Version Control", "Git", "GitHub", "Collaboration", "Repositories", "Pull Requests"],
       certificateUrl: "/Git_&_Github-Introduction.pdf",
     },
+    {
+      organization: "Infosys Springboard",
+      course: "Introduction to Cloud Computing",
+      issued: "2026",
+      issuedDateTime: "2026",
+      status: "Verified",
+      description:
+        "Completed an introductory certification covering core cloud computing concepts, deployment models, and foundational cloud services.",
+      skills: ["Cloud Computing", "Virtualization", "Cloud Services", "Infrastructure"],
+      certificateUrl: "/Inroduction_to_Cloud_Computing.pdf",
+    },
   ],
 };
 
