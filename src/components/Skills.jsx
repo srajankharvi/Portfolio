@@ -10,28 +10,33 @@ import { techIconMap, CodeBracketIcon } from "./Icons";
 const levelStyles = {
   Proficient: {
     bg: "rgba(59, 130, 246, 0.12)",
-    text: "#60A5FA",
+    text: "#3B82F6",
     border: "rgba(59, 130, 246, 0.25)",
+    glowRgb: "59, 130, 246",
   },
   Intermediate: {
     bg: "rgba(168, 85, 247, 0.12)",
     text: "#C084FC",
     border: "rgba(168, 85, 247, 0.25)",
+    glowRgb: "192, 132, 252",
   },
   Advanced: {
     bg: "rgba(16, 185, 129, 0.12)",
     text: "#34D399",
     border: "rgba(16, 185, 129, 0.25)",
+    glowRgb: "52, 211, 153",
   },
   Beginner: {
     bg: "rgba(245, 158, 11, 0.12)",
     text: "#FBBF24",
     border: "rgba(245, 158, 11, 0.25)",
+    glowRgb: "251, 191, 36",
   },
   Familiar: {
     bg: "rgba(255, 255, 255, 0.05)",
     text: "#A1A1AA",
     border: "rgba(255, 255, 255, 0.1)",
+    glowRgb: "161, 161, 170",
   },
 };
 
@@ -50,7 +55,7 @@ const allSkills = categorizedSkills.flatMap((section) =>
    ═══════════════════════════════════════════ */
 const CARD_WIDTH = 280;
 const CARD_HEIGHT = 200;
-const CARD_GAP = 28;
+const CARD_GAP = 4;
 const TOTAL = allSkills.length;
 const CLONE_COUNT = 6; // cards cloned on each side for seamless loop
 const STRIP_ITEM_WIDTH = CARD_WIDTH + CARD_GAP;
@@ -68,7 +73,7 @@ function generateStars(count = 120) {
       x: Math.random() * 100,
       y: Math.random() * 100,
       size: 0.8 + Math.random() * 1.4,
-      opacity: 0.08 + Math.random() * 0.18,
+      opacity: 0.03 + Math.random() * 0.12, // Reduced opacity for pure black background
     });
   }
   return stars;
@@ -86,65 +91,59 @@ function SkillCard({ skill, isFocusable = true }) {
   return (
     <div
       className="relative flex flex-col justify-between overflow-hidden p-5"
+      data-glow={levelConfig.glowRgb}
       style={{
         width: CARD_WIDTH,
         height: CARD_HEIGHT,
-        background: "linear-gradient(180deg, #15151e 0%, #0d0d13 100%)",
-        borderRadius: 16,
-        // Gradient border via box-shadow trick — lighter top, darker bottom
-        boxShadow: `
-          inset 0 1px 0 0 rgba(255, 255, 255, 0.10),
-          inset 0 -1px 0 0 rgba(0, 0, 0, 0.4),
-          inset 1px 0 0 0 rgba(255, 255, 255, 0.05),
-          inset -1px 0 0 0 rgba(255, 255, 255, 0.03)
+        // Charcoal base fill (contrast against pure black page)
+        // Stronger top-light bevel border (0.25 opacity)
+        background: `
+          linear-gradient(180deg, #1c1d24 0%, #111216 100%) padding-box,
+          linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.02) 100%) border-box
         `,
-        border: "1px solid rgba(255, 255, 255, 0.06)",
+        border: "1px solid transparent",
+        borderRadius: 18,
         flexShrink: 0,
       }}
       tabIndex={isFocusable ? 0 : -1}
       role="group"
       aria-label={`${skill.name} — ${skill.level} — ${skill.category}`}
     >
-      {/* Top-left sheen overlay */}
+      {/* Soft matte sheen highlight */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
-          borderRadius: 16,
+          borderRadius: 18,
           background:
-            "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 25%, transparent 55%, rgba(0,0,0,0.20) 100%)",
+            "radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.06) 0%, transparent 70%)",
         }}
       />
 
-      {/* Subtle horizontal light band near top */}
-      <div
-        className="pointer-events-none absolute left-0 right-0 top-0 h-[1px]"
-        style={{
-          borderRadius: "16px 16px 0 0",
-          background:
-            "linear-gradient(90deg, transparent 10%, rgba(255,255,255,0.12) 50%, transparent 90%)",
-        }}
-      />
-
-      {/* Content */}
+      {/* Content Layer */}
       <div className="relative z-10 flex items-center justify-between gap-3">
+        {/* Icon Chip - distinct inset panel */}
         <div
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-[#3B82F6]"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
           style={{
-            background: "rgba(59, 130, 246, 0.08)",
-            border: "1px solid rgba(59, 130, 246, 0.15)",
+            background: "rgba(0, 0, 0, 0.25)",
             boxShadow:
-              "inset 0 1px 0 rgba(59, 130, 246, 0.08), 0 2px 6px rgba(0, 0, 0, 0.25)",
+              "inset 0 1px 4px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.03), 0 1px 0 rgba(255, 255, 255, 0.05)",
+            color: "#60A5FA", // subtle blue tint matching brand
           }}
         >
           <Icon className="h-6 w-6" />
         </div>
+        
+        {/* Proficiency Badge */}
         <span
-          className="rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
+          className="rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider"
           style={{
             backgroundColor: levelConfig.bg,
             color: levelConfig.text,
             border: `1px solid ${levelConfig.border}`,
-            boxShadow: `0 1px 4px rgba(0, 0, 0, 0.3), inset 0 1px 0 ${levelConfig.border}`,
+            boxShadow: `0 2px 6px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)`,
+            lineHeight: 1,
+            height: "max-content", // Consistent height
           }}
         >
           {skill.level}
@@ -152,10 +151,10 @@ function SkillCard({ skill, isFocusable = true }) {
       </div>
 
       <div className="relative z-10 mt-auto">
-        <h4 className="font-heading text-base font-bold text-white leading-tight">
+        <h4 className="font-heading text-lg font-bold text-white leading-tight">
           {skill.name}
         </h4>
-        <span className="mt-1 block text-[10px] font-medium uppercase tracking-widest text-white/30">
+        <span className="mt-1.5 block text-[10px] font-medium uppercase tracking-[0.15em] text-[#8C93A8]">
           {skill.category}
         </span>
       </div>
@@ -375,26 +374,33 @@ export default function Skills() {
         // Brightness: center = 1, far = 0.55
         const brightness = 0.55 + smoothT * 0.45;
 
-        // ── Arc curve (Fix 1) ──
-        // Normalize distance across half the viewport
+        // ── 3D Coverflow Perspective (Fix 1) ──
+        // Normalize distance across half the viewport for smooth interpolation
         const norm = Math.min(distFromCenter / (vw * 0.5), 1.2);
-        // Parabolic Y offset: center = 0, edges = ~20px down
-        const arcY = norm * norm * 22;
-        // Z rotation: cards left of center tilt clockwise, right tilt counter-clockwise
-        const arcRotZ = (signedDist / (vw * 0.5)) * 3.5; // max ~3.5 degrees
+        
+        // Z rotation (removed) -> Y rotation (3D tilt)
+        // Max angle ~32 degrees at the edges. Left cards tilt right edge forward (positive rotateY), right cards tilt left edge forward (negative rotateY).
+        const maxAngle = 32;
+        const normalizedSigned = Math.max(-1.2, Math.min(1.2, signedDist / (vw * 0.5)));
+        const rotateY = -normalizedSigned * maxAngle;
+        
+        // Z translation: center = 0, edges = pushed back ~25px
+        const translateZ = -norm * 25;
+        
+        // Vertical Arc (Parabola): center = 0, edges = drop ~50px down
+        const translateY = norm * norm * 50;
 
-        // ── Shadow (Fix 2) ──
-        // Stronger/tighter shadow for center, softer for edges
-        const shadowBlur = 16 + smoothT * 20; // 16–36px
-        const shadowY = 8 + smoothT * 14; // 8–22px
-        const shadowAlpha = 0.25 + smoothT * 0.35; // 0.25–0.60
-        // Shift shadow slightly opposite to tilt
-        const shadowX = -arcRotZ * 0.6;
+        // ── Soft Colored Under-Glow (Replaces contact shadow) ──
+        // Read the per-card badge color passed via data-glow
+        const glowRgb = cardContainer.dataset.glow || "59, 130, 246";
+        const glowBlur = 40 + smoothT * 40; // 40–80px soft bleed
+        const glowY = 10 + smoothT * 10; // offset down slightly
+        const glowAlpha = 0.02 + smoothT * 0.10; // very low opacity (0.02-0.12)
 
         // ── Apply all transforms as one composite ──
         cardContainer.style.opacity = opacity;
-        cardContainer.style.transform = `scale(${scale}) translateY(${arcY}px) rotate(${arcRotZ}deg)`;
-        cardContainer.style.filter = `brightness(${brightness}) drop-shadow(${shadowX.toFixed(1)}px ${shadowY.toFixed(0)}px ${shadowBlur.toFixed(0)}px rgba(0, 0, 0, ${shadowAlpha.toFixed(2)}))`;
+        cardContainer.style.transform = `scale(${scale}) translateY(${translateY}px) translateZ(${translateZ}px) rotateY(${rotateY}deg)`;
+        cardContainer.style.filter = `brightness(${brightness}) drop-shadow(0px ${glowY.toFixed(0)}px ${glowBlur.toFixed(0)}px rgba(${glowRgb}, ${glowAlpha.toFixed(2)}))`;
       });
     },
     [getViewportCenter]
@@ -529,7 +535,7 @@ export default function Skills() {
     <section
       id="skills"
       className="relative overflow-hidden py-24 sm:py-32"
-      style={{ background: "#070a18" }}
+      style={{ background: "#000000" }}
     >
       {/* ─── Starfield Background ─── */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
@@ -570,6 +576,7 @@ export default function Skills() {
           touchAction: "pan-y",
           width: "100%",
           maxWidth: "100vw",
+          perspective: "1200px", // 3D Camera for Coverflow
           WebkitMaskImage:
             "linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%)",
           maskImage:
@@ -596,6 +603,7 @@ export default function Skills() {
           style={{
             gap: CARD_GAP,
             willChange: "transform",
+            transformStyle: "preserve-3d", // Let children exist in 3D space
           }}
         >
           {extendedSkills.map((skill, i) => {
@@ -611,18 +619,13 @@ export default function Skills() {
                 style={{
                   flexShrink: 0,
                   width: CARD_WIDTH,
+                  transformStyle: "preserve-3d", // Ensure label and reflection inherit tilt correctly
                   transition: prefersReducedMotion
                     ? "none"
                     : "opacity 0.15s, transform 0.15s, filter 0.15s",
                 }}
               >
-                {/* Floating label above card */}
-                <span
-                  className="mb-3 block text-center text-[11px] font-semibold uppercase tracking-[0.18em] text-white/50"
-                  aria-hidden={isClone ? "true" : undefined}
-                >
-                  {skill.name}
-                </span>
+
 
                 {/* The card */}
                 <SkillCard skill={skill} isFocusable={!isClone} />
@@ -636,9 +639,9 @@ export default function Skills() {
                     height: CARD_HEIGHT * 0.6,
                     marginTop: 2,
                     WebkitMaskImage:
-                      "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 70%)",
+                      "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 50%)",
                     maskImage:
-                      "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 70%)",
+                      "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 50%)",
                   }}
                 >
                   <div
@@ -660,20 +663,6 @@ export default function Skills() {
 
       {/* ─── Counter + Title + Dots ─── */}
       <div className="relative z-10 mx-auto mt-12 flex w-[min(100%-2rem,1200px)] flex-col items-center gap-4">
-        {/* Counter */}
-        <span className="font-mono text-sm tracking-wider text-white/40">
-          {String(activeIndex + 1).padStart(2, "0")} /{" "}
-          {String(TOTAL).padStart(2, "0")}
-        </span>
-
-        {/* Active card title */}
-        <h3
-          className="text-center font-heading text-2xl font-bold tracking-tight text-white sm:text-3xl"
-          style={{ minHeight: "2.5rem" }}
-          aria-live="polite"
-        >
-          {allSkills[activeIndex]?.name}
-        </h3>
 
         {/* Pagination dots */}
         <div

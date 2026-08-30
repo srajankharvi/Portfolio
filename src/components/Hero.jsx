@@ -118,8 +118,6 @@ export default function Hero() {
       id="home"
       className="relative isolate flex min-h-[92vh] items-center overflow-hidden pt-28 pb-20 lg:pt-36 lg:pb-28"
     >
-      {/* 3D Interactive Grid — contained to hero only */}
-      <Background />
 
       <div className="mx-auto grid w-[min(100%-2rem,1200px)] items-center gap-12 lg:grid-cols-[1.2fr_0.8fr]">
         {/* Text content */}
