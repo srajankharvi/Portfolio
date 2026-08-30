@@ -45,7 +45,7 @@ function ProjectCard({ project, index }) {
       <div
         ref={cardRef}
         onMouseMove={handleMouseMove}
-        className="group relative overflow-hidden rounded-3xl border border-[#222222] bg-[#0E0E0E] p-1 transition-all duration-300 ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:-translate-y-2 hover:border-[#3B82F6]/40 hover:shadow-[0_20px_50px_rgba(59,130,246,0.15)]"
+        className="group relative overflow-hidden rounded-3xl border border-white/[0.06] bg-[#0A0A0E] p-1 transition-all duration-300 ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:-translate-y-2 hover:border-[#3B82F6]/40 hover:shadow-[0_20px_50px_rgba(59,130,246,0.12)]"
       >
         {/* Ultra-fast Mouse-Following Radial Spotlight Glow using CSS Variables */}
         <div
@@ -56,7 +56,7 @@ function ProjectCard({ project, index }) {
         />
 
         {/* Card Content Grid */}
-        <div className="relative z-10 rounded-[22px] bg-[#111111]/90 p-6 backdrop-blur-xl lg:p-10">
+        <div className="relative z-10 rounded-[22px] bg-[#0A0A0E]/90 p-6 backdrop-blur-xl lg:p-10">
           <div className={`grid items-center gap-8 lg:grid-cols-12 ${isEven ? "" : "lg:grid-flow-dense"}`}>
             {/* Image Thumbnail Container */}
             <div className={`relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0A0A0A] lg:col-span-7 ${isEven ? "" : "lg:col-start-6"}`}>
@@ -71,7 +71,7 @@ function ProjectCard({ project, index }) {
                   />
                 </picture>
                 {/* Subtle Image Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#111111] via-transparent to-transparent opacity-50 transition-opacity duration-500 group-hover:opacity-30" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0E] via-transparent to-transparent opacity-50 transition-opacity duration-500 group-hover:opacity-30" />
               </div>
             </div>
 
@@ -104,7 +104,7 @@ function ProjectCard({ project, index }) {
               </div>
 
               {/* Tech Hash Tags */}
-              <div className="flex flex-wrap gap-2.5 border-t border-[#222222] pt-4">
+              <div className="flex flex-wrap gap-2.5 border-t border-white/[0.06] pt-4">
                 {project.tags.map((tag) => (
                   <span
                     key={tag}

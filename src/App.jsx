@@ -1,5 +1,4 @@
 import SmoothScroll from "./components/SmoothScroll";
-import Background from "./components/Background";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -12,8 +11,10 @@ import Footer from "./components/Footer";
 export default function App() {
   return (
     <SmoothScroll>
-      <div className="relative min-h-screen overflow-x-hidden bg-bg text-primary selection:bg-accent/30 selection:text-white">
-        <Background />
+      <div className="relative min-h-screen overflow-x-hidden bg-black text-primary selection:bg-accent/30 selection:text-white">
+        {/* Global noise overlay */}
+        <div className="noise-overlay" />
+
         <Navbar />
 
         <main className="relative z-10">

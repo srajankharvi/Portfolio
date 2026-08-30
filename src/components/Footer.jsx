@@ -7,7 +7,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative border-t border-border bg-surface/80 py-16">
+    <footer className="relative border-t border-white/[0.06] bg-black/80 py-16">
       <div className="mx-auto w-[min(100%-2rem,1200px)]">
         <div className="flex flex-col gap-12 lg:flex-row lg:items-center lg:justify-between">
           {/* Brand & Tagline */}
@@ -36,7 +36,7 @@ export default function Footer() {
 
             <button
               onClick={scrollToTop}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border bg-card text-secondary transition-colors hover:border-border-hover hover:text-primary"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.04] text-secondary transition-colors hover:border-white/[0.1] hover:text-primary"
               aria-label="Back to top"
             >
               <ChevronUpIcon className="h-5 w-5" />
@@ -45,7 +45,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-6 border-t border-border pt-8 text-xs text-muted sm:flex-row">
+        <div className="mt-12 flex flex-col items-center justify-between gap-6 border-t border-white/[0.06] pt-8 text-xs text-muted sm:flex-row">
           <p>© {new Date().getFullYear()} {footerContent.name}. All rights reserved.</p>
 
           <div className="flex items-center gap-4">

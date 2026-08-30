@@ -36,7 +36,7 @@ export default function Contact() {
           {/* Email Card */}
           <a
             href={`mailto:${contactContent.email}`}
-            className="group glass-card flex items-center justify-between rounded-2xl p-6 border border-[#222222] bg-[#111111] transition-all duration-300 hover:-translate-y-1 hover:border-[#3B82F6]/40 hover:shadow-[0_10px_30px_rgba(59,130,246,0.12)]"
+            className="group glass-card flex items-center justify-between rounded-2xl p-6 border border-white/[0.06] bg-[#0A0A0E] transition-all duration-300 hover:-translate-y-1 hover:border-[#3B82F6]/40 hover:shadow-[0_10px_30px_rgba(59,130,246,0.10)]"
           >
             <div className="flex items-center gap-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#3B82F6]/10 text-[#3B82F6] transition-transform duration-300 group-hover:scale-110">
@@ -53,7 +53,7 @@ export default function Contact() {
           </a>
 
           {/* Location Card */}
-          <div className="glass-card flex items-center gap-4 rounded-2xl p-6 border border-[#222222] bg-[#111111]">
+          <div className="glass-card flex items-center gap-4 rounded-2xl p-6 border border-white/[0.06] bg-[#0A0A0E]">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#3B82F6]/10 text-[#3B82F6]">
               <MapPinIcon className="h-6 w-6" />
             </div>
@@ -78,7 +78,7 @@ export default function Contact() {
                 rel="noopener noreferrer"
                 whileHover={{ y: -4, scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2.5 rounded-xl border border-[#222222] bg-[#111111] px-5 py-3 text-sm font-semibold text-[#B3B3B3] transition-all duration-300 hover:border-[#3B82F6]/40 hover:text-white hover:shadow-[0_8px_20px_rgba(59,130,246,0.12)]"
+                className="flex items-center gap-2.5 rounded-xl border border-white/[0.06] bg-[#0A0A0E] px-5 py-3 text-sm font-semibold text-[#B3B3B3] transition-all duration-300 hover:border-[#3B82F6]/40 hover:text-white hover:shadow-[0_8px_20px_rgba(59,130,246,0.10)]"
                 aria-label={social.label}
               >
                 <SocialIcon type={social.icon} className="h-5 w-5 text-[#3B82F6]" />
