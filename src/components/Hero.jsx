@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
 import { heroContent, roles } from "../data/content";
 import { ArrowRightIcon } from "./Icons";
 import Background from "./Background";
@@ -57,7 +57,6 @@ function RoleText() {
 
 function SpotlightName({ firstName, lastName }) {
   const containerRef = useRef(null);
-  const [mousePos, setMousePos] = useState({ x: -300, y: -300 });
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = (e) => {
@@ -65,7 +64,8 @@ function SpotlightName({ firstName, lastName }) {
     const rect = containerRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    setMousePos({ x, y });
+    containerRef.current.style.setProperty("--mouse-x", `${x}px`);
+    containerRef.current.style.setProperty("--mouse-y", `${y}px`);
   };
 
   return (
@@ -78,7 +78,7 @@ function SpotlightName({ firstName, lastName }) {
       style={
         isHovered
           ? {
-              backgroundImage: `radial-gradient(circle 180px at ${mousePos.x}px ${mousePos.y}px, #60A5FA 0%, #3B82F6 40%, #FFFFFF 85%)`,
+              backgroundImage: `radial-gradient(circle 180px at var(--mouse-x, -300px) var(--mouse-y, -300px), #60A5FA 0%, #3B82F6 40%, #FFFFFF 85%)`,
               WebkitBackgroundClip: "text",
               backgroundClip: "text",
               WebkitTextFillColor: "transparent",
@@ -97,7 +97,10 @@ function SpotlightName({ firstName, lastName }) {
 
 export default function Hero() {
   const imageRef = useRef(null);
-  const [parallax, setParallax] = useState({ x: 0, y: 0 });
+  const parallaxX = useMotionValue(0);
+  const parallaxY = useMotionValue(0);
+  const smoothX = useSpring(parallaxX, { stiffness: 45, damping: 20 });
+  const smoothY = useSpring(parallaxY, { stiffness: 45, damping: 20 });
 
   // Mouse parallax for image
   useEffect(() => {
@@ -107,11 +110,12 @@ export default function Hero() {
     function handleMouse(e) {
       const x = (e.clientX / window.innerWidth - 0.5) * 18;
       const y = (e.clientY / window.innerHeight - 0.5) * 18;
-      setParallax({ x, y });
+      parallaxX.set(x);
+      parallaxY.set(y);
     }
     window.addEventListener("mousemove", handleMouse, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouse);
-  }, []);
+  }, [parallaxX, parallaxY]);
 
   return (
     <section
@@ -189,11 +193,10 @@ export default function Hero() {
 
           <motion.div
             ref={imageRef}
-            animate={{
-              x: parallax.x,
-              y: parallax.y,
+            style={{
+              x: smoothX,
+              y: smoothY,
             }}
-            transition={{ type: "spring", stiffness: 45, damping: 20 }}
             className="relative"
           >
             <motion.div

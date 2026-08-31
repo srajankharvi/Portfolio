@@ -60,6 +60,7 @@ export default function Background() {
     let H = 0;
     let animId = null;
     let isTabVisible = true;
+    let isIntersecting = true;
     let time = 0;
 
     let mouseTarget = { x: 0, y: 0 };
@@ -125,6 +126,20 @@ export default function Background() {
       resizeObserver.observe(heroSection);
     }
 
+    // Intersection Observer to pause when off-screen
+    let intersectionObserver;
+    if (typeof IntersectionObserver !== "undefined") {
+      intersectionObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            isIntersecting = entry.isIntersecting;
+          });
+        },
+        { threshold: 0 }
+      );
+      intersectionObserver.observe(heroSection);
+    }
+
     // --- Mouse handlers (convert to hero-local coords) ---
     function onMouseMove(e) {
       const rect = canvas.getBoundingClientRect();
@@ -158,7 +173,7 @@ export default function Background() {
 
     // --- Animation ---
     function render(timestamp) {
-      if (!isTabVisible) {
+      if (!isTabVisible || !isIntersecting) {
         animId = requestAnimationFrame(render);
         return;
       }
@@ -436,6 +451,7 @@ export default function Background() {
     return () => {
       if (animId) cancelAnimationFrame(animId);
       if (resizeObserver) resizeObserver.disconnect();
+      if (intersectionObserver) intersectionObserver.disconnect();
       window.removeEventListener("resize", resize);
       heroSection.removeEventListener("mousemove", onMouseMove);
       heroSection.removeEventListener("mouseleave", onMouseLeave);

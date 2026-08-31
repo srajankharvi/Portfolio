@@ -188,6 +188,7 @@ export default function Skills() {
     snapStartTime: 0,
     autoAdvance: true,
     settled: false,
+    isIntersecting: true,
   });
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -272,6 +273,23 @@ export default function Skills() {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
+  // Intersection Observer to pause animation when off-screen
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          state.current.isIntersecting = entry.isIntersecting;
+        });
+      },
+      { threshold: 0 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   // Initialize position
   useEffect(() => {
     state.current.x = getXForIndex(0);
@@ -293,9 +311,17 @@ export default function Skills() {
     let prevTime = performance.now();
 
     const loop = (now) => {
+      const s = state.current;
+      
+      // Pause updates if not intersecting
+      if (!s.isIntersecting) {
+        prevTime = now;
+        rafRef.current = requestAnimationFrame(loop);
+        return;
+      }
+
       const dt = Math.min(now - prevTime, 32); // cap at ~30fps minimum
       prevTime = now;
-      const s = state.current;
 
       if (s.isSnapping) {
         // Snap animation
@@ -325,7 +351,16 @@ export default function Skills() {
       }
 
       // Wrap for infinite loop
+      const oldX = s.x;
       s.x = wrapX(s.x);
+      const diff = s.x - oldX;
+      
+      // If the coordinate wrapped, we must also shift all absolute physics targets
+      if (Math.abs(diff) > 100) {
+        s.snapFrom += diff;
+        s.snapTo += diff;
+        s.dragStartScrollX += diff;
+      }
 
       // Apply transform
       if (stripRef.current) {
