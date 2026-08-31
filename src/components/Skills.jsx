@@ -246,22 +246,105 @@ export default function Skills() {
     [getViewportCenter, getCardCenterX]
   );
 
-  // Wrap x so the strip never scrolls past the clone boundary
+  // Wrap x using a stable modulo so the strip loops seamlessly without conditional boundary flip-flopping
   const wrapX = useCallback(
     (x) => {
       const totalRealWidth = TOTAL * STRIP_ITEM_WIDTH;
       const vc = getViewportCenter();
-      // The leftmost "real" card center appears at screen position: realStartOffset + CARD_WIDTH/2 + x
-      // The rightmost "real" card center: realStartOffset + (TOTAL-1)*STRIP_ITEM_WIDTH + CARD_WIDTH/2 + x
-      // We want to keep the strip from running past clones
-      const minX = vc - (realStartOffset + TOTAL * STRIP_ITEM_WIDTH - CARD_WIDTH / 2);
-      const maxX = vc - (realStartOffset + CARD_WIDTH / 2);
-
-      if (x > maxX) return x - totalRealWidth;
-      if (x < minX) return x + totalRealWidth;
-      return x;
+      
+      // c_x is the point in the strip that is currently at the center of the viewport
+      const c_x = vc - x;
+      
+      // Map c_x into the bounds of [realStartOffset, realStartOffset + totalRealWidth) using stable modulo
+      const wrapped_c_x = realStartOffset + (((c_x - realStartOffset) % totalRealWidth) + totalRealWidth) % totalRealWidth;
+      
+      return vc - wrapped_c_x;
     },
     [getViewportCenter]
+  );
+
+  const cardEls = useRef([]);
+  const updateCardVisuals = useCallback(
+    (x) => {
+      const vc = getViewportCenter();
+      const vw = viewportRef.current ? viewportRef.current.offsetWidth : 1536;
+
+      cardEls.current.forEach((el) => {
+        if (!el) return;
+        const cardContainer = el;
+        const cardLeft = cardContainer.offsetLeft + x;
+        const cardCenter = cardLeft + CARD_WIDTH / 2;
+        const distFromCenter = Math.abs(cardCenter - vc);
+        // Signed distance for rotation direction
+        const signedDist = cardCenter - vc;
+
+        // ── Focus falloff (unchanged) ──
+        const falloff = STRIP_ITEM_WIDTH * 1.1;
+        const t = Math.max(0, Math.min(1, 1 - distFromCenter / falloff));
+        const smoothT = t * t * (3 - 2 * t); // smoothstep
+
+        // Opacity: center = 1, far = 0.4
+        const opacity = 0.4 + smoothT * 0.6;
+        // Scale: center = 1, far = 0.96
+        const scale = 0.96 + smoothT * 0.04;
+        // Brightness: center = 1, far = 0.55
+        const brightness = 0.55 + smoothT * 0.45;
+
+        // ── 3D Coverflow Perspective (Fix 1) ──
+        // Normalize distance across half the viewport for smooth interpolation
+        const norm = Math.min(distFromCenter / (vw * 0.5), 1.2);
+        
+        // Z rotation (removed) -> Y rotation (3D tilt)
+        // Max angle ~32 degrees at the edges. Left cards tilt right edge forward (positive rotateY), right cards tilt left edge forward (negative rotateY).
+        const maxAngle = 32;
+        const normalizedSigned = Math.max(-1.2, Math.min(1.2, signedDist / (vw * 0.5)));
+        const rotateY = -normalizedSigned * maxAngle;
+        
+        // Z translation: center = 0, edges = pushed back ~25px
+        const translateZ = -norm * 25;
+        
+        // Vertical Arc (Parabola): center = 0, edges = drop ~50px down
+        const translateY = norm * norm * 50;
+
+        // ── Soft Colored Under-Glow (Replaces contact shadow) ──
+        // Read the per-card badge color passed via data-glow
+        const glowRgb = cardContainer.dataset.glow || "59, 130, 246";
+        const glowBlur = 40 + smoothT * 40; // 40–80px soft bleed
+        const glowY = 10 + smoothT * 10; // offset down slightly
+        const glowAlpha = 0.02 + smoothT * 0.10; // very low opacity (0.02-0.12)
+
+        // ── Apply all transforms as one composite ──
+        cardContainer.style.opacity = opacity;
+        cardContainer.style.transform = `scale(${scale}) translateY(${translateY}px) translateZ(${translateZ}px) rotateY(${rotateY}deg)`;
+        cardContainer.style.filter = `brightness(${brightness}) drop-shadow(0px ${glowY.toFixed(0)}px ${glowBlur.toFixed(0)}px rgba(${glowRgb}, ${glowAlpha.toFixed(2)}))`;
+      });
+    },
+    [getViewportCenter]
+  );
+
+  const startSnap = useCallback(
+    (index) => {
+      const s = state.current;
+      s.isSnapping = true;
+      s.snapFrom = s.x;
+
+      const currentRenderedX = wrapX(s.x);
+      const targetRenderedX = getXForIndex(index);
+      const totalRealWidth = TOTAL * STRIP_ITEM_WIDTH;
+      
+      let diff = targetRenderedX - currentRenderedX;
+      // Choose the shortest path (wrapping)
+      if (Math.abs(diff) > totalRealWidth / 2) {
+        if (diff > 0) diff -= totalRealWidth;
+        else diff += totalRealWidth;
+      }
+      
+      s.snapTo = s.x + diff;
+
+      s.snapStartTime = performance.now();
+      s.snapDuration = 500 + Math.min(Math.abs(diff) * 0.5, 400);
+    },
+    [getXForIndex, wrapX]
   );
 
   // Reduced motion check
@@ -343,124 +426,34 @@ export default function Skills() {
         // When velocity is low enough, snap to nearest
         if (Math.abs(s.velocity) < 0.5) {
           s.velocity = 0;
-          startSnap(getNearestIndex(s.x));
+          startSnap(getNearestIndex(wrapX(s.x)));
         }
       } else if (s.autoAdvance && !s.isHovering) {
         // Auto advance
         s.x -= AUTO_SPEED;
       }
 
-      // Wrap for infinite loop
-      const oldX = s.x;
-      s.x = wrapX(s.x);
-      const diff = s.x - oldX;
-      
-      // If the coordinate wrapped, we must also shift all absolute physics targets
-      if (Math.abs(diff) > 100) {
-        s.snapFrom += diff;
-        s.snapTo += diff;
-        s.dragStartScrollX += diff;
-      }
+      // Canonical position is s.x. Compute wrapped position for rendering this frame.
+      const renderedX = wrapX(s.x);
 
       // Apply transform
       if (stripRef.current) {
-        stripRef.current.style.transform = `translate3d(${s.x}px, 0, 0)`;
+        stripRef.current.style.transform = `translate3d(${renderedX}px, 0, 0)`;
       }
 
-      // Update active index (throttled to avoid excessive React renders)
-      const newIdx = getNearestIndex(s.x);
+      // Update active index
+      const newIdx = getNearestIndex(renderedX);
       setActiveIndex((prev) => (prev !== newIdx ? newIdx : prev));
 
-      // Update per-card opacity/scale based on distance from center
-      updateCardVisuals(s.x);
+      // Update per-card visuals
+      updateCardVisuals(renderedX);
 
       rafRef.current = requestAnimationFrame(loop);
     };
 
     rafRef.current = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [prefersReducedMotion, getNearestIndex, wrapX, getXForIndex]);
-
-  // Update opacity/scale/arc/shadow of cards based on distance from center
-  const cardEls = useRef([]);
-  const updateCardVisuals = useCallback(
-    (x) => {
-      const vc = getViewportCenter();
-      const vw = viewportRef.current ? viewportRef.current.offsetWidth : 1536;
-
-      cardEls.current.forEach((el) => {
-        if (!el) return;
-        const cardContainer = el;
-        const cardLeft = cardContainer.offsetLeft + x;
-        const cardCenter = cardLeft + CARD_WIDTH / 2;
-        const distFromCenter = Math.abs(cardCenter - vc);
-        // Signed distance for rotation direction
-        const signedDist = cardCenter - vc;
-
-        // ── Focus falloff (unchanged) ──
-        const falloff = STRIP_ITEM_WIDTH * 1.1;
-        const t = Math.max(0, Math.min(1, 1 - distFromCenter / falloff));
-        const smoothT = t * t * (3 - 2 * t); // smoothstep
-
-        // Opacity: center = 1, far = 0.4
-        const opacity = 0.4 + smoothT * 0.6;
-        // Scale: center = 1, far = 0.96
-        const scale = 0.96 + smoothT * 0.04;
-        // Brightness: center = 1, far = 0.55
-        const brightness = 0.55 + smoothT * 0.45;
-
-        // ── 3D Coverflow Perspective (Fix 1) ──
-        // Normalize distance across half the viewport for smooth interpolation
-        const norm = Math.min(distFromCenter / (vw * 0.5), 1.2);
-        
-        // Z rotation (removed) -> Y rotation (3D tilt)
-        // Max angle ~32 degrees at the edges. Left cards tilt right edge forward (positive rotateY), right cards tilt left edge forward (negative rotateY).
-        const maxAngle = 32;
-        const normalizedSigned = Math.max(-1.2, Math.min(1.2, signedDist / (vw * 0.5)));
-        const rotateY = -normalizedSigned * maxAngle;
-        
-        // Z translation: center = 0, edges = pushed back ~25px
-        const translateZ = -norm * 25;
-        
-        // Vertical Arc (Parabola): center = 0, edges = drop ~50px down
-        const translateY = norm * norm * 50;
-
-        // ── Soft Colored Under-Glow (Replaces contact shadow) ──
-        // Read the per-card badge color passed via data-glow
-        const glowRgb = cardContainer.dataset.glow || "59, 130, 246";
-        const glowBlur = 40 + smoothT * 40; // 40–80px soft bleed
-        const glowY = 10 + smoothT * 10; // offset down slightly
-        const glowAlpha = 0.02 + smoothT * 0.10; // very low opacity (0.02-0.12)
-
-        // ── Apply all transforms as one composite ──
-        cardContainer.style.opacity = opacity;
-        cardContainer.style.transform = `scale(${scale}) translateY(${translateY}px) translateZ(${translateZ}px) rotateY(${rotateY}deg)`;
-        cardContainer.style.filter = `brightness(${brightness}) drop-shadow(0px ${glowY.toFixed(0)}px ${glowBlur.toFixed(0)}px rgba(${glowRgb}, ${glowAlpha.toFixed(2)}))`;
-      });
-    },
-    [getViewportCenter]
-  );
-
-  const startSnap = useCallback(
-    (index) => {
-      const s = state.current;
-      s.isSnapping = true;
-      s.snapFrom = s.x;
-      s.snapTo = getXForIndex(index);
-
-      // Choose the shortest path (wrapping)
-      const totalRealWidth = TOTAL * STRIP_ITEM_WIDTH;
-      const diff = s.snapTo - s.snapFrom;
-      if (Math.abs(diff) > totalRealWidth / 2) {
-        if (diff > 0) s.snapTo -= totalRealWidth;
-        else s.snapTo += totalRealWidth;
-      }
-
-      s.snapStartTime = performance.now();
-      s.snapDuration = 500 + Math.min(Math.abs(s.snapTo - s.snapFrom) * 0.5, 400);
-    },
-    [getXForIndex]
-  );
+  }, [prefersReducedMotion, getNearestIndex, wrapX, getXForIndex, startSnap]);
 
   /* ─── Pointer / Touch Events ─── */
   const handlePointerDown = useCallback(
@@ -513,11 +506,11 @@ export default function Skills() {
       // If velocity is very low, snap immediately
       if (Math.abs(s.velocity) < 1.5) {
         s.velocity = 0;
-        startSnap(getNearestIndex(s.x));
+        startSnap(getNearestIndex(wrapX(s.x)));
       }
       // Otherwise let momentum carry and the loop will snap when it slows
     },
-    [startSnap, getNearestIndex]
+    [startSnap, getNearestIndex, wrapX]
   );
 
   // Mouse enter/leave for auto-advance pause
@@ -655,9 +648,6 @@ export default function Skills() {
                   flexShrink: 0,
                   width: CARD_WIDTH,
                   transformStyle: "preserve-3d", // Ensure label and reflection inherit tilt correctly
-                  transition: prefersReducedMotion
-                    ? "none"
-                    : "opacity 0.15s, transform 0.15s, filter 0.15s",
                 }}
               >
 
