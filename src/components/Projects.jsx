@@ -45,33 +45,56 @@ function ProjectCard({ project, index }) {
       <div
         ref={cardRef}
         onMouseMove={handleMouseMove}
-        className="group relative overflow-hidden rounded-3xl border border-white/[0.06] bg-[#0A0A0E] p-1 transition-all duration-300 ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:-translate-y-2 hover:border-[#3B82F6]/40 hover:shadow-[0_20px_50px_rgba(59,130,246,0.12)]"
+        className="group relative overflow-hidden rounded-[28px] transition-all duration-500 ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:-translate-y-2 hover:shadow-[0_24px_60px_-15px_rgba(59,130,246,0.15)]"
+        style={{
+          background: `
+            linear-gradient(180deg, #1c1d24 0%, #111216 100%) padding-box,
+            linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.02) 100%) border-box
+          `,
+          border: "1px solid transparent",
+          boxShadow: "0 10px 40px -10px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.05)"
+        }}
       >
+        {/* Soft matte sheen highlight */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background: "radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.06) 0%, transparent 60%)",
+          }}
+        />
+
         {/* Ultra-fast Mouse-Following Radial Spotlight Glow using CSS Variables */}
         <div
-          className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+          className="pointer-events-none absolute -inset-px rounded-[28px] opacity-0 transition-opacity duration-200 group-hover:opacity-100"
           style={{
             background: `radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59, 130, 246, 0.12), transparent 80%)`,
           }}
         />
 
         {/* Card Content Grid */}
-        <div className="relative z-10 rounded-[22px] bg-[#0A0A0E]/90 p-6 backdrop-blur-xl lg:p-10">
+        <div className="relative z-10 p-6 lg:p-10">
           <div className={`grid items-center gap-8 lg:grid-cols-12 ${isEven ? "" : "lg:grid-flow-dense"}`}>
             {/* Image Thumbnail Container */}
-            <div className={`relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0A0A0A] lg:col-span-7 ${isEven ? "" : "lg:col-start-6"}`}>
-              <div className="aspect-[16/10] w-full overflow-hidden">
+            <div 
+              className={`relative overflow-hidden rounded-2xl lg:col-span-7 ${isEven ? "" : "lg:col-start-6"}`}
+              style={{
+                background: "rgba(0, 0, 0, 0.4)",
+                boxShadow: "inset 0 4px 20px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.06)",
+                border: "1px solid rgba(255, 255, 255, 0.04)",
+              }}
+            >
+              <div className="aspect-[16/10] w-full overflow-hidden p-1">
                 <picture>
                   <source srcSet={project.image} type="image/webp" />
                   <img
                     src={project.imageFallback || project.image}
                     alt={project.title}
                     loading="lazy"
-                    className="h-full w-full object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-105"
+                    className="h-full w-full rounded-xl object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-105"
                   />
                 </picture>
                 {/* Subtle Image Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0E] via-transparent to-transparent opacity-50 transition-opacity duration-500 group-hover:opacity-30" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#111216] via-transparent to-transparent opacity-50 transition-opacity duration-500 group-hover:opacity-20" />
               </div>
             </div>
 

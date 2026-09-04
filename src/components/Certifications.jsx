@@ -76,13 +76,29 @@ function CertificationCard({ cert, index }) {
       viewport={{ once: true, amount: 0.15 }}
       whileHover={{ y: -4 }}
       transition={{ type: "spring", stiffness: 500, damping: 25 }}
-      className="group relative flex h-full flex-col justify-between overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#0A0A0E] p-1.5 transition-all duration-200 hover:border-white/[0.15] hover:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+      className="group relative flex h-full flex-col justify-between overflow-hidden rounded-[28px] transition-all duration-200 hover:shadow-[0_24px_60px_-15px_rgba(59,130,246,0.1)]"
+      style={{
+        background: `
+          linear-gradient(180deg, #1c1d24 0%, #111216 100%) padding-box,
+          linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.02) 100%) border-box
+        `,
+        border: "1px solid transparent",
+        boxShadow: "0 10px 40px -10px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.05)"
+      }}
     >
       <div
         ref={cardRef}
         onMouseMove={handleMouseMove}
-        className="relative flex h-full flex-col justify-between overflow-hidden rounded-[18px] bg-[#0E0E13]/80 p-6 backdrop-blur-xl z-10"
+        className="relative flex h-full flex-col justify-between overflow-hidden rounded-[26px] p-6 z-10"
       >
+        {/* Soft matte sheen highlight */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background: "radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.06) 0%, transparent 60%)",
+          }}
+        />
+
         {/* Ultra-fast Dynamic Spotlight using CSS variables */}
         <div
           className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-200 group-hover:opacity-100 z-0"
@@ -90,9 +106,6 @@ function CertificationCard({ cert, index }) {
             background: `radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), ${glowColor}, transparent 80%)`,
           }}
         />
-
-        {/* Top highlight beam */}
-        <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-10" />
 
         {/* Background Mesh/Grid with soft mask */}
         <div className="pointer-events-none absolute inset-0 opacity-[0.02] transition-opacity duration-300 group-hover:opacity-[0.04] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_at_top,black_40%,transparent_70%)] z-0" />
