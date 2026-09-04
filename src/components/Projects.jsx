@@ -88,7 +88,7 @@ function ProjectCard({ project, index }) {
                   <source srcSet={project.image} type="image/webp" />
                   <img
                     src={project.imageFallback || project.image}
-                    alt={project.title}
+                    alt={`Screenshot of ${project.title} project`}
                     loading="lazy"
                     className="h-full w-full rounded-xl object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-105"
                   />
@@ -146,6 +146,7 @@ function ProjectCard({ project, index }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary"
+                    aria-label={`View ${project.title} live`}
                   >
                     <span>Live Demo</span>
                     <ArrowUpRightIcon className="h-4 w-4" />
@@ -157,6 +158,7 @@ function ProjectCard({ project, index }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-ghost"
+                    aria-label={`View ${project.title} source code on GitHub`}
                   >
                     <GitHubIcon className="h-4 w-4" />
                     <span>GitHub</span>

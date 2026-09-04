@@ -71,6 +71,7 @@ function SpotlightName({ firstName, lastName }) {
   return (
     <h1
       ref={containerRef}
+      aria-label={`${firstName} ${lastName}`}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -209,7 +210,7 @@ export default function Hero() {
             >
               <img
                 src="/developer-avatar-3d.png"
-                alt="Srajan Kharvi — 3D Software Developer Illustration"
+                alt="Srajan Kharvi - Software Developer"
                 width="1024"
                 height="1024"
                 className="mx-auto h-auto w-full max-w-[480px] rounded-3xl object-cover drop-shadow-[0_20px_50px_rgba(59,130,246,0.15)]"

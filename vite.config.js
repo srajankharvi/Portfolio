@@ -9,7 +9,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       injectRegister: 'auto',
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,jpg,pdf}']
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,jpg,pdf}'],
+        navigateFallbackDenylist: [/^\/sitemap\.xml$/, /^\/robots\.txt$/]
       },
       manifest: {
         name: "Srajan Kharvi | Software Developer Portfolio",
