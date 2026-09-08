@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useMotionValueEvent, useScroll } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { navItems } from "../data/content";
 import { MenuIcon, XIcon } from "./Icons";
 
@@ -11,7 +11,7 @@ export default function Navbar() {
   const isScrollingRef = useRef(false);
   const { scrollY } = useScroll();
 
-  // Shrink navbar on scroll
+  // Add a subtle border when scrolled
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsScrolled(latest > 50);
   });
@@ -66,94 +66,73 @@ export default function Navbar() {
       <motion.header
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-        className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4"
+        transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+        className={`fixed inset-x-0 top-0 z-50 flex justify-center transition-colors duration-300 ${
+          isScrolled ? "bg-black/90 backdrop-blur-md border-b border-white/[0.04]" : "bg-transparent"
+        }`}
       >
-        <motion.nav
-          animate={{
-            padding: isScrolled ? "0.5rem 1rem" : "0.625rem 1.25rem",
-          }}
-          transition={{ duration: 0.3 }}
-          className="glass flex w-full max-w-3xl items-center justify-between rounded-2xl"
-        >
-          {/* Logo */}
+        <div className="flex w-full max-w-7xl items-center justify-between px-6 py-5 lg:px-12 lg:py-6">
+          {/* Minimalist Logo */}
           <a
             href="#home"
             onClick={(e) => scrollToSection(e, "home")}
-            className="flex items-center gap-2.5 font-heading text-sm font-bold text-primary transition-opacity hover:opacity-80"
+            className="font-heading text-lg font-bold uppercase tracking-[0.2em] text-white transition-opacity hover:opacity-80"
           >
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-xs font-bold text-white">
-              SK
-            </span>
-            <span className="hidden sm:inline">Srajan</span>
+            SRAJAN
           </a>
 
-          {/* Desktop nav */}
-          <div
-            className="hidden items-center gap-1 lg:flex"
+          {/* Desktop Navigation */}
+          <nav
+            className="hidden items-center gap-10 lg:flex"
             onMouseLeave={() => setHoveredItem(null)}
           >
             {navItems.map((item) => {
-              const isActive = hoveredItem
-                ? hoveredItem === item
-                : activeItem === item;
+              const isActive = activeItem === item;
+              const isHovered = hoveredItem === item;
               return (
                 <a
                   key={item}
                   href={`#${item.toLowerCase()}`}
                   onClick={(e) => scrollToSection(e, item.toLowerCase())}
                   onMouseEnter={() => setHoveredItem(item)}
-                  className={`relative rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors duration-200 ${
-                    isActive ? "text-primary" : "text-muted hover:text-secondary"
+                  className={`text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors duration-300 ${
+                    isActive || isHovered ? "text-white" : "text-[#7A7A7A]"
                   }`}
                 >
-                  {isActive && (
-                    <motion.span
-                      layoutId="navPill"
-                      transition={{
-                        type: "spring",
-                        stiffness: 380,
-                        damping: 30,
-                      }}
-                      className="absolute inset-0 -z-10 rounded-lg bg-white/[0.06]"
-                    />
-                  )}
                   {item}
                 </a>
               );
             })}
-          </div>
+          </nav>
 
-          {/* Mobile toggle */}
+          {/* Mobile Toggle Button */}
           <button
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-secondary transition-colors hover:text-primary lg:hidden"
+            className="flex h-10 w-10 items-center justify-center text-[#7A7A7A] transition-colors hover:text-white lg:hidden"
             onClick={() => setIsMobileOpen(!isMobileOpen)}
             aria-label="Toggle menu"
           >
-            {isMobileOpen ? <XIcon /> : <MenuIcon />}
+            {isMobileOpen ? <XIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
           </button>
-        </motion.nav>
+        </div>
 
-        {/* Mobile menu */}
+        {/* Mobile Navigation Menu */}
         <AnimatePresence>
           {isMobileOpen && (
             <motion.div
-              initial={{ opacity: 0, y: -10, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="glass absolute left-4 right-4 top-full mt-2 rounded-2xl p-4 lg:hidden"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="absolute left-0 top-full w-full bg-black/95 px-6 pb-8 pt-4 backdrop-blur-xl border-b border-white/[0.04] lg:hidden"
             >
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-6">
                 {navItems.map((item) => (
                   <a
                     key={item}
                     href={`#${item.toLowerCase()}`}
                     onClick={(e) => scrollToSection(e, item.toLowerCase())}
-                    className={`rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
-                      activeItem === item
-                        ? "bg-white/[0.06] text-primary"
-                        : "text-muted hover:text-secondary"
+                    className={`text-[12px] font-semibold uppercase tracking-[0.2em] transition-colors ${
+                      activeItem === item ? "text-white" : "text-[#7A7A7A]"
                     }`}
                   >
                     {item}

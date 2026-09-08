@@ -2,13 +2,13 @@
    PORTFOLIO CONTENT DATA
    ═══════════════════════════════════════════ */
 
-export const navItems = ["Home", "About", "Skills", "Certifications", "Projects", "Contact"];
+export const navItems = ["Home", "About", "Service", "Project", "Contact"];
 
 export const heroContent = {
   greeting: "Hi, I'm",
   firstName: "Srajan",
   lastName: "Kharvi",
-  subtitle: "Aspiring Software Developer",
+  subtitle: "Aspiring Developer",
   description:
     "Building modern web applications with Python while continuously learning and improving through real-world projects.",
   primaryButtonText: "View Projects",
@@ -16,7 +16,7 @@ export const heroContent = {
 };
 
 export const roles = [
-  "Aspiring Software Developer",
+  "Aspiring Developer",
   "BCA Student",
   "Web Developer",
   "Problem Solver",
@@ -29,7 +29,7 @@ export const aboutContent = {
     "I'm Srajan, a Bachelor of Computer Applications (BCA) student at Dr. B. B. Hegde First Grade College, Kundapura, Karnataka.",
     "I enjoy solving problems through programming and building practical web applications. I believe in learning by building real projects, writing clean code, and continuously improving my technical skills.",
     "My primary focus is Python and Web Development, while currently expanding my knowledge in React, Machine Learning, and modern software development practices.",
-    "I am always eager to learn new technologies, work on challenging projects, and grow into a skilled Software Developer.",
+    "I am always eager to learn new technologies, work on challenging projects, and grow into a skilled Developer.",
   ],
 };
 
@@ -49,7 +49,7 @@ export const aboutCards = [
   {
     icon: "goal",
     title: "Career Goal",
-    subtitle: "Aspiring Software Developer",
+    subtitle: "Aspiring Developer",
     text: "Focused on building practical, scalable software solutions.",
   },
   {
@@ -203,5 +203,5 @@ export const socials = [
 export const footerContent = {
   name: "Srajan Kharvi",
   description:
-    "Aspiring Software Developer passionate about building modern web applications, learning new technologies, and creating software that solves real-world problems.",
+    "Aspiring Developer passionate about building modern web applications, learning new technologies, and creating software that solves real-world problems.",
 };

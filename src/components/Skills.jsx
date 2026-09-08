@@ -561,7 +561,7 @@ export default function Skills() {
 
   return (
     <section
-      id="skills"
+      id="service"
       className="relative overflow-hidden py-24 sm:py-32"
       style={{ background: "#000000" }}
     >

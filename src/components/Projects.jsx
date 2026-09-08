@@ -7,7 +7,7 @@ import { GitHubIcon, ArrowUpRightIcon } from "./Icons";
 export default function Projects() {
   return (
     <Section
-      id="projects"
+      id="project"
       eyebrow="Projects"
       title={projectsContent.heading}
       subtitle={projectsContent.description}
