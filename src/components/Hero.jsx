@@ -17,13 +17,14 @@ export default function Hero() {
           transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           style={{
             WebkitTextFillColor: "transparent",
-            backgroundImage: "linear-gradient(180deg, #FFFFFF 0%, #E2E2E2 40%, #A0A0A0 100%)",
+            WebkitBackgroundClip: "text",
             backgroundClip: "text",
-            filter: "drop-shadow(0px 4px 10px rgba(0,0,0,0.5))"
+            backgroundImage: "linear-gradient(180deg, #FFFFFF 0%, #D1D1D1 45%, #4A4A4A 100%)",
+            filter: "drop-shadow(0px 8px 16px rgba(0,0,0,0.8))"
           }}
-          className="font-heading text-[18vw] sm:text-[20vw] lg:text-[21.5vw] xl:text-[22.5vw] font-black leading-none tracking-tighter uppercase whitespace-nowrap text-center select-none"
+          className="font-heading text-[13vw] sm:text-[15vw] lg:text-[16.5vw] xl:text-[17.5vw] font-black leading-none tracking-tighter uppercase whitespace-nowrap text-center select-none"
         >
-          SRAJAN
+          PORTFOLIO
         </motion.h1>
       </div>
 
@@ -50,22 +51,24 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      {/* Layer 3: Small UI Elements (Bottom Left & Right) */}
-      <div className="absolute bottom-0 left-0 z-30 flex w-full justify-between p-6 pb-10 lg:p-12 lg:pb-16 pointer-events-none">
-        
-        {/* Subtitle - Bottom Left */}
+      {/* Layer 3: Small UI Elements (Top Left & Right) */}
+      
+      {/* Subtitle - Lower Left (Below large background text) */}
+      <div className="absolute bottom-0 left-0 z-40 flex p-6 pb-10 lg:p-12 lg:pb-16 pointer-events-none">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 1 }}
-          className="flex items-end z-40 relative"
+          className="flex items-end z-50 relative"
         >
-          <h2 className="font-sans text-sm font-medium uppercase tracking-[0.25em] text-[#A3A3A3] lg:text-base">
+          <h2 className="font-sans text-sm font-medium uppercase tracking-[0.25em] text-[#FFFFFF] lg:text-base drop-shadow-md">
             Developer
           </h2>
         </motion.div>
+      </div>
 
-        {/* Interaction Buttons - Bottom Right */}
+      {/* Interaction Buttons - Bottom Right */}
+      <div className="absolute bottom-0 right-0 z-40 flex justify-end w-full p-6 pb-10 lg:p-12 lg:pb-16 pointer-events-none">
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -74,9 +77,20 @@ export default function Hero() {
         >
           <a
             href="#contact"
-            className="group flex h-12 items-center justify-center rounded-full border border-white/20 bg-black/40 px-8 backdrop-blur-md transition-all duration-300 hover:border-white/50 hover:bg-white/10 hover:scale-105"
+            style={{ fontFamily: "inherit" }}
+            className="group relative flex h-12 items-center justify-center rounded-full border border-[#2a2a2a] bg-[#111111] px-8 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),_0_8px_16px_rgba(0,0,0,0.6)] transition-all duration-300 ease-out hover:border-[#444444] hover:bg-[#161616] hover:shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),_0_0_20px_rgba(255,255,255,0.1)] active:scale-95 active:shadow-[inset_0_4px_8px_rgba(0,0,0,0.8)]"
           >
-            <span className="text-xs font-semibold uppercase tracking-widest text-white">Contact</span>
+            <div className="flex text-xs font-semibold uppercase tracking-widest text-[#E5E5E5]">
+              {"CONTACT".split("").map((char, index) => (
+                <span
+                  key={index}
+                  className="inline-block transition-transform duration-300 ease-out group-hover:-translate-y-1"
+                  style={{ transitionDelay: `${index * 30}ms` }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </span>
+              ))}
+            </div>
           </a>
         </motion.div>
       </div>
