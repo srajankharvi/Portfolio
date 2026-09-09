@@ -1,6 +1,7 @@
+import React from "react";
 import { motion } from "framer-motion";
 
-export default function Hero() {
+const Hero = React.memo(function Hero() {
 
   return (
     <section
@@ -40,8 +41,12 @@ export default function Hero() {
           <div className="absolute left-1/2 top-1/2 -z-10 h-full w-full -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.08)_0%,transparent_70%)] blur-[50px]"></div>
           
           <img
-            src="/Srajan_Developer.png"
+            src="/Srajan_Developer.webp"
             alt="Srajan - Developer"
+            width="1086"
+            height="1448"
+            loading="eager"
+            fetchpriority="high"
             className="w-full h-auto object-cover object-top mask-portrait drop-shadow-[0_0_20px_rgba(0,0,0,0.8)]"
             style={{ 
               maskImage: 'linear-gradient(to top, transparent 0%, black 15%)',
@@ -100,4 +105,6 @@ export default function Hero() {
 
     </section>
   );
-}
+});
+
+export default Hero;

@@ -1,12 +1,14 @@
+import React, { Suspense } from 'react';
 import SmoothScroll from "./components/SmoothScroll";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
-import Skills from "./components/Skills";
-import Certifications from "./components/Certifications";
-import Projects from "./components/Projects";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
+
+const Skills = React.lazy(() => import("./components/Skills"));
+const Certifications = React.lazy(() => import("./components/Certifications"));
+const Projects = React.lazy(() => import("./components/Projects"));
+const Contact = React.lazy(() => import("./components/Contact"));
+const Footer = React.lazy(() => import("./components/Footer"));
 
 export default function App() {
   return (
@@ -20,13 +22,17 @@ export default function App() {
         <main className="relative z-10">
           <Hero />
           <About />
-          <Skills />
-          <Certifications />
-          <Projects />
-          <Contact />
+          <Suspense fallback={<div className="flex h-40 items-center justify-center text-secondary">Loading...</div>}>
+            <Skills />
+            <Certifications />
+            <Projects />
+            <Contact />
+          </Suspense>
         </main>
 
-        <Footer />
+        <Suspense fallback={null}>
+          <Footer />
+        </Suspense>
       </div>
     </SmoothScroll>
   );
