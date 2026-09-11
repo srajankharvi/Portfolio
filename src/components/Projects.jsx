@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Section from "./Section";
 import { projectsContent } from "../data/content";
 import { GitHubIcon, ArrowUpRightIcon } from "./Icons";
+import StarfieldButton from "./StarfieldButton";
 
 export default function Projects() {
   return (
@@ -153,16 +154,15 @@ function ProjectCard({ project, index }) {
                   </a>
                 )}
                 {project.github && (
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-ghost"
-                    aria-label={`View ${project.title} source code on GitHub`}
-                  >
-                    <GitHubIcon className="h-4 w-4" />
-                    <span>GitHub</span>
-                  </a>
+                  <StarfieldButton 
+                    link={project.github} 
+                    newTab={true}
+                    label="GitHub"
+                    addIcon={true}
+                    icon={{ type: "symbol", icon: "github", side: "left", size: 16, color: "#FFFFFF" }}
+                    font={{ variant: "Regular", fontSize: 13, fontFamily: "inherit", fontWeight: 600, letterSpacing: "0.05em" }}
+                    padding="6px 16px"
+                  />
                 )}
               </div>
             </div>

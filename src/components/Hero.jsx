@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import StarfieldButton from "./StarfieldButton";
 
 const Hero = React.memo(function Hero() {
 
@@ -80,23 +81,7 @@ const Hero = React.memo(function Hero() {
           transition={{ duration: 0.8, ease: "easeOut", delay: 1.2 }}
           className="flex items-end pointer-events-auto mr-4 lg:mr-[8vw]"
         >
-          <a
-            href="#contact"
-            style={{ fontFamily: "inherit" }}
-            className="group relative flex h-12 items-center justify-center rounded-full border border-[#2a2a2a] bg-[#111111] px-8 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),_0_8px_16px_rgba(0,0,0,0.6)] transition-all duration-300 ease-out hover:border-[#444444] hover:bg-[#161616] hover:shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),_0_0_20px_rgba(255,255,255,0.1)] active:scale-95 active:shadow-[inset_0_4px_8px_rgba(0,0,0,0.8)]"
-          >
-            <div className="flex text-xs font-semibold uppercase tracking-widest text-[#E5E5E5]">
-              {"CONTACT".split("").map((char, index) => (
-                <span
-                  key={index}
-                  className="inline-block transition-transform duration-300 ease-out group-hover:-translate-y-1"
-                  style={{ transitionDelay: `${index * 30}ms` }}
-                >
-                  {char === " " ? "\u00A0" : char}
-                </span>
-              ))}
-            </div>
-          </a>
+          <StarfieldButton link="#contact" label="CONTACT" />
         </motion.div>
       </div>
 
