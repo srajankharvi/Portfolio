@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import StarfieldButton from "./StarfieldButton";
+import ParticleText from "./originkit/ui/pixeldrift";
 
 const Hero = React.memo(function Hero() {
 
@@ -13,21 +14,29 @@ const Hero = React.memo(function Hero() {
 
       {/* Layer 1: Giant Typography */}
       <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-        <motion.h1
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-          style={{
-            WebkitTextFillColor: "transparent",
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            backgroundImage: "linear-gradient(180deg, #FFFFFF 0%, #D1D1D1 45%, #4A4A4A 100%)",
-            filter: "drop-shadow(0px 8px 16px rgba(0,0,0,0.8))"
-          }}
-          className="font-heading text-[13vw] sm:text-[15vw] lg:text-[16.5vw] xl:text-[17.5vw] font-black leading-none tracking-tighter uppercase whitespace-nowrap text-center select-none"
+          className="w-full h-[30vw] max-h-[400px] min-h-[150px] pointer-events-auto"
         >
-          PORTFOLIO
-        </motion.h1>
+          <ParticleText
+            text="PORTFOLIO"
+            colors={["#FFFFFF", "#D1D1D1", "#9A9A9A", "#4A4A4A"]}
+            mode="onEnter"
+            replay={false}
+            position="middle"
+            particleSize={10}
+            particleCount={40}
+            mouseEnabled={true}
+            mouseRadius={80}
+            mouseForce={20}
+            fontSize={300}
+            autoFit={true}
+            transition={{ type: "tween", duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+            style={{ minWidth: "100%", minHeight: "100%", width: "100%", height: "100%" }}
+          />
+        </motion.div>
       </div>
 
       {/* Layer 2: Portrait Overlay */}
