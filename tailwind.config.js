@@ -36,6 +36,9 @@ export default {
         "2xl": "1rem",
         "3xl": "1.5rem",
       },
+      transitionTimingFunction: {
+        expo: "cubic-bezier(0.19, 1, 0.22, 1)",
+      },
     },
   },
   plugins: [],

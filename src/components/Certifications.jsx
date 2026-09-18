@@ -10,23 +10,20 @@ import {
   ComputerIcon,
   AcademicCapIcon,
 } from "./Icons";
+import SmoothScrollSlider from "./originkit/ui/smooth-scroll-slider";
 
 const cardVariants = {
   hidden: {
     opacity: 0,
-    filter: "blur(8px)",
-    y: 40,
-    scale: 0.98,
+    y: 30,
   },
   visible: (i) => ({
     opacity: 1,
-    filter: "blur(0px)",
     y: 0,
-    scale: 1,
     transition: {
-      duration: 0.6,
-      ease: "easeOut",
-      delay: i * 0.12,
+      duration: 0.5,
+      ease: [0.19, 1, 0.22, 1],
+      delay: i * 0.08,
     },
   }),
 };
@@ -74,9 +71,7 @@ function CertificationCard({ cert, index }) {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.15 }}
-      whileHover={{ y: -4 }}
-      transition={{ type: "spring", stiffness: 500, damping: 25 }}
-      className="group relative flex h-full flex-col justify-between overflow-hidden rounded-[28px] transition-all duration-200 hover:shadow-[0_24px_60px_-15px_rgba(59,130,246,0.1)]"
+      className="group relative flex h-full flex-col justify-between overflow-hidden rounded-[28px] transition-all duration-300 ease-expo hover:-translate-y-2 hover:scale-[1.03] hover:shadow-[0_24px_60px_-15px_rgba(59,130,246,0.25)]"
       style={{
         background: `
           linear-gradient(180deg, #1c1d24 0%, #111216 100%) padding-box,
@@ -89,7 +84,7 @@ function CertificationCard({ cert, index }) {
       <div
         ref={cardRef}
         onMouseMove={handleMouseMove}
-        className="relative flex h-full flex-col justify-between overflow-hidden rounded-[26px] p-6 z-10"
+        className="relative flex h-full flex-col justify-between overflow-hidden rounded-[26px] p-5 z-10"
       >
         {/* Soft matte sheen highlight */}
         <div
@@ -112,17 +107,17 @@ function CertificationCard({ cert, index }) {
         
         <div className="relative z-10 flex-1 flex flex-col">
           {/* Header */}
-          <div className="mb-6 flex items-start justify-between gap-3">
+          <div className="mb-4 flex items-start justify-between gap-2">
             <div className="flex items-center gap-3">
               {/* Logo Badge */}
-              <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border bg-gradient-to-br shadow-inner ${colorClass}`}>
-                <OrgIcon className="h-5 w-5" />
+              <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border bg-gradient-to-br shadow-inner ${colorClass}`}>
+                <OrgIcon className="h-4 w-4" />
               </div>
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-[#7A7A7A] transition-colors duration-200 group-hover:text-white/70">
+                <p className="text-[9px] font-bold uppercase tracking-widest text-[#7A7A7A] transition-colors duration-200 group-hover:text-white/70">
                   {cert.organization}
                 </p>
-                <h3 className="mt-1 font-heading text-[16px] font-bold leading-tight text-white/90 transition-colors duration-200 group-hover:text-white">
+                <h3 className="mt-1 font-heading text-[14px] font-bold leading-tight text-white/90 transition-colors duration-200 group-hover:text-white line-clamp-2">
                   {cert.course}
                 </h3>
               </div>
@@ -136,11 +131,11 @@ function CertificationCard({ cert, index }) {
           </div>
 
           {/* Description */}
-          <p className="text-[13px] leading-relaxed text-[#A1A1AA] line-clamp-3">
+          <p className="text-[12px] leading-relaxed text-[#A1A1AA] line-clamp-3">
             {cert.description}
           </p>
 
-          <div className="mt-5 flex flex-col gap-4 flex-1 justify-end">
+          <div className="mt-4 flex flex-col gap-3 flex-1 justify-end">
             {/* Date */}
             <div className="flex w-fit items-center gap-2 rounded-lg border border-white/[0.04] bg-white/[0.02] px-2.5 py-1 text-xs font-mono text-[#7A7A7A]">
               <CalendarIcon className="h-3.5 w-3.5" />
@@ -162,12 +157,12 @@ function CertificationCard({ cert, index }) {
         </div>
 
         {/* Action Button */}
-        <div className="relative z-10 mt-6 pt-5 border-t border-white/[0.05]">
+        <div className="relative z-10 mt-4 pt-4 border-t border-white/[0.05]">
           <a
             href={cert.certificateUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="group/btn flex w-full items-center justify-between rounded-xl border border-white/[0.08] bg-white/[0.02] px-4 py-2.5 text-xs font-semibold text-white/80 transition-all duration-200 hover:border-white/[0.15] hover:bg-white/[0.06] hover:text-white"
+            className="group/btn flex w-full items-center justify-between rounded-xl border border-white/[0.08] bg-white/[0.02] px-4 py-2 text-[11px] font-semibold text-white/80 transition-all duration-200 hover:border-white/[0.15] hover:bg-white/[0.06] hover:text-white"
           >
             <span className="flex items-center gap-2">
               <span>View Certificate</span>
@@ -188,11 +183,18 @@ export default function Certifications() {
       title={certificationsContent.heading}
       subtitle={certificationsContent.description}
     >
-      {/* Horizontal 3-Card Grid Layout */}
-      <div className="grid gap-5 lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
-        {certificationsContent.list.map((cert, i) => (
-          <CertificationCard key={cert.course} cert={cert} index={i} />
-        ))}
+      <div className="relative mx-auto w-full h-[550px]">
+        <SmoothScrollSlider
+          items={certificationsContent.list.map((cert, i) => (
+            <CertificationCard key={cert.course} cert={cert} index={i} />
+          ))}
+          slideWidth={340}
+          slideHeight={440}
+          spacing={3}
+          dim={4}
+          sensitivity={3}
+          background="transparent"
+        />
       </div>
     </Section>
   );

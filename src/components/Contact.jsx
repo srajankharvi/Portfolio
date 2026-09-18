@@ -38,7 +38,7 @@ export default function Contact() {
           {/* Email Card */}
           <a
             href={`mailto:${contactContent.email}`}
-            className="group glass-card flex items-center justify-between rounded-2xl p-6 border border-white/[0.06] bg-[#0A0A0E] transition-all duration-300 hover:-translate-y-1 hover:border-[#3B82F6]/40 hover:shadow-[0_10px_30px_rgba(59,130,246,0.10)]"
+            className="group glass-card flex items-center justify-between rounded-2xl p-6 border border-white/[0.06] bg-[#0A0A0E] transition-all duration-300 ease-expo hover:-translate-y-2 hover:scale-[1.03] hover:border-[#3B82F6]/40 hover:shadow-[0_10px_30px_rgba(59,130,246,0.20)]"
           >
             <div className="flex items-center gap-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#3B82F6]/10 text-[#3B82F6] transition-transform duration-300 group-hover:scale-110">
@@ -78,9 +78,8 @@ export default function Contact() {
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ y: -4, scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2.5 rounded-xl border border-white/[0.06] bg-[#0A0A0E] px-5 py-3 text-sm font-semibold text-[#B3B3B3] transition-all duration-300 hover:border-[#3B82F6]/40 hover:text-white hover:shadow-[0_8px_20px_rgba(59,130,246,0.10)]"
+                className="flex items-center gap-2.5 rounded-xl border border-white/[0.06] bg-[#0A0A0E] px-5 py-3 text-sm font-semibold text-[#B3B3B3] transition-all duration-300 ease-expo hover:-translate-y-1 hover:scale-[1.03] hover:border-[#3B82F6]/40 hover:text-white hover:shadow-[0_8px_20px_rgba(59,130,246,0.20)]"
                 aria-label={social.label}
               >
                 <SocialIcon type={social.icon} className="h-5 w-5 text-[#3B82F6]" />

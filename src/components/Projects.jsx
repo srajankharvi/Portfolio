@@ -38,15 +38,15 @@ function ProjectCard({ project, index }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50, filter: "blur(8px)", scale: 0.96 }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.5, ease: [0.22, 0.61, 0.36, 1], delay: index * 0.1 }}
+      transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1], delay: index * 0.08 }}
     >
       <div
         ref={cardRef}
         onMouseMove={handleMouseMove}
-        className="group relative overflow-hidden rounded-[28px] transition-all duration-500 ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:-translate-y-2 hover:shadow-[0_24px_60px_-15px_rgba(59,130,246,0.15)]"
+        className="group relative overflow-hidden rounded-[28px] transition-all duration-300 ease-expo hover:-translate-y-2 hover:scale-[1.03] hover:shadow-[0_24px_60px_-15px_rgba(59,130,246,0.25)]"
         style={{
           background: `
             linear-gradient(180deg, #1c1d24 0%, #111216 100%) padding-box,

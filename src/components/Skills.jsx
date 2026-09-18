@@ -90,7 +90,7 @@ function SkillCard({ skill, isFocusable = true }) {
 
   return (
     <div
-      className="relative flex flex-col justify-between overflow-hidden p-5"
+      className="relative flex flex-col justify-between overflow-hidden p-5 transition-transform duration-300 ease-expo hover:-translate-y-2 hover:scale-[1.03]"
       data-glow={levelConfig.glowRgb}
       style={{
         width: CARD_WIDTH,
