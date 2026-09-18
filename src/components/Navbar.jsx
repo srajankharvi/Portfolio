@@ -18,10 +18,6 @@ export default function Navbar() {
 
   // Intersection observer for active section
   useEffect(() => {
-    const sections = navItems.map((item) =>
-      document.getElementById(item.toLowerCase())
-    );
-
     const observer = new IntersectionObserver(
       (entries) => {
         if (isScrollingRef.current) return;
@@ -35,8 +31,25 @@ export default function Navbar() {
       { root: null, rootMargin: "-40% 0px -50% 0px", threshold: 0 }
     );
 
-    sections.forEach((s) => s && observer.observe(s));
-    return () => sections.forEach((s) => s && observer.unobserve(s));
+    const observeSections = () => {
+      navItems.forEach((item) => {
+        const el = document.getElementById(item.toLowerCase());
+        if (el) observer.observe(el);
+      });
+    };
+
+    observeSections();
+
+    // Use MutationObserver to catch lazily loaded sections
+    const mutationObserver = new MutationObserver(() => {
+      observeSections();
+    });
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+      mutationObserver.disconnect();
+    };
   }, []);
 
   const scrollToSection = (e, sectionId) => {

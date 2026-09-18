@@ -10,7 +10,6 @@ import {
   ComputerIcon,
   AcademicCapIcon,
 } from "./Icons";
-import SmoothScrollSlider from "./originkit/ui/smooth-scroll-slider";
 
 const cardVariants = {
   hidden: {
@@ -183,18 +182,12 @@ export default function Certifications() {
       title={certificationsContent.heading}
       subtitle={certificationsContent.description}
     >
-      <div className="relative mx-auto w-full h-[550px]">
-        <SmoothScrollSlider
-          items={certificationsContent.list.map((cert, i) => (
-            <CertificationCard key={cert.course} cert={cert} index={i} />
-          ))}
-          slideWidth={340}
-          slideHeight={440}
-          spacing={3}
-          dim={4}
-          sensitivity={3}
-          background="transparent"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {certificationsContent.list.map((cert, i) => (
+          <div key={cert.course} className="h-[440px]">
+            <CertificationCard cert={cert} index={i} />
+          </div>
+        ))}
       </div>
     </Section>
   );
