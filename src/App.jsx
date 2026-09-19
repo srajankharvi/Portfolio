@@ -43,7 +43,7 @@ export default function App() {
               className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black"
             >
               <div className="w-64 h-64 sm:w-[400px] sm:h-[400px]">
-                <ParticleTether dotColor="#3B82F6" />
+                <ParticleTether dotColor="#E5E7EB" />
               </div>
               <motion.div
                 initial={{ opacity: 0, filter: "blur(10px)", y: 15 }}
@@ -51,14 +51,14 @@ export default function App() {
                 transition={{ delay: 0.6, duration: 1.2, ease: "easeOut" }}
                 className="mt-6 flex flex-col items-center gap-3 relative z-10"
               >
-                <h1 className="font-heading text-2xl font-bold tracking-[0.25em] uppercase sm:text-3xl text-transparent bg-clip-text bg-gradient-to-r from-white via-accent-bright to-accent text-center px-4">
+                <h1 className="font-heading text-2xl font-bold tracking-[0.25em] uppercase sm:text-3xl text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-300 to-gray-500 text-center px-4">
                   Welcome To Portfolio
                 </h1>
                 <motion.div
                   initial={{ scaleX: 0, opacity: 0 }}
                   animate={{ scaleX: 1, opacity: 0.5 }}
                   transition={{ delay: 1, duration: 1, ease: "easeInOut" }}
-                  className="h-[1px] w-32 sm:w-48 bg-gradient-to-r from-transparent via-accent to-transparent"
+                  className="h-[1px] w-32 sm:w-48 bg-gradient-to-r from-transparent via-gray-400 to-transparent"
                 />
               </motion.div>
             </motion.div>
