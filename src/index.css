@@ -111,6 +111,8 @@ textarea {
   background-repeat: repeat;
   background-size: 256px 256px;
   transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 /* ═══════════════════════════════════════════
@@ -129,6 +131,7 @@ textarea {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform, box-shadow, border-color, background-color;
 }
 
 .glass-card:hover {

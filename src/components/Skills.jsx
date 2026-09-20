@@ -56,7 +56,7 @@ const CARD_WIDTH = 280;
 const CARD_HEIGHT = 200;
 const CARD_GAP = 4;
 const TOTAL = allSkills.length;
-const CLONE_COUNT = 6; // cards cloned on each side for seamless loop
+const CLONE_COUNT = 2; // reduced for performance
 const STRIP_ITEM_WIDTH = CARD_WIDTH + CARD_GAP;
 const AUTO_SPEED = 0.80; // px per frame (~48px/sec at 60fps)
 const SNAP_EASE = (t) => 1 - Math.pow(1 - t, 4); // smooth ease-out quartic
@@ -653,32 +653,6 @@ export default function Skills() {
 
                 {/* The card */}
                 <SkillCard skill={skill} isFocusable={!isClone} />
-
-                {/* Mirror reflection */}
-                <div
-                  className="pointer-events-none overflow-hidden"
-                  aria-hidden="true"
-                  style={{
-                    width: CARD_WIDTH,
-                    height: CARD_HEIGHT * 0.6,
-                    marginTop: 2,
-                    WebkitMaskImage:
-                      "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 50%)",
-                    maskImage:
-                      "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 50%)",
-                  }}
-                >
-                  <div
-                    style={{
-                      transform: "scaleY(-1)",
-                      transformOrigin: "bottom center",
-                      opacity: 0.45,
-                      marginTop: -CARD_HEIGHT,
-                    }}
-                  >
-                    <SkillCard skill={skill} isFocusable={false} />
-                  </div>
-                </div>
               </div>
             );
           })}
