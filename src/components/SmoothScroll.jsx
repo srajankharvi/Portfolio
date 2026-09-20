@@ -16,7 +16,6 @@ export default function SmoothScroll({ children }) {
       gestureOrientation: "vertical",
       smoothWheel: true,
       syncTouch: true,
-      touchMultiplier: 2,
     });
 
     lenisRef.current = lenis;

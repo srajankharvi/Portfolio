@@ -1,28 +1,35 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import Section from "./Section";
 import { contactContent, socials } from "../data/content";
 import { EnvelopeIcon, MapPinIcon, SocialIcon, ArrowUpRightIcon } from "./Icons";
 import LiquidGlassCluster from "./originkit/ui/glass-icon";
 
 export default function Contact() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false, amount: 0 });
+
   return (
-    <Section
+    <div ref={ref}>
+      <Section
       id="contact"
       eyebrow="Contact"
       title={contactContent.heading}
       subtitle={contactContent.description}
       className="overflow-hidden"
-    >
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <LiquidGlassCluster 
-          size={65} 
-          background="transparent"
-          speed={30}
-          glass={{ chromatic: 150, frost: 0 }}
-          backdrop={{ type: "None" }}
-        />
-      </div>
-      <div className="mx-auto max-w-4xl space-y-10 text-center relative z-10">
+      >
+        {isInView && (
+          <div className="absolute inset-0 z-0 pointer-events-none">
+            <LiquidGlassCluster 
+              size={65} 
+              background="transparent"
+              speed={30}
+              glass={{ tint: "#3B82F6", chromatic: 150, frost: 0 }}
+              backdrop={{ type: "None" }}
+            />
+          </div>
+        )}
+        <div className="mx-auto max-w-4xl space-y-10 text-center relative z-10">
         {/* Big Heading Prompt */}
         <div className="space-y-4">
           <h3 className="font-heading text-3xl font-bold tracking-tight text-white sm:text-4xl">
@@ -88,7 +95,8 @@ export default function Contact() {
             ))}
           </div>
         </div>
-      </div>
-    </Section>
+        </div>
+      </Section>
+    </div>
   );
 }

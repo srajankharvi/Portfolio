@@ -90,7 +90,7 @@ function SkillCard({ skill, isFocusable = true }) {
 
   return (
     <div
-      className="relative flex flex-col justify-between overflow-hidden p-5 transition-transform duration-300 ease-expo hover:-translate-y-2 hover:scale-[1.03]"
+      className="relative flex flex-col justify-between overflow-hidden p-5 transition-transform duration-300 ease-expo"
       data-glow={levelConfig.glowRgb}
       style={{
         width: CARD_WIDTH,
@@ -316,7 +316,7 @@ export default function Skills() {
         // ── Apply all transforms as one composite ──
         cardContainer.style.opacity = opacity;
         cardContainer.style.transform = `scale(${scale}) translateY(${translateY}px) translateZ(${translateZ}px) rotateY(${rotateY}deg)`;
-        cardContainer.style.filter = `brightness(${brightness}) drop-shadow(0px ${glowY.toFixed(0)}px ${glowBlur.toFixed(0)}px rgba(${glowRgb}, ${glowAlpha.toFixed(2)}))`;
+        cardContainer.style.filter = `brightness(${brightness})`;
       });
     },
     [getViewportCenter]

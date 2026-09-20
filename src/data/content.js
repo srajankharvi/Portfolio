@@ -124,7 +124,7 @@ export const certificationsContent = {
       certificateUrl: "/NPTL_CERTIFICATE.pdf",
     },
     {
-      organization: "GITHUB",
+      organization: "Infosys Springboard",
       course: "Git & GitHub - Introduction",
       issued: "Feb 2026",
       issuedDateTime: "2026-02",

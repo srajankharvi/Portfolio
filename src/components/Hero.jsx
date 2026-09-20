@@ -1,13 +1,16 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import StarfieldButton from "./StarfieldButton";
 import ParticleText from "./originkit/ui/pixeldrift";
 
 const Hero = React.memo(function Hero() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false, amount: 0 });
 
   return (
     <section
       id="home"
+      ref={ref}
       className="relative flex h-[100dvh] min-h-[700px] w-full items-center justify-center overflow-hidden bg-black"
     >
       {/* Pure black background is set on the section via bg-black */}
@@ -20,22 +23,24 @@ const Hero = React.memo(function Hero() {
           transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           className="w-full h-[30vw] max-h-[400px] min-h-[150px] pointer-events-auto"
         >
-          <ParticleText
-            text="PORTFOLIO"
-            colors={["#FFFFFF", "#D1D1D1", "#9A9A9A", "#4A4A4A"]}
-            mode="onEnter"
-            replay={false}
-            position="middle"
-            particleSize={10}
-            particleCount={40}
-            mouseEnabled={true}
-            mouseRadius={80}
-            mouseForce={20}
-            fontSize={300}
-            autoFit={true}
-            transition={{ type: "tween", duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
-            style={{ minWidth: "100%", minHeight: "100%", width: "100%", height: "100%" }}
-          />
+          {isInView && (
+            <ParticleText
+              text="PORTFOLIO"
+              colors={["#FFFFFF", "#D1D1D1", "#9A9A9A", "#4A4A4A"]}
+              mode="onEnter"
+              replay={false}
+              position="middle"
+              particleSize={10}
+              particleCount={40}
+              mouseEnabled={true}
+              mouseRadius={80}
+              mouseForce={20}
+              fontSize={300}
+              autoFit={true}
+              transition={{ type: "tween", duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+              style={{ minWidth: "100%", minHeight: "100%", width: "100%", height: "100%" }}
+            />
+          )}
         </motion.div>
       </div>
 
@@ -57,7 +62,7 @@ const Hero = React.memo(function Hero() {
             height="1448"
             loading="eager"
             fetchpriority="high"
-            className="w-full h-auto object-cover object-top mask-portrait drop-shadow-[0_0_20px_rgba(0,0,0,0.8)]"
+            className="w-full h-auto object-cover object-top mask-portrait"
             style={{ 
               maskImage: 'linear-gradient(to top, transparent 0%, black 15%)',
               WebkitMaskImage: 'linear-gradient(to top, transparent 0%, black 15%)' 

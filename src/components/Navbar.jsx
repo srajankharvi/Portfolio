@@ -13,7 +13,10 @@ export default function Navbar() {
 
   // Add a subtle border when scrolled
   useMotionValueEvent(scrollY, "change", (latest) => {
-    setIsScrolled(latest > 50);
+    const shouldBeScrolled = latest > 50;
+    if (isScrolled !== shouldBeScrolled) {
+      setIsScrolled(shouldBeScrolled);
+    }
   });
 
   // Intersection observer for active section
@@ -40,15 +43,16 @@ export default function Navbar() {
 
     observeSections();
 
-    // Use MutationObserver to catch lazily loaded sections
-    const mutationObserver = new MutationObserver(() => {
+    observeSections();
+
+    // Re-observe after a delay to account for lazy-loaded components
+    const timer = setTimeout(() => {
       observeSections();
-    });
-    mutationObserver.observe(document.body, { childList: true, subtree: true });
+    }, 2000);
 
     return () => {
       observer.disconnect();
-      mutationObserver.disconnect();
+      clearTimeout(timer);
     };
   }, []);
 
