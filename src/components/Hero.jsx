@@ -11,12 +11,12 @@ const Hero = React.memo(function Hero() {
     <section
       id="home"
       ref={ref}
-      className="relative flex h-[100dvh] min-h-[700px] w-full items-center justify-center overflow-hidden bg-black"
+      className="relative flex h-[100dvh] min-h-[600px] md:min-h-[700px] w-full items-center justify-center overflow-hidden bg-black"
     >
       {/* Pure black background is set on the section via bg-black */}
 
       {/* Layer 1: Giant Typography */}
-      <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
+      <div className="absolute inset-0 z-10 flex items-center justify-center pb-[20vh] md:pb-0 pointer-events-none">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -51,7 +51,7 @@ const Hero = React.memo(function Hero() {
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
         className="absolute bottom-0 z-20 flex w-full justify-center pointer-events-none"
       >
-        <div className="relative w-[80vw] max-w-[650px]">
+        <div className="relative w-[95vw] md:w-[80vw] max-w-[650px]">
           {/* Subtle cinematic lighting behind the subject */}
           <div className="absolute left-1/2 top-1/2 -z-10 h-full w-full -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.08)_0%,transparent_70%)] blur-[50px]"></div>
           
