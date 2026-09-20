@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState, useMemo, useCallback } from "react";
 import Section from "./Section";
-import SkillMarquee from "./SkillMarquee";
 import { categorizedSkills } from "../data/content";
 import { techIconMap, CodeBracketIcon } from "./Icons";
 
@@ -722,10 +721,6 @@ export default function Skills() {
         </div>
       </div>
 
-      {/* ─── Skill Marquee ─── */}
-      <div className="relative z-10 mx-auto mt-16 w-[min(100%-2rem,1200px)]">
-        <SkillMarquee />
-      </div>
     </section>
   );
 }

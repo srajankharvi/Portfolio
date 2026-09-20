@@ -165,6 +165,18 @@ export const projectsContent = {
       live: "https://future-map-xi.vercel.app",
       featured: true,
     },
+    {
+      title: "Gas Booking System",
+      description:
+        "An IoT-based smart gas tracking system that monitors cylinder weight and sends real-time gas percentage data directly to a web dashboard to predict and manage refills.",
+      tags: ["IoT", "Hardware Integration", "Dashboard", "Real-time Telemetry"],
+      features: ["Live Monitoring", "Smart Refill", "Hardware Model", "Data Analytics"],
+      image: "/gas-booking-preview.png",
+      imageFallback: "/gas-booking-preview.png",
+      github: "https://github.com/srajankharvi/Gas-Booking-System",
+      live: "https://autogasbooking.vercel.app/",
+      featured: true,
+    },
   ],
 };
 
