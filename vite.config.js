@@ -13,9 +13,9 @@ export default defineConfig({
         navigateFallbackDenylist: [/^\/sitemap\.xml$/, /^\/robots\.txt$/]
       },
       manifest: {
-        name: "Srajan Kharvi | Software Developer Portfolio",
+        name: "Srajan Kharvi | Developer Portfolio",
         short_name: "Srajan Kharvi",
-        description: "Srajan Kharvi is a passionate software developer building scalable web applications. Explore projects, skills, and get in touch.",
+        description: "Srajan Kharvi is a passionate developer building scalable web applications. Explore projects, skills, and get in touch.",
         theme_color: "#050505",
         background_color: "#050505",
         display: "standalone",
