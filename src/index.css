@@ -469,3 +469,36 @@ textarea:focus-visible {
   width: 1px;
   height: 100%;
 }
+
+/* ═══════════════════════════════════════════
+   SILENT PRIVACY & SCREENSHOT PROTECTION
+   ═══════════════════════════════════════════ */
+@media print {
+  body {
+    display: none !important;
+  }
+}
+
+body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+input, textarea, [contenteditable="true"] {
+  -webkit-user-select: auto;
+  -khtml-user-select: auto;
+  -moz-user-select: auto;
+  -ms-user-select: auto;
+  user-select: auto;
+}
+
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+}

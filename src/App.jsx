@@ -16,6 +16,62 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Silent Privacy & Screenshot Protection
+    const handleKey = (e) => {
+      if (e.key === 'PrintScreen' || e.code === 'PrintScreen') {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      }
+      if (e.type === 'keydown') {
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key?.toLowerCase() === 's')) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+        }
+        if (e.metaKey && e.shiftKey && (e.key === '4' || e.key === '5')) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key?.toLowerCase() === 'p') {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+        }
+      }
+    };
+
+    const handleContextMenu = (e) => {
+      const target = e.target;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) return;
+      e.preventDefault();
+    };
+
+    const handleCopy = (e) => {
+      const target = e.target;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) return;
+      e.preventDefault();
+    };
+    
+    const handleDragStart = (e) => {
+      if (e.target.tagName === 'IMG' || e.target.tagName === 'A') {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener('keydown', handleKey, { capture: true });
+    window.addEventListener('keyup', handleKey, { capture: true });
+    window.addEventListener('contextmenu', handleContextMenu, { capture: true });
+    window.addEventListener('copy', handleCopy, { capture: true });
+    window.addEventListener('dragstart', handleDragStart, { capture: true });
+
+    return () => {
+      window.removeEventListener('keydown', handleKey, { capture: true });
+      window.removeEventListener('keyup', handleKey, { capture: true });
+      window.removeEventListener('contextmenu', handleContextMenu, { capture: true });
+      window.removeEventListener('copy', handleCopy, { capture: true });
+      window.removeEventListener('dragstart', handleDragStart, { capture: true });
+    };
+  }, []);
+
+  useEffect(() => {
     // Force scroll to top on reload
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
