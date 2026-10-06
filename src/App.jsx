@@ -28,6 +28,7 @@ export default function App() {
       window.history.replaceState(null, "", window.location.pathname);
     }
 
+    // Restored the 2.5s loading timeout
     const timer = setTimeout(() => {
       setLoading(false);
     }, 2500);
@@ -46,8 +47,8 @@ export default function App() {
                 transition={{ duration: 0.8, ease: "easeInOut" }}
                 className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black"
               >
-                <div className="w-64 h-64 sm:w-[400px] sm:h-[400px]">
-                  <ParticleTether dotColor="#E5E7EB" />
+                <div className="w-64 h-64 sm:w-[400px] sm:h-[400px] shrink-0">
+                  <ParticleTether dotColor="#FFFFFF" />
                 </div>
                 <motion.div
                   initial={{ opacity: 0, filter: "blur(10px)", y: 15 }}

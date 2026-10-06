@@ -111,6 +111,7 @@ export const certificationsContent = {
         "Successfully completed an industry-focused certification covering DevOps concepts, tools, and software development workflows.",
       skills: ["DevOps", "Docker", "Git", "Linux", "Jenkins", "CI/CD"],
       certificateUrl: "/Beginner_Devops_Course.pdf",
+      figure: "slow",
     },
     {
       organization: "NPTEL",
@@ -122,6 +123,7 @@ export const certificationsContent = {
         "Completed an NPTEL certification focused on Python programming, data analysis fundamentals, and practical problem-solving.",
       skills: ["Python", "Data Science", "Analytics", "NumPy", "Pandas", "Visualization"],
       certificateUrl: "/NPTL_CERTIFICATE.pdf",
+      figure: "terminal",
     },
     {
       organization: "Infosys Springboard",
@@ -133,6 +135,7 @@ export const certificationsContent = {
         "A foundational certification covering version control concepts with Git and collaborative workflows using GitHub.",
       skills: ["Version Control", "Git", "GitHub", "Collaboration", "Repositories", "Pull Requests"],
       certificateUrl: "/Git_&_Github-Introduction.pdf",
+      figure: "laptop",
     },
     {
       organization: "Infosys Springboard",
@@ -144,6 +147,7 @@ export const certificationsContent = {
         "Completed an introductory certification covering core cloud computing concepts, deployment models, and foundational cloud services.",
       skills: ["Cloud Computing", "Virtualization", "Cloud Services", "Infrastructure"],
       certificateUrl: "/Inroduction_to_Cloud_Computing.pdf",
+      figure: "turntable",
     },
   ],
 };

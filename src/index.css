@@ -424,8 +424,48 @@ textarea:focus-visible {
   padding: 1.5rem;
 }
 
+/* Two-column layout wrappers */
+.cert-layout-wrapper {
+  position: relative;
+  width: 100%;
+  display: block;
+}
+
+.cert-left-col {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Resting: centered */
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.cert-right-col {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 42%;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(calc(-50% + 15px));
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.cert-ui-card:hover .cert-left-col, .cert-ui-card.expanded .cert-left-col {
+  width: 58%;
+  align-items: flex-start; /* Hover: left-aligned */
+}
+
+.cert-ui-card:hover .cert-right-col, .cert-ui-card.expanded .cert-right-col {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%);
+}
+
 .cert-ui-logo {
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .cert-ui-logo-text {
@@ -441,6 +481,12 @@ textarea:focus-visible {
   background-clip: text;
   animation: cert-shine 3s linear infinite;
   transition: all 0.4s;
+  /* Ensure centering logic works when in column */
+  margin: 0 auto; 
+}
+
+.cert-ui-card:hover .cert-ui-logo-text, .cert-ui-card.expanded .cert-ui-logo-text {
+  margin: 0; /* Align left on hover */
 }
 
 @keyframes cert-shine {
@@ -450,7 +496,7 @@ textarea:focus-visible {
 .cert-ui-info {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; /* Resting: center */
   text-align: center;
   max-height: 0;
   opacity: 0;
@@ -458,6 +504,11 @@ textarea:focus-visible {
   transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
   overflow: hidden;
   width: 100%;
+}
+
+.cert-ui-card:hover .cert-ui-info, .cert-ui-card.expanded .cert-ui-info {
+  align-items: flex-start; /* Hover: left */
+  text-align: left;
 }
 
 .cert-ui-title {
