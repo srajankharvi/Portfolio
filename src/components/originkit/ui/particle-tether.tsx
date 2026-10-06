@@ -316,7 +316,7 @@ function __OriginkitBase_OrbConverge(props: Props) {
         const cy = by + half + (y - half) * fit
 
         let dr = rr
-        let da = Math.min(1, a * 1.5 + 0.2) // Increased brightness to guarantee visibility
+        let da = Math.min(1, a * 1.5 + 0.2) // Increased brightness
         if (dr < MIN_RADIUS) {
           da *= (dr / MIN_RADIUS) * (dr / MIN_RADIUS)
           dr = MIN_RADIUS
@@ -333,8 +333,7 @@ function __OriginkitBase_OrbConverge(props: Props) {
       raf = requestAnimationFrame(render)
     }
 
-    // Force an immediate synchronous render to prevent the initial black screen flash
-    render(performance.now())
+    render(performance.now()) // Force an immediate synchronous render
 
     const onDown = (e: PointerEvent) => {
       if ((vRef.current.drag as number) <= 0) return
@@ -391,10 +390,10 @@ function __OriginkitBase_OrbConverge(props: Props) {
         position: "relative",
         overflow: "hidden",
 
-        minWidth: 24,
-        minHeight: 24,
-        width: typeof width === "number" && width > 0 ? width : "100%",
-        height: typeof height === "number" && height > 0 ? height : "100%",
+        minWidth: 256,
+        minHeight: 256,
+        width: "100%",
+        height: "100%",
         ...style,
       }}
     >
@@ -406,6 +405,7 @@ function __OriginkitBase_OrbConverge(props: Props) {
           width: "100%",
           height: "100%",
           display: "block",
+
           touchAction: "none",
         }}
       />
@@ -413,35 +413,19 @@ function __OriginkitBase_OrbConverge(props: Props) {
   )
 }
 
-class ErrorBoundary extends React.Component<{children: React.ReactNode}, {hasError: boolean, error: Error | null}> {
-  constructor(props: {children: React.ReactNode}) {
-    super(props);
-    this.state = { hasError: false, error: null };
+const __originkitPresetProps = {
+  "dotSize": 150,
+  "ball": {
+    "tilt": 0,
+    "turn": 0,
+    "spread": 100
+  },
+  "pointer": {
+    "drag": 100,
+    "damping": 20
   }
-  static getDerivedStateFromError(error: Error) {
-    return { hasError: true, error };
-  }
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div style={{ color: 'red', padding: '20px', background: 'black', border: '2px solid red' }}>
-          <h2>ParticleTether Crashed!</h2>
-          <pre style={{ fontSize: '12px', whiteSpace: 'pre-wrap' }}>{this.state.error?.toString()}</pre>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
+};
 
-function OrbConverge(props: Record<string, unknown>) {
+export default function OrbConverge(props: Record<string, unknown>) {
   return <__OriginkitBase_OrbConverge {...(__originkitPresetProps as Record<string, unknown>)} {...props} />;
-}
-
-export default function SafeOrbConverge(props: Record<string, unknown>) {
-  return (
-    <ErrorBoundary>
-      <OrbConverge {...props} />
-    </ErrorBoundary>
-  );
 }
