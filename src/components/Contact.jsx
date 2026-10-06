@@ -1,16 +1,11 @@
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import Section from "./Section";
 import { contactContent, socials } from "../data/content";
 import { EnvelopeIcon, MapPinIcon, SocialIcon, ArrowUpRightIcon } from "./Icons";
-import LiquidGlassCluster from "./originkit/ui/glass-icon";
 
 export default function Contact() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, amount: 0 });
-
   return (
-    <div ref={ref}>
+    <div>
       <Section
       id="contact"
       eyebrow="Contact"
@@ -18,17 +13,6 @@ export default function Contact() {
       subtitle={contactContent.description}
       className="overflow-hidden"
       >
-        {isInView && (
-          <div className="absolute inset-0 z-0 pointer-events-none">
-            <LiquidGlassCluster 
-              size={65} 
-              background="transparent"
-              speed={30}
-              glass={{ tint: "#3B82F6", chromatic: 150, frost: 0 }}
-              backdrop={{ type: "None" }}
-            />
-          </div>
-        )}
         <div className="mx-auto max-w-4xl space-y-10 text-center relative z-10">
         {/* Big Heading Prompt */}
         <div className="space-y-4">

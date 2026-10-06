@@ -354,120 +354,169 @@ textarea:focus-visible {
 }
 
 /* ═══════════════════════════════════════════
-   CERTIFICATE CARD DESIGN
+   CERTIFICATE CARD DESIGN (Uiverse based)
    ═══════════════════════════════════════════ */
-.cert-outer {
+:root {
+  --space-indigo: #2B2D42;
+  --lavender-gray: #8D99AE;
+  --platinum: #EDF2F4;
+  --lavender-gray-transparent: rgba(141, 153, 174, 0.5);
+}
+
+.cert-ui-card {
   width: 100%;
   height: 100%;
-  border-radius: 10px;
-  padding: 1px;
-  background: radial-gradient(circle 230px at 0% 0%, rgba(59, 130, 246, 0.4), #0c0d0d);
   position: relative;
-}
-
-.cert-dot {
-  width: 5px;
-  aspect-ratio: 1;
-  position: absolute;
-  background-color: #60A5FA;
-  box-shadow: 0 0 12px #60A5FA;
-  border-radius: 100px;
-  z-index: 2;
-  right: 10%;
-  top: 10%;
-  animation: certMoveDot 6s linear infinite;
-}
-
-@keyframes certMoveDot {
-  0%,
-  100% {
-    top: 10%;
-    right: 10%;
-  }
-  25% {
-    top: 10%;
-    right: calc(100% - 35px);
-  }
-  50% {
-    top: calc(100% - 30px);
-    right: calc(100% - 35px);
-  }
-  75% {
-    top: calc(100% - 30px);
-    right: 10%;
-  }
-}
-
-.cert-inner {
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  border-radius: 9px;
-  border: solid 1px rgba(255, 255, 255, 0.06);
-  background-size: 20px 20px;
-  background: radial-gradient(circle 280px at 0% 0%, rgba(59, 130, 246, 0.12), #050505);
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  flex-direction: column;
-  position: relative;
-  color: #fff;
+  border-radius: 18px;
   overflow: hidden;
-  padding: 12%;
-  gap: 0.5rem;
+  cursor: pointer;
+  background: #111216;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
 
-.cert-ray {
-  width: 220px;
-  height: 45px;
-  border-radius: 100px;
+.cert-magic-glow {
   position: absolute;
-  background-color: #60A5FA;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background: conic-gradient(from 0deg, transparent 70%, rgba(141, 153, 174, 0.8) 80%, rgba(237, 242, 244, 0.8) 100%);
+  animation: cert-spin 4s linear infinite;
+  z-index: 0;
   opacity: 0.2;
-  box-shadow: 0 0 40px #3B82F6;
-  filter: blur(15px);
-  transform-origin: 10%;
-  top: 0%;
-  left: 0;
-  transform: rotate(40deg);
-  pointer-events: none;
+  transition: opacity 0.4s;
 }
 
-.cert-title {
-  font-weight: bolder;
-  font-size: 1.15rem;
-  line-height: 1.3;
-  background: linear-gradient(45deg, #ffffff 40%, #bfdbfe, #60A5FA);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  z-index: 10;
+@keyframes cert-spin {
+  100% { transform: rotate(360deg); }
 }
 
-.cert-line {
-  width: 100%;
-  height: 1px;
+.cert-ui-bg {
   position: absolute;
-  background-color: rgba(255, 255, 255, 0.03);
-  pointer-events: none;
+  inset: 1px;
+  border-radius: 17px;
+  background: radial-gradient(120% 100% at 50% 0%, #2B2D42 0%, #111216 70%);
+  z-index: 1;
+  overflow: hidden;
 }
-.cert-topl {
-  top: 10%;
-  background: linear-gradient(90deg, rgba(59, 130, 246, 0.4) 30%, rgba(255, 255, 255, 0.03) 70%);
+
+.cert-ui-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(141, 153, 174, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(141, 153, 174, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(to bottom, white 0%, transparent 80%);
+  -webkit-mask-image: linear-gradient(to bottom, white 0%, transparent 80%);
 }
-.cert-bottoml {
-  bottom: 10%;
-}
-.cert-leftl {
-  left: 10%;
-  width: 1px;
+
+.cert-ui-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, rgba(59, 130, 246, 0.4) 30%, rgba(255, 255, 255, 0.03) 70%);
+  padding: 1.5rem;
 }
-.cert-rightl {
-  right: 10%;
-  width: 1px;
-  height: 100%;
+
+.cert-ui-logo {
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.cert-ui-logo-text {
+  font-family: var(--font-heading, "Space Grotesk", sans-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #8D99AE 0%, #EDF2F4 50%, #8D99AE 100%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: cert-shine 3s linear infinite;
+  transition: all 0.4s;
+}
+
+@keyframes cert-shine {
+  to { background-position: 200% center; }
+}
+
+.cert-ui-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow: hidden;
+  width: 100%;
+}
+
+.cert-ui-title {
+  color: #EDF2F4;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 16px 0 6px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cert-ui-org {
+  color: #8D99AE;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin: 0 0 12px 0;
+}
+
+.cert-ui-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(141, 153, 174, 0.05);
+  border: 1px solid rgba(141, 153, 174, 0.1);
+  border-radius: 100px;
+  color: #8D99AE;
+  font-size: 0.75rem;
+  font-family: monospace;
+  text-decoration: none;
+}
+
+.cert-ui-card:hover, .cert-ui-card.expanded {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+
+.cert-ui-card:hover .cert-magic-glow, .cert-ui-card.expanded .cert-magic-glow {
+  opacity: 1;
+}
+
+.cert-ui-card:hover .cert-ui-logo, .cert-ui-card.expanded .cert-ui-logo {
+  transform: scale(0.9);
+}
+
+.cert-ui-card:hover .cert-ui-logo-text, .cert-ui-card.expanded .cert-ui-logo-text {
+  background: linear-gradient(90deg, #EDF2F4 0%, #8D99AE 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: none;
+}
+
+.cert-ui-card:hover .cert-ui-info, .cert-ui-card.expanded .cert-ui-info {
+  max-height: 150px;
+  opacity: 1;
+  transform: translateY(0);
+  margin-top: 4px;
 }
 
 /* ═══════════════════════════════════════════
@@ -488,7 +537,7 @@ body {
   user-select: none;
 }
 
-input, textarea, [contenteditable="true"] {
+input, textarea, [contenteditable="true"], .allow-select {
   -webkit-user-select: auto;
   -khtml-user-select: auto;
   -moz-user-select: auto;
@@ -496,9 +545,24 @@ input, textarea, [contenteditable="true"] {
   user-select: auto;
 }
 
-img {
+img:not(.allow-drag) {
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
+}
+
+/* Content Protection Styles */
+.protected-content {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Ensure no text selection happens in the wrapper */
+.protected-content-wrapper {
+  will-change: filter, opacity;
 }

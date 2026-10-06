@@ -32,59 +32,74 @@ const orgIconMap = {
   GITHUB: GitHubTechIcon,
 };
 
+const shortNameMap = {
+  "The Language of DevOps: DevOps Tools & Processes": "DevOps",
+  "Python for Data Science": "Python",
+  "Git & GitHub - Introduction": "Git & GitHub",
+  "Introduction to Cloud Computing": "Cloud",
+};
+
 function CertificationCard({ cert, index }) {
-  const OrgIcon = orgIconMap[cert.organization] || ComputerIcon;
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleToggle = (e) => {
+    e.preventDefault();
+    setIsExpanded(!isExpanded);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setIsExpanded(!isExpanded);
+    }
+  };
+
+  const shortName = shortNameMap[cert.course] || cert.course.split(" ")[0];
 
   return (
-    <motion.a
-      href={cert.certificateUrl}
-      target="_blank"
-      rel="noopener noreferrer"
+    <motion.div
       custom={index}
       variants={cardVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.15 }}
-      className="cert-outer block cursor-pointer transition-transform duration-300 hover:scale-[1.03]"
+      className={`cert-ui-card ${isExpanded ? "expanded" : ""}`}
+      onClick={handleToggle}
+      onMouseEnter={() => setIsExpanded(true)}
+      onMouseLeave={() => setIsExpanded(false)}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      aria-expanded={isExpanded}
+      aria-label={`Certificate for ${cert.course} from ${cert.organization}`}
     >
-      <div className="cert-dot" />
-      <div className="cert-inner">
-        <div className="cert-ray" />
-        
-        {/* Content */}
-        <div className="cert-title">{cert.course}</div>
-        
-        <div className="text-[#A1A1AA] text-sm mt-1 mb-2 font-medium flex items-center gap-1.5 z-10">
-          from 
-          <span className="flex items-center gap-1 text-[#D4D4D8] font-semibold bg-white/5 px-2 py-0.5 rounded-md border border-white/10">
-            <OrgIcon className="h-3.5 w-3.5" />
-            {cert.organization}
-          </span>
-        </div>
-        
-        <p className="text-[12px] leading-relaxed text-[#8f8f94] line-clamp-4 mb-4 z-10">
-          {cert.description}
-        </p>
-
-        <div className="mt-auto flex flex-col gap-3 w-full z-10">
-
-          
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 rounded-lg border border-white/[0.04] bg-white/[0.02] px-2.5 py-1 text-xs font-mono text-[#7A7A7A]">
-              <CalendarIcon className="h-3.5 w-3.5" />
-              <time dateTime={cert.issuedDateTime}>{cert.issued}</time>
-            </div>
-            <ExternalLinkIcon className="h-4 w-4 text-white/40" />
-          </div>
-        </div>
-
-        {/* Lines */}
-        <div className="cert-line cert-topl" />
-        <div className="cert-line cert-leftl" />
-        <div className="cert-line cert-bottoml" />
-        <div className="cert-line cert-rightl" />
+      <div className="cert-magic-glow" />
+      <div className="cert-ui-bg">
+        <div className="cert-ui-grid" />
       </div>
-    </motion.a>
+      
+      <div className="cert-ui-content">
+        <div className="cert-ui-logo">
+          <span className="cert-ui-logo-text">{shortName}</span>
+        </div>
+
+        <div className="cert-ui-info">
+          <h3 className="cert-ui-title">{cert.course}</h3>
+          <p className="cert-ui-org">{cert.organization}</p>
+          <a 
+            href={cert.certificateUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="cert-ui-meta hover:bg-white/10 transition-colors"
+            aria-label={`View ${cert.course} Certificate`}
+          >
+            <span className="cert-ui-date">{cert.issued}</span>
+            <ExternalLinkIcon className="h-3 w-3" />
+          </a>
+        </div>
+      </div>
+    </motion.div>
   );
 }
 

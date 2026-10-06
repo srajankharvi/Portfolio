@@ -40,57 +40,71 @@ function DraggableProfileCard() {
   // Rotate slightly based on x, creating a natural pendulum swinging effect
   const rotate = useTransform(x, [-250, 250], [-12, 12]);
 
-  // Generate dynamic SVG path for the elastic belt
+  // Generate dynamic SVG path for the lanyard (V-shape)
   const beltPath = useTransform([x, y], ([latestX, latestY]) => {
-    // Start at top anchor (0,0)
     // End at the card's clip (-6px offset from base)
     const endX = latestX;
     const endY = beltLength - 6 + latestY;
     
     // Smooth bezier control point to simulate slight bending/tension
-    // Bends outwards slightly when pulled sideways, but pulls taut when pulled down
     const tension = Math.max(1, 1 + latestY * 0.01);
     const controlX = latestX * (0.4 / tension);
     const controlY = (beltLength + latestY) * 0.5;
 
-    return `M 0 0 Q ${controlX} ${controlY} ${endX} ${endY}`;
+    // Draw a V-shape lanyard loop
+    // Left side of the loop
+    const startLeftX = -90;
+    const startLeftY = -40; // Above the container so it looks like it goes around the neck
+    // Right side of the loop
+    const startRightX = 90;
+    const startRightY = -40;
+
+    return `M ${startLeftX} ${startLeftY} Q ${controlX - 30} ${controlY} ${endX} ${endY} M ${startRightX} ${startRightY} Q ${controlX + 30} ${controlY} ${endX} ${endY}`;
   });
 
   return (
     <div className="relative flex h-full w-full min-h-[450px] items-start justify-center pt-0 lg:min-h-[500px]">
       
-      {/* Top Anchor Point */}
-      <div className="absolute top-0 left-1/2 z-20 h-3 w-10 -translate-x-1/2 rounded-b-lg border border-t-0 border-[#333] bg-gradient-to-b from-[#111] to-[#0a0a0a] shadow-[0_4px_10px_rgba(0,0,0,0.8)]">
-        <div className="mx-auto mt-1 h-1 w-6 rounded-full bg-[#222] shadow-inner"></div>
-      </div>
-      
-      {/* Dynamic Elastic Belt Canvas */}
+      {/* Dynamic Lanyard Canvas */}
       <svg className="absolute top-0 left-1/2 w-0 h-0 z-10 overflow-visible pointer-events-none">
-        {/* Belt Shadow */}
+        {/* Lanyard Shadow */}
         <motion.path 
           d={beltPath}
-          stroke="rgba(0,0,0,0.6)"
-          strokeWidth="6"
+          stroke="rgba(0,0,0,0.5)"
+          strokeWidth="20"
           fill="none"
           strokeLinecap="round"
-          className="translate-y-[2px]"
+          strokeLinejoin="round"
+          className="translate-y-[4px] translate-x-[2px]"
         />
-        {/* Belt Core */}
+        {/* Lanyard Base (Dark Border) */}
         <motion.path 
           d={beltPath}
-          stroke="#1a1a1a"
-          strokeWidth="4"
+          stroke="#1e3a8a"
+          strokeWidth="18"
           fill="none"
           strokeLinecap="round"
+          strokeLinejoin="round"
         />
-        {/* Belt Highlight (Metallic texture) */}
+        {/* Lanyard Inner Color */}
         <motion.path 
           d={beltPath}
-          stroke="#444"
-          strokeWidth="1.5"
+          stroke="#3b82f6"
+          strokeWidth="14"
           fill="none"
           strokeLinecap="round"
-          className="opacity-70"
+          strokeLinejoin="round"
+        />
+        {/* Lanyard Stitching */}
+        <motion.path 
+          d={beltPath}
+          stroke="#93c5fd"
+          strokeWidth="10"
+          fill="none"
+          strokeDasharray="4 4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="opacity-50 mix-blend-overlay"
         />
       </svg>
       
