@@ -51,7 +51,9 @@ export default function About() {
             <Lanyard
               frontImage="/Srajan_Developer.webp"
               cardColor="#121316"
-              finish="matte"
+              finish="glossy"
+              whiteReflection={0.6}
+              stillReflection={0}
               metal="silver"
               size={0.62}
               strapLength={0.48}

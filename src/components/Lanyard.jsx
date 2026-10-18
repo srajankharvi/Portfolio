@@ -26,10 +26,10 @@ const CLAMP_BODY = 0.15;
 const FACE_WIDTH = 1024;
 
 const FINISHES = {
-  glossy: { roughness: 0.42, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.06, foil: 0, anisotropy: 0 },
-  matte: { roughness: 0.85, metalness: 0, clearcoat: 0, clearcoatRoughness: 0.6, foil: 0, anisotropy: 0 },
-  holographic: { roughness: 0.3, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.04, foil: 1, anisotropy: 0 },
-  metallic: { roughness: 0.36, metalness: 0.75, clearcoat: 0.5, clearcoatRoughness: 0.18, foil: 0, anisotropy: 0.7 }
+  glossy: { roughness: 0.22, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.08, foil: 0, whiteReflection: 1.0, anisotropy: 0 },
+  matte: { roughness: 0.85, metalness: 0, clearcoat: 0, clearcoatRoughness: 0.6, foil: 0, whiteReflection: 0.0, anisotropy: 0 },
+  holographic: { roughness: 0.3, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.04, foil: 1, whiteReflection: 0.0, anisotropy: 0 },
+  metallic: { roughness: 0.36, metalness: 0.75, clearcoat: 0.5, clearcoatRoughness: 0.18, foil: 0, whiteReflection: 0.4, anisotropy: 0.7 }
 };
 
 const BAND_COLUMNS = [0, 0.07, 0.93, 1];
@@ -50,6 +50,7 @@ vFoilY = normalize((modelViewMatrix * vec4(0.0, 1.0, 0.0, 0.0)).xyz);
 
 const FOIL_FRAGMENT_HEAD = `
 uniform float foilStrength;
+uniform float whiteReflection;
 uniform float foilAspect;
 uniform vec3 foilKey;
 uniform vec3 foilFill;
@@ -138,6 +139,31 @@ if (foilStrength > 0.0) {
   float facing = clamp(dot(foilNormal, foilView), 0.0, 1.0);
   float tint = clamp(dot(rainbow, vec3(0.4)), 0.0, 1.0);
   outgoingLight = outgoingLight * (1.0 - foil * (0.3 + 0.32 * tint)) + (rainbow * 0.62 * (0.4 + 0.6 * facing) + sparkle * 1.6) * foil;
+}
+if (whiteReflection > 0.001) {
+  vec3 wView = normalize(vViewPosition);
+  vec3 wNormal = normalize(normal);
+  vec3 wRefl = reflect(-wView, wNormal);
+
+  vec2 cardCoord = vFoilUv - vec2(0.5, 0.5);
+  cardCoord.y *= foilAspect;
+
+  // Diagonal angle (~45 degrees) across the card face
+  float diag = cardCoord.x * 0.707 + cardCoord.y * 0.707;
+
+  // Dynamic reflection movement responding to physical card tilt and rotation
+  float tilt = dot(wRefl, vFoilX) * 0.75 + dot(wRefl, vFoilY) * 0.55;
+  float center = tilt * 1.5;
+
+  // Subtle, sleek specular glint line (narrow, crisp, no broad wash/haze)
+  float d = diag - center;
+  float streak = exp(-d * d * 160.0) * 0.18;
+  float edgeGlint = pow(clamp(1.0 - dot(wNormal, wView), 0.0, 1.0), 5.0) * 0.10;
+
+  float facing = smoothstep(0.1, 0.4, dot(wNormal, wView));
+  float totalSheen = (streak + edgeGlint) * facing * whiteReflection;
+
+  outgoingLight += vec3(totalSheen);
 }
 `;
 
@@ -708,6 +734,8 @@ const Lanyard = ({
   cardColor = '#ffffff',
   orientation = 'portrait',
   finish = 'glossy',
+  whiteReflection,
+  stillReflection = 0,
   cornerRadius = 0.3,
   size = 0.6,
   anchor = 'center',
@@ -736,6 +764,8 @@ const Lanyard = ({
     cardColor,
     orientation: orientation === 'landscape' ? 'landscape' : 'portrait',
     finish,
+    whiteReflection,
+    stillReflection,
     cornerRadius,
     size,
     anchor,
@@ -800,6 +830,7 @@ const Lanyard = ({
     const weave = buildWeaveTexture();
     const foilUniforms = {
       foilStrength: { value: 0 },
+      whiteReflection: { value: 0 },
       foilAspect: { value: 1.4 },
       foilKey: { value: new THREE.Vector3() },
       foilFill: { value: new THREE.Vector3() },
@@ -818,12 +849,12 @@ const Lanyard = ({
     const frontMaterial = new THREE.MeshPhysicalMaterial({
       map: frontTexture,
       normalMap: grain,
-      normalScale: new THREE.Vector2(0.06, 0.06)
+      normalScale: new THREE.Vector2(0.002, 0.002)
     });
     const backMaterial = new THREE.MeshPhysicalMaterial({
       map: backTexture,
       normalMap: grain,
-      normalScale: new THREE.Vector2(0.06, 0.06)
+      normalScale: new THREE.Vector2(0.002, 0.002)
     });
     frontMaterial.onBeforeCompile = injectFoil;
     backMaterial.onBeforeCompile = injectFoil;
@@ -880,6 +911,7 @@ const Lanyard = ({
     let hovering = false;
     let press = null;
     let imageToken = 0;
+    let motionFactor = 0;
     const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
 
     const paintFaces = () => {
@@ -995,6 +1027,9 @@ const Lanyard = ({
         material.anisotropy = finish.anisotropy;
       });
       foilUniforms.foilStrength.value = finish.foil;
+      const baseReflection = s.whiteReflection !== undefined ? Number(s.whiteReflection) : (finish.whiteReflection || 0);
+      const minReflection = s.stillReflection !== undefined ? Number(s.stillReflection) : 0.0;
+      foilUniforms.whiteReflection.value = THREE.MathUtils.lerp(minReflection, baseReflection, motionFactor);
       foilUniforms.foilAspect.value = layout.height / layout.width;
       edgeMaterial.color.setRGB(card[0] * 0.92, card[1] * 0.92, card[2] * 0.92, THREE.SRGBColorSpace);
       edgeMaterial.roughness = Math.min(finish.roughness, 0.35);
@@ -1141,8 +1176,26 @@ const Lanyard = ({
         sim.grab = null;
         placeHanging(sim, layout, false);
       }
+
+      // Dynamic motion-based reflection:
+      // When still in resting position, reflection fades down so the portrait image is completely clear.
+      // When moving/dragged/swinging, reflection blooms and glides across the card.
+      const s = settingsRef.current;
+      const finish = FINISHES[s.finish] || FINISHES.glossy;
+      const baseReflection = s.whiteReflection !== undefined ? Number(s.whiteReflection) : (finish.whiteReflection || 1.0);
+      const minReflection = s.stillReflection !== undefined ? Number(s.stillReflection) : 0.0;
+
+      const speed = body.velocity.length() + body.angular.length() * 0.35;
+      const activeMotion = sim.grab ? 1.0 : Math.max(0, (speed - 0.5) / 1.0);
+      const targetMotion = Math.min(1.0, activeMotion);
+
+      const lerpSpeed = targetMotion > motionFactor ? 10.0 : 3.0;
+      motionFactor += (targetMotion - motionFactor) * Math.min(1.0, dt * lerpSpeed);
+
+      foilUniforms.whiteReflection.value = THREE.MathUtils.lerp(minReflection, baseReflection, motionFactor);
+
       render();
-      const resting = sim.calm > 1.2 && !sim.grab && current.breeze === 0;
+      const resting = sim.calm > 1.2 && !sim.grab && current.breeze === 0 && motionFactor < 0.01;
       if (visible && !resting) raf = requestAnimationFrame(tick);
     };
 
