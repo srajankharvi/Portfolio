@@ -62,6 +62,11 @@ export default function About() {
               elasticity={0.6}
               breeze={0.4}
               damping={0.5}
+              backDetails={{
+                name: 'Srajan',
+                role: 'Developer',
+                status: 'Ready for Collaboration'
+              }}
             />
           </div>
         </motion.div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import * as THREE from 'three';
 
 import './Lanyard.css';
@@ -457,6 +457,228 @@ const paintFace = (canvas, image, color, fit) => {
   if (image) drawFitted(ctx, image, canvas.width, canvas.height, fit);
 };
 
+const drawRoundedRect = (ctx, x, y, w, h, r) => {
+  if (typeof ctx.roundRect === 'function') {
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, h, r);
+    return;
+  }
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.arcTo(x + w, y, x + w, y + r, r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+  ctx.lineTo(x + r, y + h);
+  ctx.arcTo(x, y + h, x, y + h - r, r);
+  ctx.lineTo(x, y + r);
+  ctx.arcTo(x, y, x + r, y, r);
+  ctx.closePath();
+};
+
+const drawBackCard = (canvas, details = {}) => {
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  const w = canvas.width;
+  const h = canvas.height;
+
+  const name = details.name || 'Srajan';
+  const nameLabel = details.nameLabel || 'NAME';
+  const role = details.role || 'Developer';
+  const roleLabel = details.roleLabel || 'ROLE';
+  const status = details.status || 'Ready for Collaboration';
+  const statusLabel = details.statusLabel || 'STATUS';
+
+  // 1. Background Charcoal Gradient (matching Skills card)
+  const bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+  bgGrad.addColorStop(0, '#1c1d24');
+  bgGrad.addColorStop(1, '#0e0f13');
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, w, h);
+
+  // Soft matte sheen highlight at top (radial gradient matching SkillCard)
+  const sheen = ctx.createRadialGradient(w * 0.5, 0, 10, w * 0.5, 0, h * 0.7);
+  sheen.addColorStop(0, 'rgba(255, 255, 255, 0.08)');
+  sheen.addColorStop(0.5, 'rgba(255, 255, 255, 0.02)');
+  sheen.addColorStop(1, 'transparent');
+  ctx.fillStyle = sheen;
+  ctx.fillRect(0, 0, w, h);
+
+  // 2. Beveled Border Frame (matching SkillCard border)
+  const padX = 54;
+  const frameY = 140;
+  const frameW = w - padX * 2;
+  const frameH = h - frameY - 60;
+  const frameR = 28;
+
+  drawRoundedRect(ctx, padX, frameY, frameW, frameH, frameR);
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+  ctx.fill();
+
+  const borderGrad = ctx.createLinearGradient(0, frameY, 0, frameY + frameH);
+  borderGrad.addColorStop(0, 'rgba(255, 255, 255, 0.22)');
+  borderGrad.addColorStop(0.3, 'rgba(255, 255, 255, 0.08)');
+  borderGrad.addColorStop(1, 'rgba(255, 255, 255, 0.02)');
+  ctx.strokeStyle = borderGrad;
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // 3. Header Row (below slot hole)
+  const headerY = frameY + 36;
+  const contentLeft = padX + 50;
+  const contentRight = padX + frameW - 50;
+
+  // Left: Inset Icon Chip (matching SkillCard Icon Chip)
+  const chipSize = 64;
+  drawRoundedRect(ctx, contentLeft, headerY, chipSize, chipSize, 16);
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.07)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  // Code icon </>
+  ctx.textAlign = 'center';
+  ctx.font = '700 26px "Space Grotesk", sans-serif';
+  ctx.fillStyle = '#60A5FA';
+  if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+  ctx.fillText('</>', contentLeft + chipSize / 2, headerY + 41);
+
+  // Right: Clean Status Pill Badge (matching SkillCard level badge)
+  const badgeH = 38;
+  const badgeW = 150;
+  const badgeX = contentRight - badgeW;
+  const badgeY = headerY + (chipSize - badgeH) / 2;
+
+  drawRoundedRect(ctx, badgeX, badgeY, badgeW, badgeH, 19);
+  ctx.fillStyle = 'rgba(16, 185, 129, 0.12)';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(16, 185, 129, 0.28)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  // Glowing status pulse dot
+  const dotX = badgeX + 24;
+  const dotY = badgeY + badgeH / 2;
+  ctx.fillStyle = 'rgba(16, 185, 129, 0.35)';
+  ctx.beginPath();
+  ctx.arc(dotX, dotY, 8, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#34D399';
+  ctx.beginPath();
+  ctx.arc(dotX, dotY, 4.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.textAlign = 'left';
+  ctx.font = '700 13px "Space Grotesk", sans-serif';
+  ctx.fillStyle = '#34D399';
+  if ('letterSpacing' in ctx) ctx.letterSpacing = '2px';
+  ctx.fillText('VERIFIED', dotX + 16, dotY + 4.5);
+
+  // Header bottom hairline divider
+  const divY = headerY + chipSize + 36;
+  ctx.beginPath();
+  ctx.moveTo(contentLeft, divY);
+  ctx.lineTo(contentRight, divY);
+  const divGrad = ctx.createLinearGradient(contentLeft, 0, contentRight, 0);
+  divGrad.addColorStop(0, 'rgba(255, 255, 255, 0.14)');
+  divGrad.addColorStop(0.7, 'rgba(255, 255, 255, 0.04)');
+  divGrad.addColorStop(1, 'transparent');
+  ctx.strokeStyle = divGrad;
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  // 4. Content Blocks Styled Exactly Like SkillCard (Second Image)
+  // [Title in bold white]
+  // [Subtitle in tracked uppercase #8C93A8]
+
+  // --- BLOCK 1: NAME ---
+  const b1Y = divY + 130;
+  ctx.textAlign = 'left';
+  ctx.font = '700 86px "Space Grotesk", sans-serif';
+  ctx.fillStyle = '#FFFFFF';
+  if ('letterSpacing' in ctx) ctx.letterSpacing = '-1px';
+  ctx.fillText(name, contentLeft, b1Y);
+
+  ctx.font = '600 24px "Space Grotesk", sans-serif';
+  ctx.fillStyle = '#8C93A8';
+  if ('letterSpacing' in ctx) ctx.letterSpacing = '5px';
+  ctx.fillText(nameLabel, contentLeft, b1Y + 44);
+
+  // Divider between Block 1 and Block 2
+  const div2Y = b1Y + 115;
+  ctx.beginPath();
+  ctx.moveTo(contentLeft, div2Y);
+  ctx.lineTo(contentRight, div2Y);
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+  ctx.stroke();
+
+  // --- BLOCK 2: ROLE ---
+  const b2Y = div2Y + 125;
+  ctx.font = '700 74px "Space Grotesk", sans-serif';
+  ctx.fillStyle = '#FFFFFF';
+  if ('letterSpacing' in ctx) ctx.letterSpacing = '-0.5px';
+  ctx.fillText(role, contentLeft, b2Y);
+
+  ctx.font = '600 24px "Space Grotesk", sans-serif';
+  ctx.fillStyle = '#8C93A8';
+  if ('letterSpacing' in ctx) ctx.letterSpacing = '5px';
+  ctx.fillText(roleLabel, contentLeft, b2Y + 44);
+
+  // Divider between Block 2 and Block 3
+  const div3Y = b2Y + 115;
+  ctx.beginPath();
+  ctx.moveTo(contentLeft, div3Y);
+  ctx.lineTo(contentRight, div3Y);
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+  ctx.stroke();
+
+  // --- BLOCK 3: STATUS / COLLABORATION ---
+  const b3Y = div3Y + 125;
+
+  // Active green pulse dot next to status
+  const statusDotX = contentLeft + 14;
+  const statusDotY = b3Y - 20;
+  const statHalo = ctx.createRadialGradient(statusDotX, statusDotY, 4, statusDotX, statusDotY, 20);
+  statHalo.addColorStop(0, 'rgba(16, 185, 129, 0.55)');
+  statHalo.addColorStop(1, 'transparent');
+  ctx.fillStyle = statHalo;
+  ctx.beginPath();
+  ctx.arc(statusDotX, statusDotY, 20, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#10B981';
+  ctx.beginPath();
+  ctx.arc(statusDotX, statusDotY, 8, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#FFFFFF';
+  ctx.beginPath();
+  ctx.arc(statusDotX, statusDotY, 3, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Title
+  const statusTextX = contentLeft + 42;
+  ctx.font = '700 54px "Space Grotesk", sans-serif';
+  ctx.fillStyle = '#FFFFFF';
+  if ('letterSpacing' in ctx) ctx.letterSpacing = '-0.5px';
+  ctx.fillText(status, statusTextX, b3Y);
+
+  // Subtitle
+  ctx.font = '600 24px "Space Grotesk", sans-serif';
+  ctx.fillStyle = '#8C93A8';
+  if ('letterSpacing' in ctx) ctx.letterSpacing = '5px';
+  ctx.fillText(statusLabel, statusTextX, b3Y + 44);
+
+  // 5. Minimalist Bottom Footer
+  ctx.textAlign = 'center';
+  ctx.font = '600 18px "Space Grotesk", sans-serif';
+  ctx.fillStyle = 'rgba(140, 147, 168, 0.45)';
+  if ('letterSpacing' in ctx) ctx.letterSpacing = '4px';
+  ctx.fillText('PORTFOLIO • SRAJAN KHARVI', w / 2, frameY + frameH - 36);
+};
+
 const paintStrap = (canvas, image, color) => {
   const across = 192;
   const along = image ? Math.max(64, Math.round((image.width / image.height) * across)) : across * 2;
@@ -727,9 +949,10 @@ const stepSimulation = (sim, dt, physics, time) => {
   sim.calm = energy < 2e-4 ? sim.calm + dt : 0;
 };
 
-const Lanyard = ({
+const Lanyard = forwardRef(({
   frontImage,
   backImage,
+  backDetails,
   imageFit = 'cover',
   cardColor = '#ffffff',
   orientation = 'portrait',
@@ -752,14 +975,21 @@ const Lanyard = ({
   intro = true,
   className = '',
   style
-}) => {
+}, ref) => {
   const containerRef = useRef(null);
   const settingsRef = useRef(null);
   const applyRef = useRef(null);
 
+  useImperativeHandle(ref, () => ({
+    flip: () => {
+      applyRef.current?.flip?.();
+    }
+  }));
+
   settingsRef.current = {
     frontImage,
     backImage,
+    backDetails,
     imageFit: imageFit === 'contain' ? 'contain' : 'cover',
     cardColor,
     orientation: orientation === 'landscape' ? 'landscape' : 'portrait',
@@ -785,6 +1015,12 @@ const Lanyard = ({
   useEffect(() => {
     applyRef.current?.();
   });
+
+  useEffect(() => {
+    document.fonts?.ready?.then(() => {
+      applyRef.current?.();
+    });
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -928,7 +1164,11 @@ const Lanyard = ({
         backTexture.dispose();
       }
       paintFace(frontCanvas, images.front, color, s.imageFit);
-      paintFace(backCanvas, images.back || images.front, color, s.imageFit);
+      if (images.back) {
+        paintFace(backCanvas, images.back, color, s.imageFit);
+      } else {
+        drawBackCard(backCanvas, s.backDetails, color);
+      }
       frontTexture.needsUpdate = true;
       backTexture.needsUpdate = true;
       start();
@@ -1013,7 +1253,7 @@ const Lanyard = ({
           repaintStrap();
         });
       }
-      const faceKey = `${layoutKey}|${s.cardColor}|${s.imageFit}`;
+      const faceKey = `${layoutKey}|${s.cardColor}|${s.imageFit}|${JSON.stringify(s.backDetails || {})}`;
       if (faceKey !== applied.faceKey) paintFaces();
       if (s.strapColor !== applied.strapColor) repaintStrap();
 
@@ -1276,7 +1516,9 @@ const Lanyard = ({
     const onPointerUp = event => {
       if (!sim.grab) return;
       sim.grab = null;
-      if (press && event.type === 'pointerup' && performance.now() - press.time < 450) flip(press.point);
+      if (press && (performance.now() - press.time < 800 || Math.hypot(event.clientX - press.x, event.clientY - press.y) < 15)) {
+        flip(press.point);
+      }
       press = null;
       canvas.releasePointerCapture?.(event.pointerId);
       setCursor(hovering && event.pointerType !== 'touch' ? 'grab' : '');
@@ -1317,6 +1559,10 @@ const Lanyard = ({
     };
     document.addEventListener('visibilitychange', onVisibility);
 
+    apply.flip = () => {
+      flip(new THREE.Vector3(0, 0, 0));
+      start();
+    };
     applyRef.current = apply;
     resize();
 
@@ -1343,6 +1589,6 @@ const Lanyard = ({
   }, []);
 
   return <div ref={containerRef} className={`lanyard ${className}`.trim()} style={style} />;
-};
+});
 
 export default Lanyard;
