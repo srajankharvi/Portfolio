@@ -47,7 +47,7 @@ export default function App() {
             className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black"
           >
             <div className="w-64 h-64 sm:w-[400px] sm:h-[400px] shrink-0">
-              <ParticleTether dotColor="#8D99AE" />
+              <ParticleTether dotColor="#FFFFFF" />
             </div>
             <motion.div
               initial={{ opacity: 0, filter: "blur(10px)", y: 15 }}
