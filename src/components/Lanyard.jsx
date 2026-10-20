@@ -983,6 +983,9 @@ const Lanyard = forwardRef(({
   useImperativeHandle(ref, () => ({
     flip: () => {
       applyRef.current?.flip?.();
+    },
+    shake: (options) => {
+      applyRef.current?.shake?.(options);
     }
   }));
 
@@ -1561,6 +1564,40 @@ const Lanyard = forwardRef(({
 
     apply.flip = () => {
       flip(new THREE.Vector3(0, 0, 0));
+      start();
+    };
+
+    apply.shake = (options = {}) => {
+      if (reducedMotion) return;
+      const {
+        directionX = 1,
+        directionY = 0,
+        directionZ = 0.4,
+        intensity = 1.0
+      } = options;
+
+      const mult = Math.min(Math.max(intensity, 0.4), 2.0);
+
+      // 1. Linear impulse on card body (pendulum swing arc)
+      sim.body.velocity.x += directionX * 5.8 * mult;
+      sim.body.velocity.y += (directionY || 0) * 2.2 * mult;
+      sim.body.velocity.z += (directionZ || 0.4) * 3.6 * mult;
+
+      // 2. Rotational angular impulse (side-to-side roll, subtle yaw & pitch)
+      sim.body.angular.z += directionX * 4.2 * mult;
+      sim.body.angular.y += ((Math.random() - 0.5) * 2.8) * mult;
+      sim.body.angular.x += ((directionZ || 0.4) * 2.2) * mult;
+
+      // 3. Realistic flexible strap and clip momentum transfer
+      for (let i = 1; i < JOINTS; i++) {
+        const fraction = i / JOINTS;
+        sim.velocities[i].x += directionX * fraction * 4.6 * mult;
+        sim.velocities[i].y += (directionY || 0) * fraction * 1.8 * mult;
+        sim.velocities[i].z += (directionZ || 0.4) * fraction * 3.0 * mult;
+      }
+
+      // Awaken physics engine from calm state
+      sim.calm = 0;
       start();
     };
     applyRef.current = apply;
