@@ -1,4 +1,4 @@
-import { useRef, useCallback } from "react";
+﻿import { useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import Lanyard from "./Lanyard";
 import Section from "./Section";
@@ -40,7 +40,7 @@ export default function About() {
     lanyardRef.current?.shake?.(shakeData);
   }, []);
 
-  const { permissionState, requestPermission } = useDeviceMotionShake({
+  useDeviceMotionShake({
     onShake: handleShake,
     threshold: 13.5,
     cooldown: 900
@@ -84,21 +84,6 @@ export default function About() {
               }}
             />
           </div>
-
-          {/* Unobtrusive button for iOS Safari where explicit permission is required */}
-          {permissionState === 'prompt' && (
-            <div className="mt-2 flex justify-center">
-              <button
-                type="button"
-                onClick={requestPermission}
-                className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-gray-300 backdrop-blur-md transition-all duration-300 hover:border-white/20 hover:bg-white/[0.08] hover:text-white active:scale-95 shadow-sm"
-                aria-label="Enable Motion Effects"
-              >
-                <span className="flex h-2 w-2 rounded-full bg-accent animate-pulse" />
-                <span>Enable Motion Effects</span>
-              </button>
-            </div>
-          )}
         </motion.div>
 
         {/* Right Column: Existing Content (Spans 7 cols) */}
