@@ -26,7 +26,7 @@ const Hero = React.memo(function Hero() {
           {isInView && (
             <ParticleText
               text="PORTFOLIO"
-              colors={["#FFFFFF", "#D1D1D1", "#9A9A9A", "#4A4A4A"]}
+              colors={["#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#808080"]}
               mode="onEnter"
               replay={false}
               position="middle"
